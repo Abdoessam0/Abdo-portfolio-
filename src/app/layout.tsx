@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import "../styles/animations.css";
 import { ThemeProvider } from "../components/layout/theme-provider";
 import Navbar from "../components/layout/Navbar";
+import { PageTransition } from "../components/motion/page-transition";
 import { site } from "../lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const poppins = Poppins({
+  weight: ["600", "700"],
+  variable: "--font-poppins",
   subsets: ["latin"],
   display: "swap",
 });
@@ -41,10 +49,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased bg-bg text-text`}>
+      <body className={`${inter.variable} ${poppins.variable} antialiased bg-bg text-text`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Navbar />
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
         </ThemeProvider>
       </body>
     </html>

@@ -7,7 +7,8 @@ import { Button } from "../components/ui/Button";
 import { Github, Linkedin, Mail } from "lucide-react";
 
 export default function Contact() {
-    const [status, setStatus] = React.useState<string | null>(null);
+  const [status, setStatus] = React.useState<string | null>(null);
+  const [submitting, setSubmitting] = React.useState(false);
 
     async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -22,14 +23,21 @@ export default function Contact() {
             return;
         }
 
-        const res = await fetch("/api/contact", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, message }),
-        });
-        const data = await res.json();
-        setStatus(data?.ok ? "Message sent!" : "Something went wrong.");
-        form.reset();
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+      const data = await res.json();
+      setStatus(data?.ok ? "Message sent!" : "Something went wrong.");
+      if (data?.ok) form.reset();
+    } catch (e) {
+      setStatus("Something went wrong.");
+    } finally {
+      setSubmitting(false);
+    }
     }
 
     return (
@@ -37,7 +45,7 @@ export default function Contact() {
             <Container>
                 <SectionTitle>Contact</SectionTitle>
                 <div className="grid md:grid-cols-2 gap-8">
-                    <form onSubmit={onSubmit} className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
+          <form onSubmit={onSubmit} className="rounded-xl bg-surface/90 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
                         <div>
                             <label className="block text-sm text-text/80">Name</label>
                             <input name="name" className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text placeholder:text-text/50 outline-none focus:ring-2 focus:ring-accent" placeholder="Your name" />
@@ -50,7 +58,7 @@ export default function Contact() {
                             <label className="block text-sm text-text/80">Message</label>
                             <textarea name="message" rows={4} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text placeholder:text-text/50 outline-none focus:ring-2 focus:ring-accent" placeholder="How can I help?" />
                         </div>
-                        <Button type="submit">Send</Button>
+            <Button type="submit" disabled={submitting}>{submitting ? "Sending..." : "Send"}</Button>
                         {status && <p className="text-sm text-text/80">{status}</p>}
                     </form>
                     <div className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4">

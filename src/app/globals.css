@@ -1,32 +1,39 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-bg: #0A192F;
-  --color-text: #CCD6F6;
-  --color-accent: #64FFDA;
-  --shadow-glass: 0 8px 32px rgba(0,0,0,.35);
+  --font-inter: var(--font-inter);
+  --font-heading: var(--font-poppins);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, .35);
   --backdrop-blur-xs: 2px;
-  --font-inter: "Inter", system-ui, sans-serif;
+
+  /* Light theme (default) */
+  --color-bg: #F1F5F9;
+  /* Slate 100 */
+  --color-surface: #FFFFFF;
+  /* White */
+  --color-text: #334155;
+  /* Slate 700 */
+  --color-heading: #0F172A;
+  /* Slate 900 */
+  --color-accent: #0891B2;
+  /* Cyan 600 */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Dark theme via next-themes .dark class on <html> */
+.dark {
+  --color-bg: #0F172A;
+  /* Slate 900 */
+  --color-surface: #1E293B;
+  /* Slate 800 */
+  --color-text: #CBD5E1;
+  /* Slate 300 */
+  --color-heading: #F8FAFC;
+  /* Slate 50 */
+  --color-accent: #22D3EE;
+  /* Cyan 400 */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
