@@ -10,6 +10,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-bg: #0A192F;
+  --color-text: #CCD6F6;
+  --color-accent: #64FFDA;
+  --shadow-glass: 0 8px 32px rgba(0,0,0,.35);
+  --backdrop-blur-xs: 2px;
+  --font-inter: "Inter", system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
