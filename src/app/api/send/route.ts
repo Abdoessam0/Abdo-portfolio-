@@ -20,11 +20,17 @@ export async function POST(request: Request) {
   }
   const { name, email, message } = parsed.data;
   try {
+    const from = process.env.RESEND_FROM || "Contact Form <onboarding@resend.dev>";
+    const to = (process.env.RESEND_TO || "abdoessammo@gmail.com")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
     const data = await resend.emails.send({
-      from: "Contact Form <onboarding@resend.dev>", // NOTE: verify a domain in Resend and update
-      to: ["abdoessammo@gmail.com"],
+      from,
+      to,
       subject: "Message from Portfolio Contact Form",
-      reply_to: email,
+      replyTo: email,
       react: React.createElement(ContactFormEmail, { message, senderEmail: email, name }),
     });
     return NextResponse.json({ ok: true, data });

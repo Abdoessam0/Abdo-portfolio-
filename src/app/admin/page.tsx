@@ -12,10 +12,14 @@ import {
   type ExperienceItem,
   type Certification,
 } from "../../lib/content";
+import { strapiLogin, createProject, uploadFile } from "../../lib/strapi";
 
 export default function AdminPage() {
   const [form, setForm] = React.useState<SiteContent>(loadContent());
   const [saved, setSaved] = React.useState<string | null>(null);
+  const [jwt, setJwt] = React.useState<string | null>(null);
+  const [authError, setAuthError] = React.useState<string | null>(null);
+  const [creating, setCreating] = React.useState(false);
 
   function update<K extends keyof SiteContent>(key: K, value: SiteContent[K]) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -59,6 +63,34 @@ export default function AdminPage() {
     <main className="mx-auto max-w-3xl px-4 md:px-6 py-10">
       <h1 className="text-2xl font-semibold text-text">Admin</h1>
       <p className="text-sm text-text/80">Update content. Stored locally in your browser for now.</p>
+
+      <section className="mt-4 rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
+        <h2 className="font-semibold text-text">Connect to Strapi (optional)</h2>
+        <p className="text-sm text-text/70">Set NEXT_PUBLIC_STRAPI_API_URL in your env to enable CMS. Log in here to create items.</p>
+        {jwt ? (
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-text/80">Authenticated with Strapi.</p>
+            <button onClick={() => setJwt(null)} className="text-sm text-accent">Log out</button>
+          </div>
+        ) : (
+          <StrapiLoginForm onLogin={async (email, password) => {
+            setAuthError(null);
+            try {
+              const { jwt } = await strapiLogin(email, password);
+              setJwt(jwt);
+            } catch {
+              setAuthError("Login failed. Check credentials and CORS.");
+            }
+          }} error={authError} />
+        )}
+
+        {jwt && (
+          <div className="pt-2 border-t border-text/10">
+            <h3 className="font-medium text-text">Quick-create Project</h3>
+            <QuickCreateProject jwt={jwt} creating={creating} setCreating={setCreating} />
+          </div>
+        )}
+      </section>
       <form onSubmit={onSubmit} className="mt-6 space-y-6">
         <section className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
           <h2 className="font-semibold text-text">Basics</h2>
@@ -276,4 +308,57 @@ export default function AdminPage() {
   );
 }
 
+function StrapiLoginForm({ onLogin, error }: { onLogin: (email: string, password: string) => void | Promise<void>; error: string | null; }) {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  return (
+    <form onSubmit={async (e) => { e.preventDefault(); setLoading(true); await onLogin(email, password); setLoading(false); }} className="grid md:grid-cols-2 gap-2">
+      <input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
+      <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
+      <div className="md:col-span-2 flex items-center gap-3">
+        <button type="submit" className="inline-flex items-center rounded-lg px-3 py-2 bg-bg text-text ring-1 ring-text/20">{loading ? "Signing in…" : "Sign in"}</button>
+        {error && <span className="text-sm text-red-400">{error}</span>}
+      </div>
+    </form>
+  );
+}
+
+function QuickCreateProject({ jwt, creating, setCreating }: { jwt: string; creating: boolean; setCreating: (b: boolean) => void; }) {
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [image, setImage] = React.useState<File | null>(null);
+  const [status, setStatus] = React.useState<string | null>(null);
+  return (
+    <form onSubmit={async (e) => {
+      e.preventDefault();
+      setCreating(true);
+      setStatus(null);
+      try {
+        let imageId: number | null = null;
+        if (image) {
+          const uploaded = await uploadFile(jwt, image);
+          imageId = uploaded?.[0]?.id ?? null;
+        }
+        await createProject(jwt, { title, description, image: imageId });
+        setStatus("Created.");
+        setTitle("");
+        setDescription("");
+        setImage(null);
+      } catch {
+        setStatus("Failed to create.");
+      } finally {
+        setCreating(false);
+      }
+    }} className="grid gap-2">
+      <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
+      <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" rows={2} />
+      <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} className="text-sm text-text/70" />
+      <div className="flex items-center gap-3">
+        <button type="submit" className="inline-flex items-center rounded-lg px-3 py-2 bg-bg text-text ring-1 ring-text/20" disabled={creating}>{creating ? "Creating…" : "Create"}</button>
+        {status && <span className="text-sm text-text/80">{status}</span>}
+      </div>
+    </form>
+  );
+}
 

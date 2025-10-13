@@ -5,6 +5,7 @@ import { Container } from "../components/ui/container";
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { Button } from "../components/ui/Button";
 import { Github, Linkedin, Mail } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 export default function Contact() {
   const [status, setStatus] = React.useState<string | null>(null);
@@ -25,15 +26,24 @@ export default function Contact() {
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
-      });
-      const data = await res.json();
-      setStatus(data?.ok ? "Message sent!" : "Something went wrong.");
-      if (data?.ok) form.reset();
-    } catch (e) {
+      const service = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const template = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+      if (service && template && publicKey) {
+        await emailjs.send(service, template, { from_name: name, reply_to: email, message }, publicKey);
+        setStatus("Message sent!");
+        form.reset();
+      } else {
+        const res = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, message }),
+        });
+        const data = await res.json();
+        setStatus(data?.ok ? "Message sent!" : "Something went wrong.");
+        if (data?.ok) form.reset();
+      }
+    } catch {
       setStatus("Something went wrong.");
     } finally {
       setSubmitting(false);

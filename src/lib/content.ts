@@ -55,7 +55,7 @@ export type SiteContent = {
 
 export const defaultContent: SiteContent = {
   name: "Abdelrahman Mohamed",
-  subline: "Full Stack Developer • Open Source Contributor • Tech Explorer",
+  subline: "Full‑Stack Developer • Open Source Contributor • Tech Explorer",
   socials: {
     github: "https://github.com/Abdoessam0", // TODO: confirm
     linkedin: "https://www.linkedin.com/in/", // TODO: add handle
@@ -64,7 +64,7 @@ export const defaultContent: SiteContent = {
   profileImage: "/next.svg", // safe built-in asset
   cvUrl: "#", // TODO: replace with hosted CV link
   about: {
-    location: "Nationality: Egyptian, Based in Erzurum, Türkiye.",
+    location: "Nationality: Egyptian · Based in Erzurum, Türkiye.",
     languages: "Languages: Arabic (Native), English (C1), Turkish (C1).",
     narrative1:
       "Technical Passion: I build reliable, accessible interfaces and data-driven backends. I love Next.js, React, and modern tooling. I care about clean architecture, performance, and DX.",
@@ -112,9 +112,9 @@ export const defaultContent: SiteContent = {
     { title: "NFS Soft (Erzurum)", role: "WordPress Dev Intern", summary: "Custom themes/plugins." },
   ],
   volunteering: [
-    "Translator | Snowboardcross World Cup — TR/EN for 15+ teams.",
-    "Participant | Erasmus+ Sports Forum — policy/youth dialogue.",
-    "Volunteer | Damla Movement — 31-member international team, community projects.",
+    "Translator — Snowboardcross World Cup — TR/EN for 15+ teams.",
+    "Participant — Erasmus+ Sports Forum — policy/youth dialogue.",
+    "Volunteer — Damla Movement — 31-member international team, community projects.",
   ],
   certifications: [
     { title: "ALX Full-Stack Engineer", url: "#" },
@@ -175,5 +175,4 @@ export function clearContent() {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(STORAGE_KEY);
 }
-
 

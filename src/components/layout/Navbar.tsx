@@ -17,6 +17,8 @@ export default function Navbar() {
       <nav className="mx-auto max-w-6xl px-4 md:px-6 mt-4">
         <div className="flex items-center justify-between rounded-2xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/10 px-4 py-3">
           <div className="flex items-center gap-6">
+            <Link href="#about" className="text-text/90 hover:text-accent transition">About</Link>
+            <Link href="#skills" className="text-text/90 hover:text-accent transition">Skills</Link>
             <Link href="#projects" className="text-text/90 hover:text-accent transition">Projects</Link>
             <Link href="#experience" className="text-text/90 hover:text-accent transition">Experience</Link>
             <Link href="#contact" className="text-text/90 hover:text-accent transition">Contact</Link>

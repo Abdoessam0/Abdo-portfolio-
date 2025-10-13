@@ -6,7 +6,7 @@ export function fadeIn(direction: "up" | "down" | "left" | "right" = "up", dista
   return {
     hidden: { opacity: 0, [axis]: delta },
     show: { opacity: 1, [axis]: 0 },
-  } as any;
+  } as unknown as Variants;
 }
 
 export const stagger: Variants = {

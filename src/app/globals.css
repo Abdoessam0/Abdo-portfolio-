@@ -37,3 +37,11 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+section {
+  scroll-margin-top: 96px; /* account for fixed navbar */
+}
