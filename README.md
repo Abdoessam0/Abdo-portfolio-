@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Abdelrahman Mohamed - Portfolio
 
-## Getting Started
+Light-mode, mobile-first portfolio powered by Next.js 15, Tailwind CSS, and typed content modules. The site highlights full-stack case studies, an experience timeline with proof, certificates, and a contact flow that posts to the built-in `/api/send` route.
 
-First, run the development server:
+## Stack and Structure
+- **Next.js 15 (App Router)** with typed `generateMetadata` on every route, including `/experience/[slug]` for deep dives.
+- **Tailwind CSS** with a custom light palette, Plus Jakarta Sans via `next/font`, and GPU-friendly background motion that respects `prefers-reduced-motion`.
+- **next/image** assets (SVG/JPG) + inline certificate PDF viewer backed by Next headers (see `next.config.mjs`).
+- **Typed content modules**
+  - `src/data/profile.ts` - hero copy, CTA buttons, skills, tech panels, and contact channels.
+  - `src/data/projects.ts` - featured projects, metrics, galleries, and live/repo links.
+  - `src/data/experience.ts` - home timeline + `/experience/[slug]` detail data (metrics, gallery, project cards).
+  - `src/data/certificates.ts` - certificate metadata with file names, skills, and verify URLs.
+- **Reusable components**: Header, Footer, ProjectCard, ExperienceItem, TechPanel, CertificateCard/Gallery/Modal (inline PDF viewer), SectionHeading, and ContactForm.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Media & Certificates
+- All RE/MAX photos live under `public/images/remax-lisbon/*` (kebab-case).
+- The hero portrait is saved at `public/profile/cvphoto.jpg`. Swap the file with your latest photo and update `PROFILE.heroImage` in `src/data/profile.ts` so width, height, and blur metadata stay correct.
+- Certificates live in `public/certificates/*` (PDF/SVG/PNG). `next.config.mjs` forces inline rendering for `/certificates/:path*.pdf`.
+- Certificate names/metadata come from `src/data/certificates.ts`. Keep each `title` identical to the CV entry and adjust issuer/date/links there.
+- The certificate modal traps focus, renders PDFs via `<iframe>`, and links to both verify URLs and “Open in new tab” fallbacks.
+
+## Local Development
+1. Install dependencies  
+   `npm install`
+2. Start the dev server (Turbopack)  
+   `npm run dev`
+3. Lint and type-check  
+   `npm run lint`
+4. Production build  
+   `npm run build`
+5. Preview the build (optional)  
+   `npm run start`
+
+## Editing Content
+- Update hero, metrics, skills, tech panels, and contact info inside `src/data/profile.ts`.
+- Projects live in `src/data/projects.ts`. Each project drives both the homepage grid and the `/projects/[slug]` detail route (hero, problem statement, metrics, outcomes, gallery).
+- Timeline bullets, stack tags, and gallery proofs live in `src/data/experience.ts`.
+- Certificates (thumbnail, description, credential URL) are defined in `src/data/certificates.ts`.
+- All images referenced in the data files live under `public/projects`, `public/experience`, or `public/certificates`. New assets should follow the same naming pattern and light palette.
+
+## Contact Flow
+The form in the Contact section posts to `/api/send`, which uses Resend. Set the following environment variables if you want live email delivery:
+
+```
+RESEND_API_KEY="..."
+RESEND_FROM="Portfolio <you@domain>"
+RESEND_TO="you@domain"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Without these values the route safely no-ops with an error response, and the UI will show a friendly message.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment Checklist
+1. `npm run lint` - ensure ESLint and type checks pass.
+2. `npm run build` - confirm the production bundle compiles without errors.
+3. Push to the main branch (or trigger Vercel) so the deployment inherits the verified build.
+4. Run audits against the production build:
+   - Lighthouse (Performance, Accessibility, Best Practices, SEO) >= 95 on both `/` and `/projects/[slug]`.
+   - Axe DevTools: no critical or serious issues.
+5. Validate keyboard navigation (skip link, header nav, cards, certificate modal, contact form).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The site is optimized for Vercel out of the box, including metadata, sitemap, robots, and Open Graph image generation.

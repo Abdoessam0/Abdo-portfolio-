@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" rx="40" fill="#ecfccb" />
+  <rect x="220" y="140" width="760" height="360" rx="32" fill="#ffffff" stroke="#a3e635" stroke-width="3" />
+  <polyline points="260,420 400,320 540,360 680,260 840,300" fill="none" stroke="#16a34a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="600" y="200" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" fill="#14532d">
+    Spotify Churn Prediction
+  </text>
+  <text x="600" y="240" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#4d7c0f">
+    ROC-AUC · Cohort reporting · Automation
+  </text>
+</svg>

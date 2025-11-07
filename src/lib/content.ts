@@ -64,7 +64,7 @@ export const defaultContent: SiteContent = {
   profileImage: "/next.svg", // safe built-in asset
   cvUrl: "#", // TODO: replace with hosted CV link
   about: {
-    location: "Nationality: Egyptian · Based in Erzurum, Türkiye.",
+    location: "Nationality: Egyptian - Based in Erzurum, Türkiye.",
     languages: "Languages: Arabic (Native), English (C1), Turkish (C1).",
     narrative1:
       "Technical Passion: I build reliable, accessible interfaces and data-driven backends. I love Next.js, React, and modern tooling. I care about clean architecture, performance, and DX.",
@@ -175,4 +175,3 @@ export function clearContent() {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(STORAGE_KEY);
 }
-
