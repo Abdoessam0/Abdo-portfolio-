@@ -3,6 +3,7 @@
 import { type ReactNode } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import type { Variants, Transition } from "framer-motion";
 import {
   Download,
   ExternalLink,
@@ -12,22 +13,20 @@ import {
   MapPin,
 } from "lucide-react";
 import { loadContent } from "../../lib/content";
+import { fadeUp, easeOutExpo } from "@/lib/motion";
 
-const sectionVariants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
+const sectionVariants = fadeUp(32, 0.6);
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
-  visible: (index: number) => ({
+  visible: (index: number = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: index * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    transition: {
+      delay: index * 0.08,
+      duration: 0.5,
+      ease: easeOutExpo as Transition["ease"],
+    },
   }),
 };
 

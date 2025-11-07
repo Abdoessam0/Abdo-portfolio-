@@ -28,7 +28,7 @@ export default function Projects() {
                 </FadeIn>
                 <div className="grid sm:grid-cols-2 gap-6">
                   {projects.map((p, i) => (
-                    <FadeIn key={p.title} transition={{ delay: i * 0.05 }}>
+                    <FadeIn key={p.title} delay={i * 0.05}>
                       <ProjectCard imageUrl={p.imageUrl} title={p.title} description={p.description} tech={p.tech} liveUrl={p.liveUrl} repoUrl={p.repoUrl} />
                     </FadeIn>
                   ))}

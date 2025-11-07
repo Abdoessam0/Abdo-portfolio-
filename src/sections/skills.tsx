@@ -13,7 +13,7 @@ export default function Skills() {
         </FadeIn>
         <div className="grid md:grid-cols-2 gap-6">
           {content.skills.map((cat, i) => (
-            <FadeIn key={cat.title} className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4" transition={{ delay: i * 0.05 }}>
+            <FadeIn key={cat.title} className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4" delay={i * 0.05}>
               <h3 className="text-text font-semibold">{cat.title}</h3>
               <div className="mt-3 flex flex-wrap gap-2">
                 {cat.items.map((item) => (

@@ -28,7 +28,7 @@ export default function Experience() {
                 <ol className="relative border-s border-text/20 ms-4">
                   {experience.map((e, i) => (
                     <li key={e.title} className="mb-8 ms-4">
-                      <FadeIn transition={{ delay: i * 0.05 }}>
+                      <FadeIn delay={i * 0.05}>
                         <div className="absolute w-3 h-3 bg-accent rounded-full -start-1.5 mt-2.5" />
                         <div className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4">
                           <h3 className="text-text font-semibold">{e.title}</h3>
