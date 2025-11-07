@@ -4,7 +4,8 @@ import * as React from "react";
 import { z } from "zod";
 import { ContactFormEmail } from "../../emails/ContactFormEmail";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const BodySchema = z.object({
   name: z.string().min(1),
@@ -13,16 +14,24 @@ const BodySchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const json = await request.json().catch(() => null);
-  const parsed = BodySchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json({ ok: false, error: "Invalid payload" }, { status: 400 });
-  }
-  const { name, email, message } = parsed.data;
   try {
-    const from = process.env.RESEND_FROM || "Contact Form <onboarding@resend.dev>";
-    const to = (process.env.RESEND_TO || "abdoessammo@gmail.com")
-      .split(",")
+    const json = await request.json().catch(() => null);
+    const parsed = BodySchema.safeParse(json);
+    if (!parsed.success) {
+      return NextResponse.json({ ok: false, error: "Invalid payload" }, { status: 400 });
+    }
+
+    if (!process.env.RESEND_API_KEY || !process.env.RESEND_FROM || !process.env.CONTACT_TO) {
+      return NextResponse.json(
+        { ok: false, error: "Email service not configured" },
+        { status: 503 },
+      );
+    }
+
+    const { name, email, message } = parsed.data;
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const from = process.env.RESEND_FROM;
+    const to = process.env.CONTACT_TO.split(",")
       .map((s) => s.trim())
       .filter(Boolean);
 
@@ -35,7 +44,8 @@ export async function POST(request: Request) {
     });
     return NextResponse.json({ ok: true, data });
   } catch (error) {
-    return NextResponse.json({ ok: false, error: String(error) }, { status: 500 });
+    console.error("Failed to send contact email", error);
+    return NextResponse.json({ ok: false, error: "Failed to send email" }, { status: 500 });
   }
 }
 
