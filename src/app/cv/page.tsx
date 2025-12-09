@@ -1,3 +1,4 @@
+// src/app/cv/page.tsx
 "use client";
 
 import { type ReactNode } from "react";

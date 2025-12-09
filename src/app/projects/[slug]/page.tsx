@@ -1,183 +1,205 @@
+// src/app/projects/[slug]/page.tsx
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { PROFILE } from "@/data/profile";
+import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { PROJECTS } from "@/data/projects";
 
-type ProjectPageProps = {
-  params: Promise<{ slug: string }>;
+type ProjectDetailPageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
 };
 
-const siteOrigin = new URL(PROFILE.links.portfolio).origin;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-const getProject = (slug: string) => PROJECTS.find((project) => project.slug === slug);
-
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return PROJECTS.map((project) => ({ slug: project.slug }));
-}
-
-export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const { slug } = await params;
-  const project = getProject(slug);
-  if (!project) return {};
+  const project = PROJECTS.find((p) => p.slug === slug);
 
-  const canonical = `${siteOrigin}/projects/${project.slug}`;
-  const title = `${project.title} - ${PROFILE.person.name}`;
-
-  return {
-    title,
-    description: project.description,
-    alternates: {
-      canonical,
-    },
-    openGraph: {
-      title,
-      description: project.description,
-      url: canonical,
-      type: "article",
-      images: [
-        {
-          url: `${siteOrigin}${project.hero.src}`,
-          width: project.hero.width,
-          height: project.hero.height,
-          alt: project.hero.alt,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: project.description,
-      images: [`${siteOrigin}${project.hero.src}`],
-    },
-  };
-}
-
-const ProjectPage = async ({ params }: ProjectPageProps) => {
-  const { slug } = await params;
-  const project = getProject(slug);
-
-  if (!project) notFound();
-
-  const links = [
-    project.links.live
-      ? { label: "View live", href: project.links.live, aria: `Open ${project.title} live site` }
-      : null,
-    project.links.repo
-      ? { label: "View repository", href: project.links.repo, aria: `Open ${project.title} repository` }
-      : null,
-  ].filter(Boolean) as { label: string; href: string; aria: string }[];
+  if (!project) {
+    notFound();
+  }
 
   return (
-    <article className="space-y-10 py-12 sm:py-16">
-      <header className="space-y-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-500">{project.period}</p>
-        <h1 className="text-3xl font-semibold text-zinc-900 sm:text-4xl">{project.title}</h1>
-        <p className="text-base text-zinc-600">{project.summary}</p>
-      </header>
-
-      <div className="flex flex-wrap gap-2 text-xs font-semibold text-zinc-700">
-        {project.stack.map((item) => (
-          <span key={item} className="rounded-full border border-zinc-200 px-3 py-1">
-            {item}
-          </span>
-        ))}
-        {project.badges.map((badge) => (
-          <span key={badge} className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">
-            {badge}
-          </span>
-        ))}
-      </div>
-
-      <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-card">
-        <Image
-          src={project.hero.src}
-          alt={project.hero.alt}
-          width={project.hero.width}
-          height={project.hero.height}
-          className="w-full object-cover"
-          priority
-          placeholder="blur"
-          blurDataURL={project.hero.blurDataURL}
-        />
-      </div>
-
-      <div className="flex flex-wrap gap-3">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={link.aria}
-            className="inline-flex items-center rounded-full border border-zinc-300 bg-white px-5 py-2 text-sm font-semibold text-zinc-900 transition hover:border-zinc-900 hover:bg-zinc-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
-          >
-            {link.label}
-          </Link>
-        ))}
+    <div className="min-h-screen py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
         <Link
           href="/#projects"
-          className="inline-flex items-center rounded-full px-5 py-2 text-sm font-semibold text-zinc-600 underline-offset-4 hover:text-zinc-900 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
         >
+          <ArrowLeft size={16} />
           Back to projects
         </Link>
+
+        <div className="mb-8">
+          <h1 className="mb-4 text-4xl font-bold text-ink">{project.title}</h1>
+          <p className="text-xl text-muted">{project.description}</p>
+
+          <div className="mt-6 flex flex-wrap gap-4">
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-canvas transition-all hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <ExternalLink size={16} />
+                Live demo
+              </a>
+            )}
+            {project.repoUrl && (
+              <a
+                href={project.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-accent/40 px-5 py-2.5 text-sm font-semibold text-ink transition-all hover:-translate-y-0.5 hover:border-accent"
+              >
+                <Github size={16} />
+                Source code
+              </a>
+            )}
+          </div>
+        </div>
+
+        {project.image ? (
+          <div className="mb-8 overflow-hidden rounded-2xl border border-outline">
+            <Image
+              src={project.image.src}
+              alt={project.image.alt}
+              width={project.image.width}
+              height={project.image.height}
+              className="h-auto w-full"
+              placeholder={project.image.blurDataURL ? "blur" : "empty"}
+              blurDataURL={project.image.blurDataURL}
+            />
+          </div>
+        ) : null}
+
+        <div className="grid gap-8 md:grid-cols-3">
+          <div className="space-y-8 md:col-span-2">
+            <section className="space-y-4">
+              <h2 className="text-2xl font-semibold text-ink">Overview</h2>
+              <p className="text-ink/90">{project.longDescription ?? project.description}</p>
+            </section>
+
+            {project.highlights.length ? (
+              <section className="space-y-4">
+                <h2 className="text-2xl font-semibold text-ink">Key features</h2>
+                <ul className="space-y-3">
+                  {project.highlights.map((highlight) => (
+                    <li key={highlight} className="flex items-start gap-3">
+                      <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-accent" />
+                      <span className="text-ink/90">{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            {project.screenshots?.length ? (
+              <section className="space-y-4">
+                <h2 className="text-2xl font-semibold text-ink">Screenshots</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {project.screenshots.map((shot) => (
+                    <div key={shot.src} className="overflow-hidden rounded-lg border border-outline">
+                      <Image
+                        src={shot.src}
+                        alt={shot.alt}
+                        width={shot.width}
+                        height={shot.height}
+                        className="h-auto w-full"
+                        placeholder={shot.blurDataURL ? "blur" : "empty"}
+                        blurDataURL={shot.blurDataURL}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+          </div>
+
+          <div className="space-y-6">
+            <div className="rounded-2xl border border-outline bg-panel/80 p-5">
+              <h3 className="mb-4 text-lg font-semibold text-ink">Tech stack</h3>
+              <div className="flex flex-wrap gap-2">
+                {project.stack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full border border-outline bg-surface/50 px-3 py-1.5 text-sm font-medium text-ink/80"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-outline bg-panel/80 p-5">
+              <h3 className="mb-4 text-lg font-semibold text-ink">Project details</h3>
+              <dl className="space-y-3">
+                {project.role ? (
+                  <div>
+                    <dt className="text-sm text-muted">Role</dt>
+                    <dd className="font-medium text-ink">{project.role}</dd>
+                  </div>
+                ) : null}
+                {project.timeline ? (
+                  <div>
+                    <dt className="text-sm text-muted">Timeline</dt>
+                    <dd className="font-medium text-ink">{project.timeline}</dd>
+                  </div>
+                ) : null}
+                {project.status ? (
+                  <div>
+                    <dt className="text-sm text-muted">Status</dt>
+                    <dd className="font-medium text-ink">{project.status}</dd>
+                  </div>
+                ) : null}
+              </dl>
+            </div>
+
+            <div className="rounded-2xl border border-outline bg-panel/80 p-5">
+              <h3 className="mb-4 text-lg font-semibold text-ink">Links</h3>
+              <div className="space-y-3">
+                {project.liveUrl ? (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-ink transition-colors hover:text-accent"
+                  >
+                    <ExternalLink size={16} />
+                    Live website
+                  </a>
+                ) : null}
+                {project.repoUrl ? (
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-ink transition-colors hover:text-accent"
+                  >
+                    <Github size={16} />
+                    GitHub repository
+                  </a>
+                ) : null}
+                {project.certificateUrl ? (
+                  <a
+                    href={project.certificateUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-ink transition-colors hover:text-accent"
+                  >
+                    <ExternalLink size={16} />
+                    View certificate
+                  </a>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <section className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-card">
-          <h2 className="text-lg font-semibold text-zinc-900">The challenge</h2>
-          <p className="mt-3 text-sm text-zinc-700">{project.problem}</p>
-        </div>
-        <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-card">
-          <h2 className="text-lg font-semibold text-zinc-900">Key metrics</h2>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {project.metrics.map((metric) => (
-              <div key={metric.label} className="rounded-2xl border border-zinc-100 bg-zinc-50 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">{metric.label}</p>
-                <p className="text-xl font-semibold text-zinc-900">{metric.value}</p>
-                {metric.helper ? <p className="text-xs text-zinc-600">{metric.helper}</p> : null}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-card">
-        <h2 className="text-lg font-semibold text-zinc-900">Outcomes</h2>
-        <ul className="mt-4 space-y-3 text-sm text-zinc-700">
-          {project.outcomes.map((item) => (
-            <li key={item} className="flex gap-3">
-              <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {project.gallery.length ? (
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900">Gallery</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {project.gallery.map((media) => (
-              <div key={media.src} className="overflow-hidden rounded-3xl border border-zinc-200 shadow-soft">
-                <Image
-                  src={media.src}
-                  alt={media.alt}
-                  width={media.width}
-                  height={media.height}
-                  className="w-full object-cover"
-                  sizes="(min-width: 640px) 50vw, 100vw"
-                />
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
-    </article>
+    </div>
   );
-};
-
-export default ProjectPage;
+}

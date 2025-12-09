@@ -1,3 +1,4 @@
+// src/components/CertificateModal.tsx
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
@@ -62,7 +63,7 @@ const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
       role="dialog"
       aria-modal="true"
       aria-label={`${certificate.title} certificate`}
-      className="fixed inset-0 z-50 grid place-items-center bg-black/40 px-4 py-8"
+      className="fixed inset-0 z-50 grid place-items-center bg-black/70 px-4 py-8"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           onClose();
@@ -71,24 +72,24 @@ const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
     >
       <div
         ref={dialogRef}
-        className="w-full max-w-5xl rounded-3xl border border-zinc-200 bg-white shadow-card ring-1 ring-black/5"
+        className="w-full max-w-5xl rounded-3xl border border-outline bg-panel shadow-card ring-1 ring-black/20"
       >
-        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-zinc-100 p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-outline/60 p-4">
           <div>
-            <p className="text-lg font-semibold text-zinc-900">{certificate.title}</p>
-            <p className="text-sm text-zinc-600">
+            <p className="text-lg font-semibold text-ink">{certificate.title}</p>
+            <p className="text-sm text-muted">
               {certificate.issuer} - {certificate.date}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-900 transition hover:border-zinc-900 hover:bg-zinc-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
+            className="rounded-full border border-accent/50 px-4 py-2 text-sm font-semibold text-ink transition hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             Close
           </button>
         </div>
-        <div className="h-[70vh] w-full bg-zinc-50">
+        <div className="h-[70vh] w-full bg-surface">
           {isPdf ? (
             <iframe
               title={`${certificate.title} PDF`}
@@ -107,7 +108,7 @@ const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
             </div>
           )}
         </div>
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-zinc-100 p-4 text-sm text-zinc-600">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-outline/60 p-4 text-sm text-muted">
           <div className="space-y-1">
             {certificate.credentialId ? <p>ID: {certificate.credentialId}</p> : null}
             <p>{certificate.skills.join(" / ")}</p>
@@ -118,7 +119,7 @@ const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
                 href={certificate.verifyUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="font-semibold text-emerald-800 underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
+                className="font-semibold text-accent underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 Verify
               </Link>
@@ -127,7 +128,7 @@ const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
               href={fileUrl}
               target="_blank"
               rel="noreferrer"
-              className="font-semibold text-emerald-800 underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
+              className="font-semibold text-accent underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               Open in new tab
             </a>

@@ -1,3 +1,4 @@
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
@@ -18,21 +19,23 @@ const config: Config = {
     },
     extend: {
       colors: {
-        canvas: "#fafafa",
-        ink: "#18181b",
-        muted: "#52525b",
-        outline: "#e4e4e7",
+        canvas: "#05070d",
+        surface: "#0b0f17",
+        panel: "#0f1624",
+        ink: "#e6f7ed",
+        muted: "#9fb8aa",
+        outline: "#182032",
         accent: {
-          DEFAULT: "#3b7c74",
-          soft: "#e1f0ec",
+          DEFAULT: "#4ef19d",
+          soft: "#123322",
         },
       },
       fontFamily: {
         sans: ["var(--font-jakarta)", ...defaultTheme.fontFamily.sans],
       },
       boxShadow: {
-        card: "0 25px 60px rgba(15, 23, 42, 0.08)",
-        soft: "0 12px 30px rgba(15, 23, 42, 0.08)",
+        card: "0 30px 70px rgba(0, 0, 0, 0.35)",
+        soft: "0 16px 40px rgba(0, 0, 0, 0.28)",
       },
       keyframes: {
         aurora: {

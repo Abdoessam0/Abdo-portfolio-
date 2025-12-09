@@ -1,198 +1,194 @@
-import type { Metric } from "./profile";
-
+// src/data/projects.ts
 const blur = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/xcAAmMBgJ6Ar6MAAAAASUVORK5CYII=";
 
-export type ProjectMedia = {
+export type ProjectImage = {
   src: string;
   alt: string;
   width: number;
   height: number;
+  blurDataURL?: string;
 };
 
 export type Project = {
   slug: string;
   title: string;
-  period: string;
-  summary: string;
   description: string;
+  longDescription?: string;
+  role?: string;
+  timeline?: string;
+  status?: string;
+  image?: ProjectImage;
+  screenshots?: ProjectImage[];
   stack: string[];
-  badges: string[];
-  problem: string;
-  outcomes: string[];
-  metrics: Metric[];
-  hero: ProjectMedia & { blurDataURL: string };
-  gallery: ProjectMedia[];
-  links: {
-    live?: string;
-    repo?: string;
-  };
+  highlights: string[];
+  liveUrl?: string;
+  repoUrl?: string;
+  certificateUrl?: string;
 };
 
 export const PROJECTS: Project[] = [
   {
-    slug: "remax-journey",
-    title: "Algarve Real Estate Funnels",
-    period: "2025 - Lisbon",
-    summary: "Next.js 15 funnels for RE/MAX Wise that pair bilingual hero storytelling with Supabase-powered CMS controls.",
-    description:
-      "Rebuilt the Algarve and Lisbon buyer flows with React Server Components, schema-driven Supabase content, and a portable design system that marketing can extend without new tickets. The playbook covers recruitment, relocation, and premium listings while staying within CLS and SEO guardrails.",
-    stack: ["Next.js 15", "TypeScript", "Supabase", "Tailwind CSS", "Vercel Analytics"],
-    badges: ["SEO", "Design Systems"],
-    problem: "The legacy WordPress build loaded in 5+ seconds and broke when agents reused blocks.",
-    outcomes: [
-      "Introduced a schema-driven content matrix so marketing can stage a launch in under 20 minutes.",
-      "Ship-ready components documented in Storybook with tokens that match RE/MAX global brand guardrails.",
-      "Automated sitemap and metadata updates so Vercel deploys stay warning-free.",
+    slug: "real-estate-platforms",
+    title: "Real Estate Funnels & Multi-Site Platform",
+    description: "Multi-site real estate platforms for RE/MAX Wise built during Erasmus+ internship.",
+    longDescription:
+      "Built and improved production platforms for Algarve, Lisbon, and 5 Steps using Next.js 15, TypeScript, and Tailwind CSS. Implemented SEO-safe routing, metadata handling, and reusable UI components deployed on Vercel with Supabase content.",
+    role: "Software Developer Intern",
+    timeline: "Sep 2025 – Nov 2025",
+    status: "Live",
+    stack: ["Next.js 15", "TypeScript", "Tailwind CSS", "Supabase", "Vercel", "SEO"],
+    highlights: [
+      "Unified layouts and reusable UI blocks across three sites",
+      "SEO-safe routing, metadata, and internal linking",
+      "Accessibility and performance improvements for all launches",
     ],
-    metrics: [
-      { label: "LCP on 4G", value: "1.8 s" },
-      { label: "Schema sections", value: "24" },
-    ],
-    hero: {
+    liveUrl: "https://remax.pt/en/agencia/remax-wise/12690",
+    repoUrl: "https://github.com/Abdoessam0/real-estate-platforms",
+    image: {
       src: "/projects/remax-journey.svg",
-      alt: "Screens from the RE/MAX Journey experience",
+      alt: "RE/MAX Wise multi-site funnel previews",
       width: 1280,
       height: 720,
       blurDataURL: blur,
     },
-    gallery: [
+    screenshots: [
       {
-        src: "/projects/event-management.svg",
-        alt: "Scheduling tools powering the RE/MAX concierge workflow",
+        src: "/images/remax-lisbon/remax-lisbon-team.jpg",
+        alt: "RE/MAX Wise launch celebration",
         width: 1200,
-        height: 630,
+        height: 1600,
       },
+    ],
+  },
+  {
+    slug: "erzurumsikayet",
+    title: "ErzurumŞikayet – City Complaint Platform",
+    description: "Full-stack complaint and review platform with dashboards and real-time stats.",
+    longDescription:
+      "Comprehensive complaint management with user, company, and admin dashboards. Includes multi-step complaint flows, category filters, company registration, and live statistics maintained on cPanel with GitHub tracking.",
+    role: "Full-Stack Developer",
+    timeline: "2024",
+    status: "Live",
+    stack: ["Laravel", "PHP", "MySQL", "Tailwind CSS", "Alpine.js", "cPanel"],
+    highlights: [
+      "Multi-step complaint submission flow with validation",
+      "Company registration and admin moderation tools",
+      "Real-time statistics dashboards",
+      "Deployed and maintained on cPanel",
+    ],
+    liveUrl: "https://erzurumsikayet.com/",
+    repoUrl: "https://github.com/Abdoessam0/erzurumsikayet",
+    image: {
+      src: "/projects/atlas-mobile.svg",
+      alt: "ErzurumŞikayet dashboard preview",
+      width: 1280,
+      height: 720,
+      blurDataURL: blur,
+    },
+  },
+  {
+    slug: "trustedbuildr",
+    title: "TrustedBuildr.pt – Verified Construction Marketplace",
+    description: "Bilingual marketplace for verified developers, land listings, and projects with advanced SEO.",
+    longDescription:
+      "Built a bilingual marketplace prepared for future AI verification and blockchain escrow. Implemented sitemaps, JSON-LD, canonical/hreflang, structured schemas, and Leaflet-based mapping for verified developers and land listings.",
+    role: "Full-Stack Developer",
+    timeline: "2025",
+    status: "Live",
+    stack: ["Next.js 15", "TypeScript", "Tailwind CSS", "Supabase Postgres", "next-intl", "Leaflet"],
+    highlights: [
+      "Advanced SEO with structured data, sitemaps, and hreflang",
+      "Leaflet mapping for developers, land, and projects",
+      "Structured schema ready for AI verification and escrow",
+    ],
+    liveUrl: "https://trustedbuildr.com/",
+    repoUrl: "https://github.com/Abdoessam0/trustedbuildr",
+    image: {
+      src: "/projects/spotify-churn.svg",
+      alt: "TrustedBuildr marketplace visuals",
+      width: 1280,
+      height: 720,
+      blurDataURL: blur,
+    },
+  },
+  {
+    slug: "eventsys",
+    title: "EventSys – Event Management System",
+    description: "End-to-end event platform with admin tools, ticketing, and live weather data.",
+    longDescription:
+      "Full event platform providing live weather, ticket purchases, recommendations, user authentication, and an admin panel for events and announcements. Backend uses secure JWT with MongoDB models.",
+    role: "Full-Stack Developer",
+    timeline: "2023",
+    status: "Prototype",
+    stack: ["React", "Node.js", "Express", "MongoDB", "JWT", "OpenWeather API"],
+    highlights: [
+      "User auth, ticketing, and recommendations",
+      "Admin panel for events and announcements",
+      "Secure JWT auth with MongoDB models",
+    ],
+    repoUrl: "https://github.com/Abdoessam0",
+    image: {
+      src: "/projects/event-management.svg",
+      alt: "EventSys management interface",
+      width: 1280,
+      height: 720,
+      blurDataURL: blur,
+    },
+    screenshots: [
       {
         src: "/projects/event-calendar.svg",
-        alt: "Calendar automation preview for RE/MAX operations",
+        alt: "EventSys calendar and admin tools",
         width: 800,
         height: 600,
       },
     ],
-    links: {
-      live: "https://www.realestate-lisbon.com",
-      repo: "https://github.com/Abdoessam0/remax-journey-system",
-    },
   },
   {
-    slug: "fleet-ops-console",
-    title: "Fleet Ops Console",
-    period: "2024 - Riyadh",
-    summary: "Operations cockpit for AFAQY that tracks 650+ vehicles with geofencing and automated health checks.",
-    description:
-      "Built a Supabase-backed control center that merges telematics, ticketing, and billing so support agents can resolve incidents without switching tabs. Included a role-based notification system and printable compliance packs.",
-    stack: ["Next.js 14", "Postgres", "Supabase Functions", "Leaflet", "Radix UI"],
-    badges: ["Realtime", "Ops"],
-    problem: "Technicians updated three separate spreadsheets and could not spot hardware regressions in time.",
-    outcomes: [
-      "Reduced average ticket resolution time from 3 days to 18 hours by surfacing fleet anomalies instantly.",
-      "Created a health rules engine that tags risky vehicle clusters every 15 minutes.",
-      "Delivered export-ready compliance PDFs with audit trail metadata.",
+    slug: "yolov8-detection",
+    title: "YOLOv8 Real-Time Object Detection System",
+    description: "WebRTC-enabled detection and analytics around an optimized YOLOv8n model.",
+    longDescription:
+      "Real-time YOLOv8 object detection (~30 FPS) with WebRTC camera support and Streamlit dashboards for Live Detection and Analytics. Includes FPS/confidence metrics, hardware detection, and tuning for future fine-tuning and deployment.",
+    role: "Computer Vision Developer",
+    timeline: "2024",
+    status: "Prototype",
+    stack: ["Python", "YOLOv8", "PyTorch", "Streamlit", "OpenCV", "WebRTC"],
+    highlights: [
+      "WebRTC camera capture with live detection and metrics",
+      "Streamlit dashboards for detection and analytics",
+      "Optimized YOLOv8n with performance tuning",
     ],
-    metrics: [
-      { label: "Devices monitored", value: "650+" },
-      { label: "INP", value: "152 ms" },
-    ],
-    hero: {
-      src: "/projects/fleet-ops-console.svg",
-      alt: "Dashboard mockups for the Fleet Ops Console",
+    repoUrl: "https://github.com/Abdoessam0",
+    image: {
+      src: "/projects/ai-object-detection.svg",
+      alt: "YOLOv8 detection dashboard",
       width: 1280,
       height: 720,
       blurDataURL: blur,
     },
-    gallery: [
-      {
-        src: "/projects/spotify-cohorts.svg",
-        alt: "Vehicle retention cohorts visualizing risks",
-        width: 800,
-        height: 600,
-      },
-      {
-        src: "/projects/spotify-churn.svg",
-        alt: "Analytics snapshot for the fleet console",
-        width: 1200,
-        height: 630,
-      },
-    ],
-    links: {
-      live: "https://trustedbuildr.com/fleet",
-      repo: "https://github.com/Abdoessam0/fleet-ops-console",
-    },
   },
   {
-    slug: "alx-system-kit",
-    title: "ALX Training Systems Kit",
-    period: "2023 - Remote",
-    summary: "Reusable React + Node patterns documented during the ALX Full-Stack program for faster capstone delivery.",
-    description:
-      "Led peer reviews, hardened CI, and published component recipes so cohort teams could focus on business logic. Every module shipped with accessibility prompts, Jest coverage, and README playbooks that became the cohort default reference.",
-    stack: ["React", "Node.js", "Express", "MongoDB", "Jest"],
-    badges: ["Education", "DX"],
-    problem: "Cohort projects started from scratch each sprint, resulting in inconsistent scaffolding and missed QA gates.",
-    outcomes: [
-      "Delivered three capstones with zero blocking QA issues by enforcing shared lint, type, and test profiles.",
-      "Set up GitHub Actions for lint + preview builds adopted by four squads.",
-      "Documented accessibility prompts that became part of every submission checklist.",
+    slug: "library-management",
+    title: "Library Management System – Desktop App",
+    description: "Desktop automation for library operations backed by SQL Server.",
+    longDescription:
+      "C# Windows Forms desktop app covering books, students, issuing, returning, and reporting. Uses SQL Server with stored procedures, triggers, functions, and views to enforce rules and prevent data issues.",
+    role: "Desktop Developer",
+    timeline: "2022",
+    status: "Completed",
+    stack: ["C# Windows Forms", "SQL Server", "T-SQL procedures", "Triggers", "Functions", "Views"],
+    highlights: [
+      "Prevents negative stock and deletion of active borrowers",
+      "Automatic book status updates via triggers and procedures",
+      "Reporting for issuing, returning, and student records",
     ],
-    metrics: [
-      { label: "Capstones delivered", value: "3" },
-      { label: "Squads adopting CI", value: "4" },
-    ],
-    hero: {
-      src: "/projects/atlas-mobile.svg",
-      alt: "ALX systems kit dashboards and task boards",
+    repoUrl: "https://github.com/Abdoessam0",
+    image: {
+      src: "/projects/the-loop-dialog.svg",
+      alt: "Library management UI concepts",
       width: 1280,
       height: 720,
       blurDataURL: blur,
-    },
-    gallery: [
-      {
-        src: "/projects/the-loop-dialog.svg",
-        alt: "Review board used for ALX component approvals",
-        width: 800,
-        height: 600,
-      },
-    ],
-    links: {
-      repo: "https://github.com/Abdoessam0",
-    },
-  },
-  {
-    slug: "nfs-wordpress-suite",
-    title: "NFS Soft WordPress Suite",
-    period: "2022 - Erzurum",
-    summary: "Multilingual WordPress themes and QA rituals delivered during the NFS Soft internship.",
-    description:
-      "Hand-coded bilingual templates for education brands, automated screenshots for approvals, and shipped a reusable checklist so every release held 90+ Lighthouse scores. Paired with the team on Git workflows, deployment hygiene, and documentation.",
-    stack: ["WordPress", "PHP", "Sass", "cPanel"],
-    badges: ["Multilingual", "QA"],
-    problem: "Legacy templates drifted from brand guidelines and required manual rewrites for each language.",
-    outcomes: [
-      "Launched eight multilingual templates that consistently hit 90+ Lighthouse mobile scores.",
-      "Automated critical CSS extraction and responsive screenshots to cut review cycles by 35%.",
-      "Mentored junior interns on Git workflows and ticket hygiene.",
-    ],
-    metrics: [
-      { label: "Templates launched", value: "8" },
-      { label: "Mobile Lighthouse", value: "90+" },
-    ],
-    hero: {
-      src: "/projects/the-loop.svg",
-      alt: "WordPress components and theme preview grids",
-      width: 1280,
-      height: 720,
-      blurDataURL: blur,
-    },
-    gallery: [
-      {
-        src: "/projects/the-loop-dialog.svg",
-        alt: "Responsive QA checklist for a WordPress template",
-        width: 800,
-        height: 600,
-      },
-    ],
-    links: {
-      repo: "https://github.com/Abdoessam0",
     },
   },
 ];

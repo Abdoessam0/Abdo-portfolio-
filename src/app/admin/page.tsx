@@ -1,364 +1,957 @@
 "use client";
 
-import * as React from "react";
-import {
-  defaultContent,
-  loadContent,
-  saveContent,
-  clearContent,
-  type SiteContent,
-  type Project,
-  type SkillsCategory,
-  type ExperienceItem,
-  type Certification,
-} from "../../lib/content";
-import { strapiLogin, createProject, uploadFile } from "../../lib/strapi";
+import { useEffect, useState, type ReactNode } from "react";
+import Link from "next/link";
+import { supabase } from "@/lib/supabase";
+
+type Id = string | number;
+
+type ProfileRow = {
+  id?: Id;
+  name?: string;
+  title?: string;
+  bio?: string;
+  location?: string;
+  email?: string;
+  phone?: string;
+  languages?: string;
+  education?: string;
+};
+
+type ProjectRow = {
+  id?: Id;
+  title?: string;
+  slug?: string;
+  description?: string;
+  live_url?: string;
+  repo_url?: string;
+  status?: string;
+};
+
+type ExperienceRow = {
+  id?: Id;
+  company?: string;
+  role?: string;
+  location?: string;
+  summary?: string;
+};
+
+type VolunteeringRow = {
+  id?: Id;
+  title?: string;
+  organization?: string;
+  description?: string;
+};
+
+type CertificateRow = {
+  id?: Id;
+  name?: string;
+  issuer?: string;
+  issue_date?: string;
+  verify_url?: string;
+};
+
+const inputClass =
+  "w-full rounded-lg border border-emerald-500/30 bg-[#0f1724] px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/40";
+
+const textAreaClass =
+  "w-full rounded-lg border border-emerald-500/30 bg-[#0f1724] px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/40 min-h-[120px]";
+
+const errClass = "text-xs text-red-400";
+const okClass = "text-xs text-emerald-300";
+
+const emptyProfile: ProfileRow = {
+  name: "",
+  title: "",
+  bio: "",
+  location: "",
+  email: "",
+  phone: "",
+  languages: "",
+  education: "",
+};
+
+const emptyProject: ProjectRow = {
+  title: "",
+  slug: "",
+  description: "",
+  live_url: "",
+  repo_url: "",
+  status: "draft",
+};
+
+const emptyExperience: ExperienceRow = {
+  company: "",
+  role: "",
+  location: "",
+  summary: "",
+};
+
+const emptyVolunteer: VolunteeringRow = {
+  title: "",
+  organization: "",
+  description: "",
+};
+
+const emptyCertificate: CertificateRow = {
+  name: "",
+  issuer: "",
+  issue_date: "",
+  verify_url: "",
+};
+
+const getErrorMessage = (err: unknown) => (err instanceof Error ? err.message : "Error");
 
 export default function AdminPage() {
-  const [form, setForm] = React.useState<SiteContent>(loadContent());
-  const [saved, setSaved] = React.useState<string | null>(null);
-  const [jwt, setJwt] = React.useState<string | null>(null);
-  const [authError, setAuthError] = React.useState<string | null>(null);
-  const [creating, setCreating] = React.useState(false);
+  const [profile, setProfile] = useState<ProfileRow>(emptyProfile);
+  const [projects, setProjects] = useState<ProjectRow[]>([]);
+  const [experience, setExperience] = useState<ExperienceRow[]>([]);
+  const [volunteering, setVolunteering] = useState<VolunteeringRow[]>([]);
+  const [certificates, setCertificates] = useState<CertificateRow[]>([]);
 
-  function update<K extends keyof SiteContent>(key: K, value: SiteContent[K]) {
-    setForm((f) => ({ ...f, [key]: value }));
-  }
+  const [profileMsg, setProfileMsg] = useState<string | null>(null);
+  const [projectMsg, setProjectMsg] = useState<string | null>(null);
+  const [experienceMsg, setExperienceMsg] = useState<string | null>(null);
+  const [volunteerMsg, setVolunteerMsg] = useState<string | null>(null);
+  const [certificateMsg, setCertificateMsg] = useState<string | null>(null);
 
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    saveContent(form);
-    setSaved("Saved. Refresh the site to see changes.");
-  }
+  const [newProject, setNewProject] = useState<ProjectRow>(emptyProject);
+  const [newExperience, setNewExperience] = useState<ExperienceRow>(emptyExperience);
+  const [newVolunteer, setNewVolunteer] = useState<VolunteeringRow>(emptyVolunteer);
+  const [newCertificate, setNewCertificate] = useState<CertificateRow>(emptyCertificate);
 
-  function exportJson() {
-    const blob = new Blob([JSON.stringify(form, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "portfolio-content.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  function importJson(ev: React.ChangeEvent<HTMLInputElement>) {
-    const file = ev.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const parsed = JSON.parse(String(reader.result));
-        setForm({ ...defaultContent, ...parsed });
-      } catch { }
+  useEffect(() => {
+    const loadAll = async () => {
+      await Promise.all([loadProfile(), loadProjects(), loadExperience(), loadVolunteering(), loadCertificates()]);
     };
-    reader.readAsText(file);
-  }
+    loadAll();
+  }, []);
 
-  function resetAll() {
-    clearContent();
-    setForm(defaultContent);
-  }
+  const loadProfile = async () => {
+    setProfileMsg(null);
+    const { data, error } = await supabase.from("profile").select("*").maybeSingle();
+    if (error) {
+      setProfileMsg(`Failed to load profile: ${error.message}`);
+      console.error("Load profile error", error);
+      return;
+    }
+    if (data) {
+      setProfile({ ...emptyProfile, ...data });
+    }
+  };
+
+  const saveProfile = async () => {
+    setProfileMsg(null);
+    const { id, ...payload } = profile;
+    try {
+      if (id) {
+        const { error } = await supabase.from("profile").update(payload).eq("id", id);
+        if (error) throw error;
+      } else {
+        const { data, error } = await supabase.from("profile").insert(payload).select().single();
+        if (error) throw error;
+        setProfile({ ...emptyProfile, ...data });
+      }
+      setProfileMsg("Saved profile");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setProfileMsg(`Failed to save profile: ${msg}`);
+      console.error("Save profile error", err);
+    }
+  };
+
+  const loadProjects = async () => {
+    setProjectMsg(null);
+    const { data, error } = await supabase.from("projects").select("*");
+    if (error) {
+      setProjectMsg(`Failed to load projects: ${error.message}`);
+      console.error("Load projects error", error);
+      return;
+    }
+    if (data) setProjects(data as ProjectRow[]);
+  };
+
+  const createProject = async () => {
+    setProjectMsg(null);
+    try {
+      const { data, error } = await supabase.from("projects").insert(newProject).select().single();
+      if (error) throw error;
+      setProjects((prev) => [data as ProjectRow, ...prev]);
+      setNewProject(emptyProject);
+      setProjectMsg("Project created");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setProjectMsg(`Failed to create project: ${msg}`);
+      console.error("Create project error", err);
+    }
+  };
+
+  const updateProject = async (row: ProjectRow) => {
+    if (!row.id) return;
+    setProjectMsg(null);
+    const { id, ...payload } = row;
+    try {
+      const { error } = await supabase.from("projects").update(payload).eq("id", id);
+      if (error) throw error;
+      setProjectMsg("Project updated");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setProjectMsg(`Failed to update project: ${msg}`);
+      console.error("Update project error", err);
+    }
+  };
+
+  const deleteProject = async (id?: Id) => {
+    if (!id) return;
+    if (!confirm("Delete this project?")) return;
+    setProjectMsg(null);
+    try {
+      const { error } = await supabase.from("projects").delete().eq("id", id);
+      if (error) throw error;
+      setProjects((prev) => prev.filter((p) => p.id !== id));
+      setProjectMsg("Project deleted");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setProjectMsg(`Failed to delete project: ${msg}`);
+      console.error("Delete project error", err);
+    }
+  };
+
+  const loadExperience = async () => {
+    setExperienceMsg(null);
+    const { data, error } = await supabase.from("experience").select("*");
+    if (error) {
+      setExperienceMsg(`Failed to load experience: ${error.message}`);
+      console.error("Load experience error", error);
+      return;
+    }
+    if (data) setExperience(data as ExperienceRow[]);
+  };
+
+  const addExperience = async () => {
+    setExperienceMsg(null);
+    try {
+      const { data, error } = await supabase.from("experience").insert(newExperience).select().single();
+      if (error) throw error;
+      setExperience((prev) => [data as ExperienceRow, ...prev]);
+      setNewExperience(emptyExperience);
+      setExperienceMsg("Experience added");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setExperienceMsg(`Failed to add experience: ${msg}`);
+      console.error("Add experience error", err);
+    }
+  };
+
+  const saveExperience = async (row: ExperienceRow) => {
+    if (!row.id) return;
+    setExperienceMsg(null);
+    const { id, ...payload } = row;
+    try {
+      const { error } = await supabase.from("experience").update(payload).eq("id", id);
+      if (error) throw error;
+      setExperienceMsg("Experience updated");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setExperienceMsg(`Failed to update experience: ${msg}`);
+      console.error("Save experience error", err);
+    }
+  };
+
+  const deleteExperience = async (id?: Id) => {
+    if (!id) return;
+    if (!confirm("Delete this experience?")) return;
+    setExperienceMsg(null);
+    try {
+      const { error } = await supabase.from("experience").delete().eq("id", id);
+      if (error) throw error;
+      setExperience((prev) => prev.filter((e) => e.id !== id));
+      setExperienceMsg("Experience deleted");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setExperienceMsg(`Failed to delete experience: ${msg}`);
+      console.error("Delete experience error", err);
+    }
+  };
+
+  const loadVolunteering = async () => {
+    setVolunteerMsg(null);
+    const { data, error } = await supabase.from("volunteering").select("*");
+    if (error) {
+      setVolunteerMsg(`Failed to load volunteering: ${error.message}`);
+      console.error("Load volunteering error", error);
+      return;
+    }
+    if (data) setVolunteering(data as VolunteeringRow[]);
+  };
+
+  const addVolunteer = async () => {
+    setVolunteerMsg(null);
+    try {
+      const { data, error } = await supabase.from("volunteering").insert(newVolunteer).select().single();
+      if (error) throw error;
+      setVolunteering((prev) => [data as VolunteeringRow, ...prev]);
+      setNewVolunteer(emptyVolunteer);
+      setVolunteerMsg("Volunteering added");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setVolunteerMsg(`Failed to add volunteering: ${msg}`);
+      console.error("Add volunteering error", err);
+    }
+  };
+
+  const saveVolunteer = async (row: VolunteeringRow) => {
+    if (!row.id) return;
+    setVolunteerMsg(null);
+    const { id, ...payload } = row;
+    try {
+      const { error } = await supabase.from("volunteering").update(payload).eq("id", id);
+      if (error) throw error;
+      setVolunteerMsg("Volunteering updated");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setVolunteerMsg(`Failed to update volunteering: ${msg}`);
+      console.error("Save volunteering error", err);
+    }
+  };
+
+  const deleteVolunteer = async (id?: Id) => {
+    if (!id) return;
+    if (!confirm("Delete this volunteering item?")) return;
+    setVolunteerMsg(null);
+    try {
+      const { error } = await supabase.from("volunteering").delete().eq("id", id);
+      if (error) throw error;
+      setVolunteering((prev) => prev.filter((v) => v.id !== id));
+      setVolunteerMsg("Volunteering deleted");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setVolunteerMsg(`Failed to delete volunteering: ${msg}`);
+      console.error("Delete volunteering error", err);
+    }
+  };
+
+  const loadCertificates = async () => {
+    setCertificateMsg(null);
+    const { data, error } = await supabase.from("certificates").select("*");
+    if (error) {
+      setCertificateMsg(`Failed to load certificates: ${error.message}`);
+      console.error("Load certificates error", error);
+      return;
+    }
+    if (data) setCertificates(data as CertificateRow[]);
+  };
+
+  const addCertificate = async () => {
+    setCertificateMsg(null);
+    try {
+      const { data, error } = await supabase.from("certificates").insert(newCertificate).select().single();
+      if (error) throw error;
+      setCertificates((prev) => [data as CertificateRow, ...prev]);
+      setNewCertificate(emptyCertificate);
+      setCertificateMsg("Certificate added");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setCertificateMsg(`Failed to add certificate: ${msg}`);
+      console.error("Add certificate error", err);
+    }
+  };
+
+  const saveCertificate = async (row: CertificateRow) => {
+    if (!row.id) return;
+    setCertificateMsg(null);
+    const { id, ...payload } = row;
+    try {
+      const { error } = await supabase.from("certificates").update(payload).eq("id", id);
+      if (error) throw error;
+      setCertificateMsg("Certificate updated");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setCertificateMsg(`Failed to update certificate: ${msg}`);
+      console.error("Save certificate error", err);
+    }
+  };
+
+  const deleteCertificate = async (id?: Id) => {
+    if (!id) return;
+    if (!confirm("Delete this certificate?")) return;
+    setCertificateMsg(null);
+    try {
+      const { error } = await supabase.from("certificates").delete().eq("id", id);
+      if (error) throw error;
+      setCertificates((prev) => prev.filter((c) => c.id !== id));
+      setCertificateMsg("Certificate deleted");
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setCertificateMsg(`Failed to delete certificate: ${msg}`);
+      console.error("Delete certificate error", err);
+    }
+  };
+
+  const Section = ({
+    title,
+    description,
+    message,
+    children,
+  }: {
+    title: string;
+    description?: string;
+    message?: string | null;
+    children: ReactNode;
+  }) => (
+    <section className="rounded-2xl border border-emerald-500/20 bg-white/5 p-6 shadow-md shadow-emerald-500/5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-semibold text-white">{title}</h2>
+          {description ? <p className="text-sm text-slate-400">{description}</p> : null}
+        </div>
+        {message ? <p className={message.startsWith("Failed") ? errClass : okClass}>{message}</p> : null}
+      </div>
+      <div className="mt-4 space-y-4">{children}</div>
+    </section>
+  );
 
   return (
-    <main className="mx-auto max-w-3xl px-4 md:px-6 py-10">
-      <h1 className="text-2xl font-semibold text-text">Admin</h1>
-      <p className="text-sm text-text/80">Update content. Stored locally in your browser for now.</p>
-
-      <section className="mt-4 rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
-        <h2 className="font-semibold text-text">Connect to Strapi (optional)</h2>
-        <p className="text-sm text-text/70">Set NEXT_PUBLIC_STRAPI_API_URL in your env to enable CMS. Log in here to create items.</p>
-        {jwt ? (
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-text/80">Authenticated with Strapi.</p>
-            <button onClick={() => setJwt(null)} className="text-sm text-accent">Log out</button>
-          </div>
-        ) : (
-          <StrapiLoginForm onLogin={async (email, password) => {
-            setAuthError(null);
-            try {
-              const { jwt } = await strapiLogin(email, password);
-              setJwt(jwt);
-            } catch {
-              setAuthError("Login failed. Check credentials and CORS.");
-            }
-          }} error={authError} />
-        )}
-
-        {jwt && (
-          <div className="pt-2 border-t border-text/10">
-            <h3 className="font-medium text-text">Quick-create Project</h3>
-            <QuickCreateProject jwt={jwt} creating={creating} setCreating={setCreating} />
-          </div>
-        )}
-      </section>
-      <form onSubmit={onSubmit} className="mt-6 space-y-6">
-        <section className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
-          <h2 className="font-semibold text-text">Basics</h2>
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100">
+      <div className="mx-auto max-w-6xl space-y-8 px-4 py-10">
+        <header className="flex items-center justify-between rounded-2xl border border-emerald-500/20 bg-white/5 px-4 py-3">
           <div>
-            <label className="block text-sm text-text/80">Name</label>
-            <input value={form.name} onChange={(e) => update("name", e.target.value)} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" />
+            <p className="text-xs uppercase tracking-wide text-emerald-300">Admin</p>
+            <h1 className="text-2xl font-semibold text-white">Admin Panel</h1>
           </div>
-          <div>
-            <label className="block text-sm text-text/80">Subline</label>
-            <input value={form.subline} onChange={(e) => update("subline", e.target.value)} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-          </div>
-          <div className="grid md:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm text-text/80">GitHub URL</label>
-              <input value={form.socials.github} onChange={(e) => update("socials", { ...form.socials, github: e.target.value })} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" />
+          <Link
+            href="/admin/logout"
+            className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-200 transition hover:border-emerald-400 hover:bg-emerald-500/20"
+          >
+            Logout
+          </Link>
+        </header>
+
+        <p className="text-sm text-slate-400">Edit portfolio content from one page.</p>
+
+        <div className="space-y-8">
+          <Section title="Profile" description="Main profile and hero information" message={profileMsg}>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Name
+                <input
+                  className={inputClass}
+                  value={profile.name ?? ""}
+                  onChange={(e) => setProfile((p) => ({ ...p, name: e.target.value }))}
+                />
+              </label>
+              <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Title
+                <input
+                  className={inputClass}
+                  value={profile.title ?? ""}
+                  onChange={(e) => setProfile((p) => ({ ...p, title: e.target.value }))}
+                />
+              </label>
+              <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Location
+                <input
+                  className={inputClass}
+                  value={profile.location ?? ""}
+                  onChange={(e) => setProfile((p) => ({ ...p, location: e.target.value }))}
+                />
+              </label>
+              <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Email
+                <input
+                  className={inputClass}
+                  value={profile.email ?? ""}
+                  onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))}
+                />
+              </label>
+              <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Phone
+                <input
+                  className={inputClass}
+                  value={profile.phone ?? ""}
+                  onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))}
+                />
+              </label>
+              <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Languages (comma separated)
+                <input
+                  className={inputClass}
+                  value={profile.languages ?? ""}
+                  onChange={(e) => setProfile((p) => ({ ...p, languages: e.target.value }))}
+                />
+              </label>
             </div>
-            <div>
-              <label className="block text-sm text-text/80">LinkedIn URL</label>
-              <input value={form.socials.linkedin} onChange={(e) => update("socials", { ...form.socials, linkedin: e.target.value })} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm text-text/80">Email</label>
-            <input value={form.socials.email || ""} onChange={(e) => update("socials", { ...form.socials, email: e.target.value })} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-          </div>
-          <div>
-            <label className="block text-sm text-text/80">Profile Image URL</label>
-            <input value={form.profileImage} onChange={(e) => update("profileImage", e.target.value)} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-          </div>
-          <div>
-            <label className="block text-sm text-text/80">CV URL</label>
-            <input value={form.cvUrl} onChange={(e) => update("cvUrl", e.target.value)} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-          </div>
-        </section>
+            <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400 block">
+              Short bio
+              <textarea
+                className={textAreaClass}
+                value={profile.bio ?? ""}
+                onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))}
+              />
+            </label>
+            <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400 block">
+              Education
+              <textarea
+                className={textAreaClass}
+                value={profile.education ?? ""}
+                onChange={(e) => setProfile((p) => ({ ...p, education: e.target.value }))}
+              />
+            </label>
+            <button
+              onClick={saveProfile}
+              className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
+            >
+              Save Profile
+            </button>
+          </Section>
 
-        <section className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
-          <h2 className="font-semibold text-text">About</h2>
-          <div>
-            <label className="block text-sm text-text/80">Location</label>
-            <input value={form.about.location} onChange={(e) => update("about", { ...form.about, location: e.target.value })} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-          </div>
-          <div>
-            <label className="block text-sm text-text/80">Languages</label>
-            <input value={form.about.languages} onChange={(e) => update("about", { ...form.about, languages: e.target.value })} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-          </div>
-          <div>
-            <label className="block text-sm text-text/80">Narrative 1</label>
-            <textarea value={form.about.narrative1} onChange={(e) => update("about", { ...form.about, narrative1: e.target.value })} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" rows={3} />
-          </div>
-          <div>
-            <label className="block text-sm text-text/80">Narrative 2</label>
-            <textarea value={form.about.narrative2} onChange={(e) => update("about", { ...form.about, narrative2: e.target.value })} className="mt-1 w-full rounded-md bg-text/10 px-3 py-2 text-text" rows={3} />
-          </div>
-        </section>
-
-        <section className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
-          <h2 className="font-semibold text-text">Skills</h2>
-          {form.skills.map((cat, idx) => (
-            <div key={idx} className="border-t border-text/10 pt-3">
-              <input value={cat.title} onChange={(e) => {
-                const copy = [...form.skills] as SkillsCategory[];
-                copy[idx] = { ...copy[idx], title: e.target.value };
-                update("skills", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text mb-2" />
-              <textarea value={cat.items.join(", ")} onChange={(e) => {
-                const copy = [...form.skills] as SkillsCategory[];
-                copy[idx] = { ...copy[idx], items: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) };
-                update("skills", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" rows={2} />
-              <div className="mt-2 flex justify-end">
-                <button type="button" onClick={() => {
-                  const copy = form.skills.filter((_, i) => i !== idx);
-                  update("skills", copy);
-                }} className="text-sm text-text/70 hover:text-accent">Remove</button>
+          <Section title="Projects" description="Basic project details" message={projectMsg}>
+            <div className="rounded-xl border border-emerald-500/10 bg-white/5 p-4">
+              <p className="mb-2 text-sm font-semibold text-emerald-300">Add new project</p>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                  Title
+                  <input className={inputClass} value={newProject.title ?? ""} onChange={(e) => setNewProject((p) => ({ ...p, title: e.target.value }))} />
+                </label>
+                <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                  Slug
+                  <input className={inputClass} value={newProject.slug ?? ""} onChange={(e) => setNewProject((p) => ({ ...p, slug: e.target.value }))} />
+                </label>
+                <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                  Live URL
+                  <input className={inputClass} value={newProject.live_url ?? ""} onChange={(e) => setNewProject((p) => ({ ...p, live_url: e.target.value }))} />
+                </label>
+                <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                  Repo URL
+                  <input className={inputClass} value={newProject.repo_url ?? ""} onChange={(e) => setNewProject((p) => ({ ...p, repo_url: e.target.value }))} />
+                </label>
               </div>
+              <label className="mt-3 block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Short description
+                <textarea className={textAreaClass} value={newProject.description ?? ""} onChange={(e) => setNewProject((p) => ({ ...p, description: e.target.value }))} />
+              </label>
+              <label className="mt-3 block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Status
+                <select
+                  className={inputClass}
+                  value={newProject.status ?? "draft"}
+                  onChange={(e) => setNewProject((p) => ({ ...p, status: e.target.value }))}
+                >
+                  <option value="draft">draft</option>
+                  <option value="published">published</option>
+                </select>
+              </label>
+              <button
+                onClick={createProject}
+                className="mt-3 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
+              >
+                Save project
+              </button>
             </div>
-          ))}
-          <button type="button" onClick={() => update("skills", [...form.skills, { title: "New", items: [] }])} className="inline-flex items-center rounded-lg px-3 py-2 bg-bg text-text ring-1 ring-text/20">Add Category</button>
-        </section>
 
-        <section className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
-          <h2 className="font-semibold text-text">Projects</h2>
-          {form.projects.map((p, idx) => (
-            <div key={idx} className="border-t border-text/10 pt-3 grid gap-2">
-              <input placeholder="Title" value={p.title} onChange={(e) => {
-                const copy = [...form.projects] as Project[];
-                copy[idx] = { ...copy[idx], title: e.target.value };
-                update("projects", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-              <textarea placeholder="Description" value={p.description} onChange={(e) => {
-                const copy = [...form.projects] as Project[];
-                copy[idx] = { ...copy[idx], description: e.target.value };
-                update("projects", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" rows={2} />
-              <input placeholder="Tech (comma separated)" value={p.tech.join(", ")} onChange={(e) => {
-                const copy = [...form.projects] as Project[];
-                copy[idx] = { ...copy[idx], tech: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) };
-                update("projects", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-              <input placeholder="Image URL or upload" value={p.imageUrl || ""} onChange={(e) => {
-                const copy = [...form.projects] as Project[];
-                copy[idx] = { ...copy[idx], imageUrl: e.target.value };
-                update("projects", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-              <input type="file" accept="image/*" onChange={(ev) => {
-                const file = ev.target.files?.[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = () => {
-                  const copy = [...form.projects] as Project[];
-                  copy[idx] = { ...copy[idx], imageUrl: String(reader.result) };
-                  update("projects", copy);
-                };
-                reader.readAsDataURL(file);
-              }} />
-              <div className="grid md:grid-cols-2 gap-2">
-                <input placeholder="Live URL" value={p.liveUrl || ""} onChange={(e) => {
-                  const copy = [...form.projects] as Project[];
-                  copy[idx] = { ...copy[idx], liveUrl: e.target.value };
-                  update("projects", copy);
-                }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-                <input placeholder="Repo URL" value={p.repoUrl || ""} onChange={(e) => {
-                  const copy = [...form.projects] as Project[];
-                  copy[idx] = { ...copy[idx], repoUrl: e.target.value };
-                  update("projects", copy);
-                }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
+            <div className="space-y-4">
+              <p className="text-sm font-semibold text-emerald-300">Existing projects</p>
+              {projects.length === 0 ? (
+                <p className="text-sm text-slate-400">No projects yet.</p>
+              ) : (
+                projects.map((project, idx) => (
+                  <div key={`${project.id ?? idx}`} className="space-y-2 rounded-xl border border-emerald-500/10 bg-slate-900/50 p-4">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                        Title
+                        <input
+                          className={inputClass}
+                          value={project.title ?? ""}
+                          onChange={(e) =>
+                            setProjects((prev) =>
+                              prev.map((p, i) => (i === idx ? { ...p, title: e.target.value } : p))
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                        Slug
+                        <input
+                          className={inputClass}
+                          value={project.slug ?? ""}
+                          onChange={(e) =>
+                            setProjects((prev) =>
+                              prev.map((p, i) => (i === idx ? { ...p, slug: e.target.value } : p))
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                        Live URL
+                        <input
+                          className={inputClass}
+                          value={project.live_url ?? ""}
+                          onChange={(e) =>
+                            setProjects((prev) =>
+                              prev.map((p, i) => (i === idx ? { ...p, live_url: e.target.value } : p))
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                        Repo URL
+                        <input
+                          className={inputClass}
+                          value={project.repo_url ?? ""}
+                          onChange={(e) =>
+                            setProjects((prev) =>
+                              prev.map((p, i) => (i === idx ? { ...p, repo_url: e.target.value } : p))
+                            )
+                          }
+                        />
+                      </label>
+                    </div>
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Short description
+                      <textarea
+                        className={textAreaClass}
+                        value={project.description ?? ""}
+                        onChange={(e) =>
+                          setProjects((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, description: e.target.value } : p))
+                          )
+                        }
+                      />
+                    </label>
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Status
+                      <select
+                        className={inputClass}
+                        value={project.status ?? "draft"}
+                        onChange={(e) =>
+                          setProjects((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, status: e.target.value } : p))
+                          )
+                        }
+                      >
+                        <option value="draft">draft</option>
+                        <option value="published">published</option>
+                      </select>
+                    </label>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => updateProject(project)}
+                        className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-emerald-400"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => deleteProject(project.id)}
+                        className="rounded-lg border border-red-500/60 px-3 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/10"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </Section>
+
+          <Section title="Experience" description="Work history" message={experienceMsg}>
+            <div className="rounded-xl border border-emerald-500/10 bg-white/5 p-4 space-y-3">
+              <p className="text-sm font-semibold text-emerald-300">Add new experience</p>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                  Company
+                  <input className={inputClass} value={newExperience.company ?? ""} onChange={(e) => setNewExperience((p) => ({ ...p, company: e.target.value }))} />
+                </label>
+                <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                  Role
+                  <input className={inputClass} value={newExperience.role ?? ""} onChange={(e) => setNewExperience((p) => ({ ...p, role: e.target.value }))} />
+                </label>
+                <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                  Location
+                  <input className={inputClass} value={newExperience.location ?? ""} onChange={(e) => setNewExperience((p) => ({ ...p, location: e.target.value }))} />
+                </label>
               </div>
-              <div className="flex justify-end">
-                <button type="button" onClick={() => update("projects", form.projects.filter((_, i) => i !== idx))} className="text-sm text-text/70 hover:text-accent">Remove</button>
-              </div>
+              <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Summary
+                <textarea className={textAreaClass} value={newExperience.summary ?? ""} onChange={(e) => setNewExperience((p) => ({ ...p, summary: e.target.value }))} />
+              </label>
+              <button
+                onClick={addExperience}
+                className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
+              >
+                Add experience
+              </button>
             </div>
-          ))}
-          <button type="button" onClick={() => update("projects", [...form.projects, { title: "New Project", description: "", tech: [] }])} className="inline-flex items-center rounded-lg px-3 py-2 bg-bg text-text ring-1 ring-text/20">Add Project</button>
-        </section>
 
-        <section className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
-          <h2 className="font-semibold text-text">Experience</h2>
-          {form.experience.map((e, idx) => (
-            <div key={idx} className="border-t border-text/10 pt-3 grid gap-2">
-              <input placeholder="Title" value={e.title} onChange={(ev) => {
-                const copy = [...form.experience] as ExperienceItem[];
-                copy[idx] = { ...copy[idx], title: ev.target.value };
-                update("experience", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-              <input placeholder="Role" value={e.role} onChange={(ev) => {
-                const copy = [...form.experience] as ExperienceItem[];
-                copy[idx] = { ...copy[idx], role: ev.target.value };
-                update("experience", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-              <textarea placeholder="Summary" value={e.summary} onChange={(ev) => {
-                const copy = [...form.experience] as ExperienceItem[];
-                copy[idx] = { ...copy[idx], summary: ev.target.value };
-                update("experience", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" rows={2} />
-              <div className="flex justify-end">
-                <button type="button" onClick={() => update("experience", form.experience.filter((_, i) => i !== idx))} className="text-sm text-text/70 hover:text-accent">Remove</button>
-              </div>
+            <div className="space-y-4">
+              <p className="text-sm font-semibold text-emerald-300">Existing experience</p>
+              {experience.length === 0 ? (
+                <p className="text-sm text-slate-400">No experience entries yet.</p>
+              ) : (
+                experience.map((item, idx) => (
+                  <div key={`${item.id ?? idx}`} className="space-y-2 rounded-xl border border-emerald-500/10 bg-slate-900/50 p-4">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                        Company
+                        <input
+                          className={inputClass}
+                          value={item.company ?? ""}
+                          onChange={(e) =>
+                            setExperience((prev) =>
+                              prev.map((p, i) => (i === idx ? { ...p, company: e.target.value } : p))
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                        Role
+                        <input
+                          className={inputClass}
+                          value={item.role ?? ""}
+                          onChange={(e) =>
+                            setExperience((prev) =>
+                              prev.map((p, i) => (i === idx ? { ...p, role: e.target.value } : p))
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                        Location
+                        <input
+                          className={inputClass}
+                          value={item.location ?? ""}
+                          onChange={(e) =>
+                            setExperience((prev) =>
+                              prev.map((p, i) => (i === idx ? { ...p, location: e.target.value } : p))
+                            )
+                          }
+                        />
+                      </label>
+                    </div>
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Summary
+                      <textarea
+                        className={textAreaClass}
+                        value={item.summary ?? ""}
+                        onChange={(e) =>
+                          setExperience((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, summary: e.target.value } : p))
+                          )
+                        }
+                      />
+                    </label>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => saveExperience(item)}
+                        className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-emerald-400"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => deleteExperience(item.id)}
+                        className="rounded-lg border border-red-500/60 px-3 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/10"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
-          ))}
-          <button type="button" onClick={() => update("experience", [...form.experience, { title: "", role: "", summary: "" }])} className="inline-flex items-center rounded-lg px-3 py-2 bg-bg text-text ring-1 ring-text/20">Add Experience</button>
-        </section>
+          </Section>
 
-        <section className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
-          <h2 className="font-semibold text-text">Volunteering</h2>
-          {form.volunteering.map((v, idx) => (
-            <div key={idx} className="flex gap-2 items-center border-t border-text/10 pt-3">
-              <input value={v} onChange={(e) => update("volunteering", form.volunteering.map((x, i) => (i === idx ? e.target.value : x)))} className="flex-1 rounded-md bg-text/10 px-3 py-2 text-text" />
-              <button type="button" onClick={() => update("volunteering", form.volunteering.filter((_, i) => i !== idx))} className="text-sm text-text/70 hover:text-accent">Remove</button>
+          <Section title="Volunteering" description="Volunteering entries" message={volunteerMsg}>
+            <div className="rounded-xl border border-emerald-500/10 bg-white/5 p-4 space-y-3">
+              <p className="text-sm font-semibold text-emerald-300">Add new volunteering</p>
+              <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Title
+                <input className={inputClass} value={newVolunteer.title ?? ""} onChange={(e) => setNewVolunteer((p) => ({ ...p, title: e.target.value }))} />
+              </label>
+              <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Organization
+                <input
+                  className={inputClass}
+                  value={newVolunteer.organization ?? ""}
+                  onChange={(e) => setNewVolunteer((p) => ({ ...p, organization: e.target.value }))}
+                />
+              </label>
+              <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Description
+                <textarea className={textAreaClass} value={newVolunteer.description ?? ""} onChange={(e) => setNewVolunteer((p) => ({ ...p, description: e.target.value }))} />
+              </label>
+              <button
+                onClick={addVolunteer}
+                className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
+              >
+                Add volunteering
+              </button>
             </div>
-          ))}
-          <button type="button" onClick={() => update("volunteering", [...form.volunteering, ""])} className="inline-flex items-center rounded-lg px-3 py-2 bg-bg text-text ring-1 ring-text/20">Add Item</button>
-        </section>
 
-        <section className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
-          <h2 className="font-semibold text-text">Certifications</h2>
-          {form.certifications.map((c, idx) => (
-            <div key={idx} className="grid md:grid-cols-2 gap-2 border-t border-text/10 pt-3">
-              <input placeholder="Title" value={c.title} onChange={(e) => {
-                const copy = [...form.certifications] as Certification[];
-                copy[idx] = { ...copy[idx], title: e.target.value };
-                update("certifications", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-              <input placeholder="URL" value={c.url} onChange={(e) => {
-                const copy = [...form.certifications] as Certification[];
-                copy[idx] = { ...copy[idx], url: e.target.value };
-                update("certifications", copy);
-              }} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-              <div className="md:col-span-2 flex justify-end">
-                <button type="button" onClick={() => update("certifications", form.certifications.filter((_, i) => i !== idx))} className="text-sm text-text/70 hover:text-accent">Remove</button>
-              </div>
+            <div className="space-y-4">
+              <p className="text-sm font-semibold text-emerald-300">Existing volunteering</p>
+              {volunteering.length === 0 ? (
+                <p className="text-sm text-slate-400">No volunteering entries yet.</p>
+              ) : (
+                volunteering.map((item, idx) => (
+                  <div key={`${item.id ?? idx}`} className="space-y-2 rounded-xl border border-emerald-500/10 bg-slate-900/50 p-4">
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Title
+                      <input
+                        className={inputClass}
+                        value={item.title ?? ""}
+                        onChange={(e) =>
+                          setVolunteering((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, title: e.target.value } : p))
+                          )
+                        }
+                      />
+                    </label>
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Organization
+                      <input
+                        className={inputClass}
+                        value={item.organization ?? ""}
+                        onChange={(e) =>
+                          setVolunteering((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, organization: e.target.value } : p))
+                          )
+                        }
+                      />
+                    </label>
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Description
+                      <textarea
+                        className={textAreaClass}
+                        value={item.description ?? ""}
+                        onChange={(e) =>
+                          setVolunteering((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, description: e.target.value } : p))
+                          )
+                        }
+                      />
+                    </label>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => saveVolunteer(item)}
+                        className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-emerald-400"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => deleteVolunteer(item.id)}
+                        className="rounded-lg border border-red-500/60 px-3 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/10"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
-          ))}
-          <button type="button" onClick={() => update("certifications", [...form.certifications, { title: "", url: "" }])} className="inline-flex items-center rounded-lg px-3 py-2 bg-bg text-text ring-1 ring-text/20">Add Certification</button>
-        </section>
+          </Section>
 
-        <section className="rounded-xl bg-bg/60 backdrop-blur-xs shadow-glass ring-1 ring-white/5 p-4 space-y-3">
-          <h2 className="font-semibold text-text">Education</h2>
-          <input placeholder="Degree" value={form.education.degree} onChange={(e) => update("education", { ...form.education, degree: e.target.value })} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-          <textarea placeholder="Details" value={form.education.details} onChange={(e) => update("education", { ...form.education, details: e.target.value })} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" rows={2} />
-        </section>
+          <Section title="Certificates" description="Certificates list" message={certificateMsg}>
+            <div className="rounded-xl border border-emerald-500/10 bg-white/5 p-4 space-y-3">
+              <p className="text-sm font-semibold text-emerald-300">Add new certificate</p>
+              <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Name
+                <input className={inputClass} value={newCertificate.name ?? ""} onChange={(e) => setNewCertificate((p) => ({ ...p, name: e.target.value }))} />
+              </label>
+              <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Issuer
+                <input className={inputClass} value={newCertificate.issuer ?? ""} onChange={(e) => setNewCertificate((p) => ({ ...p, issuer: e.target.value }))} />
+              </label>
+              <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Issue date
+                <input className={inputClass} value={newCertificate.issue_date ?? ""} onChange={(e) => setNewCertificate((p) => ({ ...p, issue_date: e.target.value }))} />
+              </label>
+              <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                Verification URL
+                <input className={inputClass} value={newCertificate.verify_url ?? ""} onChange={(e) => setNewCertificate((p) => ({ ...p, verify_url: e.target.value }))} />
+              </label>
+              <button
+                onClick={addCertificate}
+                className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
+              >
+                Add certificate
+              </button>
+            </div>
 
-        <div className="flex gap-3">
-          <button type="submit" className="inline-flex items-center rounded-lg px-5 py-3 bg-accent text-bg shadow-glass">Save</button>
-          <button type="button" onClick={resetAll} className="inline-flex items-center rounded-lg px-5 py-3 bg-bg text-text ring-1 ring-text/20">Reset</button>
-          <button type="button" onClick={exportJson} className="inline-flex items-center rounded-lg px-5 py-3 bg-bg text-text ring-1 ring-text/20">Export JSON</button>
-          <label className="inline-flex items-center rounded-lg px-5 py-3 bg-bg text-text ring-1 ring-text/20 cursor-pointer">
-            Import JSON
-            <input type="file" accept="application/json" onChange={importJson} className="hidden" />
-          </label>
+            <div className="space-y-4">
+              <p className="text-sm font-semibold text-emerald-300">Existing certificates</p>
+              {certificates.length === 0 ? (
+                <p className="text-sm text-slate-400">No certificates yet.</p>
+              ) : (
+                certificates.map((item, idx) => (
+                  <div key={`${item.id ?? idx}`} className="space-y-2 rounded-xl border border-emerald-500/10 bg-slate-900/50 p-4">
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Name
+                      <input
+                        className={inputClass}
+                        value={item.name ?? ""}
+                        onChange={(e) =>
+                          setCertificates((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, name: e.target.value } : p))
+                          )
+                        }
+                      />
+                    </label>
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Issuer
+                      <input
+                        className={inputClass}
+                        value={item.issuer ?? ""}
+                        onChange={(e) =>
+                          setCertificates((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, issuer: e.target.value } : p))
+                          )
+                        }
+                      />
+                    </label>
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Issue date
+                      <input
+                        className={inputClass}
+                        value={item.issue_date ?? ""}
+                        onChange={(e) =>
+                          setCertificates((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, issue_date: e.target.value } : p))
+                          )
+                        }
+                      />
+                    </label>
+                    <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
+                      Verification URL
+                      <input
+                        className={inputClass}
+                        value={item.verify_url ?? ""}
+                        onChange={(e) =>
+                          setCertificates((prev) =>
+                            prev.map((p, i) => (i === idx ? { ...p, verify_url: e.target.value } : p))
+                          )
+                        }
+                      />
+                    </label>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => saveCertificate(item)}
+                        className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-emerald-400"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => deleteCertificate(item.id)}
+                        className="rounded-lg border border-red-500/60 px-3 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/10"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </Section>
         </div>
-
-        {saved && <p className="text-sm text-text/80">{saved}</p>}
-      </form>
+      </div>
     </main>
   );
 }
-
-function StrapiLoginForm({ onLogin, error }: { onLogin: (email: string, password: string) => void | Promise<void>; error: string | null; }) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  return (
-    <form onSubmit={async (e) => { e.preventDefault(); setLoading(true); await onLogin(email, password); setLoading(false); }} className="grid md:grid-cols-2 gap-2">
-      <input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-      <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-      <div className="md:col-span-2 flex items-center gap-3">
-        <button type="submit" className="inline-flex items-center rounded-lg px-3 py-2 bg-bg text-text ring-1 ring-text/20">{loading ? "Signing in…" : "Sign in"}</button>
-        {error && <span className="text-sm text-red-400">{error}</span>}
-      </div>
-    </form>
-  );
-}
-
-function QuickCreateProject({ jwt, creating, setCreating }: { jwt: string; creating: boolean; setCreating: (b: boolean) => void; }) {
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [image, setImage] = React.useState<File | null>(null);
-  const [status, setStatus] = React.useState<string | null>(null);
-  return (
-    <form onSubmit={async (e) => {
-      e.preventDefault();
-      setCreating(true);
-      setStatus(null);
-      try {
-        let imageId: number | null = null;
-        if (image) {
-          const uploaded = await uploadFile(jwt, image);
-          imageId = uploaded?.[0]?.id ?? null;
-        }
-        await createProject(jwt, { title, description, image: imageId });
-        setStatus("Created.");
-        setTitle("");
-        setDescription("");
-        setImage(null);
-      } catch {
-        setStatus("Failed to create.");
-      } finally {
-        setCreating(false);
-      }
-    }} className="grid gap-2">
-      <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" />
-      <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full rounded-md bg-text/10 px-3 py-2 text-text" rows={2} />
-      <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} className="text-sm text-text/70" />
-      <div className="flex items-center gap-3">
-        <button type="submit" className="inline-flex items-center rounded-lg px-3 py-2 bg-bg text-text ring-1 ring-text/20" disabled={creating}>{creating ? "Creating…" : "Create"}</button>
-        {status && <span className="text-sm text-text/80">{status}</span>}
-      </div>
-    </form>
-  );
-}
-

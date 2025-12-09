@@ -49,19 +49,19 @@ const ContactForm = () => {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
-        <label htmlFor="name" className="text-sm font-medium text-zinc-700">
+        <label htmlFor="name" className="text-sm font-medium text-ink">
           Name
         </label>
         <input
           id="name"
           name="name"
           required
-          className="mt-2 w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10"
+          className="mt-2 w-full rounded-2xl border border-outline bg-surface px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/30"
           placeholder="Your name"
         />
       </div>
       <div>
-        <label htmlFor="email" className="text-sm font-medium text-zinc-700">
+        <label htmlFor="email" className="text-sm font-medium text-ink">
           Email
         </label>
         <input
@@ -69,12 +69,12 @@ const ContactForm = () => {
           name="email"
           type="email"
           required
-          className="mt-2 w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10"
+          className="mt-2 w-full rounded-2xl border border-outline bg-surface px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/30"
           placeholder="you@example.com"
         />
       </div>
       <div>
-        <label htmlFor="message" className="text-sm font-medium text-zinc-700">
+        <label htmlFor="message" className="text-sm font-medium text-ink">
           Message
         </label>
         <textarea
@@ -82,20 +82,20 @@ const ContactForm = () => {
           name="message"
           required
           rows={5}
-          className="mt-2 w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10"
+          className="mt-2 w-full rounded-2xl border border-outline bg-surface px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/30"
           placeholder="Share the project, timelines, or context."
         />
       </div>
       <button
         type="submit"
         disabled={status.state === "loading"}
-        className="inline-flex w-full items-center justify-center rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900 disabled:opacity-60"
+        className="inline-flex w-full items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-canvas transition hover:shadow-soft hover:shadow-accent/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-60"
       >
         {status.state === "loading" ? "Sending..." : "Send message"}
       </button>
       {status.message ? (
         <p
-          className={`text-sm ${status.state === "error" ? "text-red-600" : "text-emerald-700"}`}
+          className={`text-sm ${status.state === "error" ? "text-red-400" : "text-accent"}`}
           aria-live="polite"
           data-state={status.state}
         >
