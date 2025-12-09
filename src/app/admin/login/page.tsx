@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const ADMIN_PASSWORD = "Memabdo321";
+const ADMIN_PASSWORD = "1234";
 
 export default function AdminLoginPage() {
   const router = useRouter();
