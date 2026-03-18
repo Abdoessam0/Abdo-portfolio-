@@ -7,16 +7,6 @@ export type ExperienceMedia = {
   height: number;
 };
 
-export type ExperienceProject = {
-  title: string;
-  summary: string;
-  tech: string[];
-  links: {
-    live?: string;
-    repo?: string;
-  };
-};
-
 export type ExperienceLink = {
   label: string;
   href: string;
@@ -24,7 +14,8 @@ export type ExperienceLink = {
 
 export type Experience = {
   id: string;
-  slug?: string;
+  slug: string;
+  featured: boolean;
   role: string;
   company: string;
   location: string;
@@ -34,62 +25,86 @@ export type Experience = {
   summary: string;
   stack: string[];
   impact: string[];
-  links?: ExperienceLink[];
-  media?: ExperienceMedia[];
   metrics?: Metric[];
-  projects?: ExperienceProject[];
+  links?: ExperienceLink[];
   gallery?: ExperienceMedia[];
+  projectSlugs?: string[];
 };
 
 export const EXPERIENCE: Experience[] = [
   {
     id: "remax-wise",
     slug: "remax-wise",
-    role: "Software Developer (Erasmus+ Internship)",
+    featured: true,
+    role: "Software Developer",
     company: "RE/MAX Wise",
     location: "Lisbon, Portugal",
     period: "Sep 2025 – Nov 2025",
     start: "2025-09",
     end: "2025-11",
     summary:
-      "Built and improved multi-site real estate platforms (Algarve, Lisbon, 5 Steps) using Next.js, TypeScript, Tailwind CSS, Supabase, and Vercel.",
-    stack: ["Next.js 15", "TypeScript", "Tailwind CSS", "Supabase", "Vercel", "SEO routing", "CI/CD"],
+      "Built and improved production real-estate platforms across Algarve, Lisbon, and 5 Steps during Erasmus+ internship.",
+    stack: [
+      "Next.js 15",
+      "TypeScript",
+      "Tailwind CSS",
+      "Supabase",
+      "Vercel",
+      "SEO",
+    ],
     impact: [
-      "Implemented dynamic routing, SEO-safe metadata, unified layouts, reusable UI components, and internal linking.",
-      "Improved accessibility, performance, and deployment stability across Algarve, Lisbon, and 5 Steps funnels.",
-      "Partnered with marketing to keep content structures reusable and localized without duplicating code.",
+      "Implemented SEO-safe routing, metadata handling, canonical/noindex logic, and reusable UI components across 3 platforms.",
+      "Standardized layouts and component structures across Algarve, Lisbon, and 5 Steps sites.",
+      "Improved accessibility, performance, and deployment stability through code reviews and testing.",
     ],
-    links: [{ label: "RE/MAX Portugal", href: "https://www.remax.pt/" }],
     metrics: [
-      { label: "Sites", value: "3", helper: "Algarve, Lisbon, 5 Steps" },
-      { label: "Core stack", value: "Next.js 15 + Supabase" },
+      { label: "Sites delivered", value: "3", helper: "Algarve, Lisbon, 5 Steps" },
+      { label: "Focus", value: "SEO + reusable frontend" },
     ],
-    projects: [
-      {
-        title: "Real Estate Funnels",
-        summary: "Multi-site funnels with shared layouts, SEO metadata, and reusable content blocks.",
-        tech: ["Next.js 15", "TypeScript", "Tailwind CSS"],
-        links: {},
-      },
+    links: [
+      { label: "RE/MAX Wise", href: "https://www.remax.pt/" },
+      { label: "About page (my profile)", href: "https://www.realestate-lisbon.com/about" },
+      { label: "Real Estate Lisbon", href: "https://www.realestate-lisbon.com/" },
+      { label: "Real Estate Algarve", href: "https://www.realestate-algarve.com/" },
     ],
     gallery: [
       {
-        src: "/images/remax-lisbon/remax-lisbon-standup.jpg",
-        alt: "RE/MAX Wise team standup",
-        width: 897,
-        height: 617,
+        src: "/images/remax-lisbon/remax-lisbon-journey-wall.jpg",
+        alt: "Abdelrahman at the RE/MAX WISE office in Lisbon",
+        width: 900,
+        height: 1200,
       },
       {
         src: "/images/remax-lisbon/remax-lisbon-office.jpg",
-        alt: "Workspace during Lisbon platform build",
+        alt: "RE/MAX Wise team at the Lisbon office",
         width: 1600,
         height: 900,
       },
+      {
+        src: "/images/remax-lisbon/remax-lisbon-standup.jpg",
+        alt: "Standup with the CEO at the RE/MAX Lisbon office",
+        width: 897,
+        height: 1200,
+      },
+      {
+        src: "/images/remax-lisbon/remax-lisbon-team.jpg",
+        alt: "Meet our team — 5 Steps Real Estate platform",
+        width: 1200,
+        height: 800,
+      },
+      {
+        src: "/images/remax-lisbon/abdo-team-photo.webp",
+        alt: "Abdo Essam — Developer on the Platform & Technology Team at Real Estate Lisbon",
+        width: 600,
+        height: 800,
+      },
     ],
+    projectSlugs: ["real-estate-platforms"],
   },
   {
     id: "afaqy",
     slug: "afaqy",
+    featured: true,
     role: "Technical Support Engineer",
     company: "AFAQY",
     location: "Riyadh, Saudi Arabia",
@@ -97,52 +112,69 @@ export const EXPERIENCE: Experience[] = [
     start: "2024-07",
     end: "2024-09",
     summary:
-      "Supported fleet systems and 650+ GPS devices with troubleshooting, diagnostics, dashboards, and automated reports using Next.js, Supabase, and Node.js.",
-    stack: ["Next.js", "Supabase", "Node.js", "Dashboards", "Diagnostics"],
+      "Supported fleet systems and 650+ GPS devices with troubleshooting, diagnostics, and customer training.",
+    stack: [
+      "Fleet systems",
+      "Diagnostics",
+      "Dashboards",
+      "Customer training",
+      "Excel",
+      "Reporting",
+    ],
     impact: [
-      "Developed dashboards and automated reports to keep fleet and GPS data quality high for multiple clients.",
-      "Prepared documentation and training materials for operations teams and stakeholders.",
-      "Managed telemetry troubleshooting with bilingual support and proactive monitoring.",
+      "Managed maintenance requests and fleet data for 650+ vehicles across clients including Wefaq and Top-Tech.",
+      "Delivered client training on AFAQY Pro software and handled support via WhatsApp and calls.",
+      "Updated vehicle details across Pro, InDrive, and Rent platforms ensuring data accuracy.",
+    ],
+    metrics: [
+      { label: "Devices supported", value: "650+", helper: "Fleet GPS systems" },
+      { label: "Focus", value: "Diagnostics + reliability" },
     ],
     links: [{ label: "AFAQY", href: "https://afaqy.net/" }],
-    metrics: [
-      { label: "Devices", value: "650+", helper: "Fleet GPS systems" },
-      { label: "Focus", value: "Diagnostics & reporting" },
-    ],
-    media: [
-      {
-        src: "/experience/afaqy-lab.svg",
-        alt: "AFAQY dashboards",
-        width: 1200,
-        height: 720,
-      },
-    ],
   },
   {
     id: "nfs-soft",
     slug: "nfs-soft",
+    featured: true,
     role: "WordPress Developer Intern",
     company: "NFS Soft",
     location: "Erzurum, Türkiye",
-    period: "Sep 2022 – Jun 2023",
-    start: "2022-09",
-    end: "2023-06",
+    period: "Oct 2022 – Dec 2022",
+    start: "2022-10",
+    end: "2022-12",
     summary:
-      "Built multilingual WordPress themes and improved mobile responsiveness while assisting with PHP customisations and hosting via cPanel.",
-    stack: ["WordPress", "PHP", "cPanel", "Responsive design", "Multilingual themes"],
+      "Built multilingual WordPress themes and websites with focus on responsiveness, performance, and accessibility.",
+    stack: [
+      "WordPress",
+      "PHP",
+      "Custom templates",
+      "Responsive design",
+      "Accessibility",
+      "cPanel",
+    ],
     impact: [
-      "Implemented custom templates, optimized performance and accessibility, and ensured mobile responsiveness.",
-      "Managed hosting tasks with cPanel and supported deployments for client sites.",
-      "Assisted with PHP customisations and QA to keep multilingual experiences stable.",
+      "Crafted custom WordPress themes and plugins prioritizing responsiveness and user-friendliness.",
+      "Created websites ranging from business platforms to content-heavy sites with seamless UX.",
+      "Managed hosting with cPanel and assisted with PHP customizations for client projects.",
+    ],
+    metrics: [
+      { label: "Strengths", value: "Multilingual + frontend quality" },
+      { label: "Location", value: "Erzurum, Türkiye" },
     ],
     links: [{ label: "NFS Soft", href: "https://www.nfssoft.com/" }],
     gallery: [
       {
         src: "/certificates/wordpress-internship.png",
-        alt: "WordPress internship work samples",
+        alt: "NFS Soft internship certificate",
         width: 1200,
         height: 900,
       },
+    ],
+    projectSlugs: [
+      "ustunler-et-borsasi",
+      "bels-digital-application-system",
+      "erzurum-sikayet",
+      "easy4learning",
     ],
   },
 ];

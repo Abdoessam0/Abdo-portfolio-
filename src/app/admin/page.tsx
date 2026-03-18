@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { loadSection, saveSection, updateItem, deleteItem } from "@/lib/admin-api";
 
 type Id = string | number;
 
@@ -100,9 +100,9 @@ const emptyCertificate: CertificateRow = {
   verify_url: "",
 };
 
-const getErrorMessage = (err: unknown) => (err instanceof Error ? err.message : "Error");
-
 export default function AdminPage() {
+  const [loading, setLoading] = useState(true);
+
   const [profile, setProfile] = useState<ProfileRow>(emptyProfile);
   const [projects, setProjects] = useState<ProjectRow[]>([]);
   const [experience, setExperience] = useState<ExperienceRow[]>([]);
@@ -120,273 +120,200 @@ export default function AdminPage() {
   const [newVolunteer, setNewVolunteer] = useState<VolunteeringRow>(emptyVolunteer);
   const [newCertificate, setNewCertificate] = useState<CertificateRow>(emptyCertificate);
 
+  const [saving, setSaving] = useState<Record<string, boolean>>({});
+  const markSaving = (key: string, v: boolean) => setSaving((s) => ({ ...s, [key]: v }));
+
   useEffect(() => {
     const loadAll = async () => {
-      await Promise.all([loadProfile(), loadProjects(), loadExperience(), loadVolunteering(), loadCertificates()]);
+      const [pRes, prRes, eRes, vRes, cRes] = await Promise.all([
+        loadSection<ProfileRow>("profile"),
+        loadSection<ProjectRow[]>("projects"),
+        loadSection<ExperienceRow[]>("experience"),
+        loadSection<VolunteeringRow[]>("volunteering"),
+        loadSection<CertificateRow[]>("certificates"),
+      ]);
+
+      if (pRes.error) setProfileMsg(`Failed to load profile: ${pRes.error}`);
+      else if (pRes.data) setProfile({ ...emptyProfile, ...pRes.data });
+
+      if (prRes.error) setProjectMsg(`Failed to load projects: ${prRes.error}`);
+      else if (prRes.data) setProjects(prRes.data);
+
+      if (eRes.error) setExperienceMsg(`Failed to load experience: ${eRes.error}`);
+      else if (eRes.data) setExperience(eRes.data);
+
+      if (vRes.error) setVolunteerMsg(`Failed to load volunteering: ${vRes.error}`);
+      else if (vRes.data) setVolunteering(vRes.data);
+
+      if (cRes.error) setCertificateMsg(`Failed to load certificates: ${cRes.error}`);
+      else if (cRes.data) setCertificates(cRes.data);
+
+      setLoading(false);
     };
     loadAll();
   }, []);
 
-  const loadProfile = async () => {
-    setProfileMsg(null);
-    const { data, error } = await supabase.from("profile").select("*").maybeSingle();
-    if (error) {
-      setProfileMsg(`Failed to load profile: ${error.message}`);
-      console.error("Load profile error", error);
-      return;
-    }
-    if (data) {
-      setProfile({ ...emptyProfile, ...data });
-    }
-  };
+  /* ---------------------------------------------------------------- */
+  /*  Profile                                                          */
+  /* ---------------------------------------------------------------- */
 
-  const saveProfile = async () => {
+  const handleSaveProfile = async () => {
     setProfileMsg(null);
+    markSaving("profile", true);
     const { id, ...payload } = profile;
-    try {
-      if (id) {
-        const { error } = await supabase.from("profile").update(payload).eq("id", id);
-        if (error) throw error;
-      } else {
-        const { data, error } = await supabase.from("profile").insert(payload).select().single();
-        if (error) throw error;
-        setProfile({ ...emptyProfile, ...data });
-      }
-      setProfileMsg("Saved profile");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setProfileMsg(`Failed to save profile: ${msg}`);
-      console.error("Save profile error", err);
-    }
+    const fn = id
+      ? () => updateItem<ProfileRow>("profile", id, payload)
+      : () => saveSection<ProfileRow>("profile", payload);
+    const { data, error } = await fn();
+    markSaving("profile", false);
+    if (error) { setProfileMsg(`Failed to save profile: ${error}`); return; }
+    if (data) setProfile({ ...emptyProfile, ...data });
+    setProfileMsg("✓ Profile saved");
   };
 
-  const loadProjects = async () => {
+  /* ---------------------------------------------------------------- */
+  /*  Projects                                                         */
+  /* ---------------------------------------------------------------- */
+
+  const handleCreateProject = async () => {
     setProjectMsg(null);
-    const { data, error } = await supabase.from("projects").select("*");
-    if (error) {
-      setProjectMsg(`Failed to load projects: ${error.message}`);
-      console.error("Load projects error", error);
-      return;
-    }
-    if (data) setProjects(data as ProjectRow[]);
+    markSaving("newProject", true);
+    const { error, data } = await saveSection<ProjectRow>("projects", newProject);
+    markSaving("newProject", false);
+    if (error) { setProjectMsg(`Failed to create project: ${error}`); return; }
+    if (data) setProjects((prev) => [data, ...prev]);
+    setNewProject(emptyProject);
+    setProjectMsg("✓ Project created");
   };
 
-  const createProject = async () => {
-    setProjectMsg(null);
-    try {
-      const { data, error } = await supabase.from("projects").insert(newProject).select().single();
-      if (error) throw error;
-      setProjects((prev) => [data as ProjectRow, ...prev]);
-      setNewProject(emptyProject);
-      setProjectMsg("Project created");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setProjectMsg(`Failed to create project: ${msg}`);
-      console.error("Create project error", err);
-    }
-  };
-
-  const updateProject = async (row: ProjectRow) => {
+  const handleUpdateProject = async (row: ProjectRow) => {
     if (!row.id) return;
     setProjectMsg(null);
+    markSaving(`proj-${row.id}`, true);
     const { id, ...payload } = row;
-    try {
-      const { error } = await supabase.from("projects").update(payload).eq("id", id);
-      if (error) throw error;
-      setProjectMsg("Project updated");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setProjectMsg(`Failed to update project: ${msg}`);
-      console.error("Update project error", err);
-    }
+    const { error } = await updateItem("projects", id, payload);
+    markSaving(`proj-${row.id}`, false);
+    if (error) { setProjectMsg(`Failed to update project: ${error}`); return; }
+    setProjectMsg("✓ Project updated");
   };
 
-  const deleteProject = async (id?: Id) => {
-    if (!id) return;
-    if (!confirm("Delete this project?")) return;
+  const handleDeleteProject = async (id?: Id) => {
+    if (!id || !confirm("Delete this project?")) return;
     setProjectMsg(null);
-    try {
-      const { error } = await supabase.from("projects").delete().eq("id", id);
-      if (error) throw error;
-      setProjects((prev) => prev.filter((p) => p.id !== id));
-      setProjectMsg("Project deleted");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setProjectMsg(`Failed to delete project: ${msg}`);
-      console.error("Delete project error", err);
-    }
+    const { error } = await deleteItem("projects", id);
+    if (error) { setProjectMsg(`Failed to delete project: ${error}`); return; }
+    setProjects((prev) => prev.filter((p) => p.id !== id));
+    setProjectMsg("✓ Project deleted");
   };
 
-  const loadExperience = async () => {
+  /* ---------------------------------------------------------------- */
+  /*  Experience                                                       */
+  /* ---------------------------------------------------------------- */
+
+  const handleAddExperience = async () => {
     setExperienceMsg(null);
-    const { data, error } = await supabase.from("experience").select("*");
-    if (error) {
-      setExperienceMsg(`Failed to load experience: ${error.message}`);
-      console.error("Load experience error", error);
-      return;
-    }
-    if (data) setExperience(data as ExperienceRow[]);
+    markSaving("newExp", true);
+    const { error, data } = await saveSection<ExperienceRow>("experience", newExperience);
+    markSaving("newExp", false);
+    if (error) { setExperienceMsg(`Failed to add experience: ${error}`); return; }
+    if (data) setExperience((prev) => [data, ...prev]);
+    setNewExperience(emptyExperience);
+    setExperienceMsg("✓ Experience added");
   };
 
-  const addExperience = async () => {
-    setExperienceMsg(null);
-    try {
-      const { data, error } = await supabase.from("experience").insert(newExperience).select().single();
-      if (error) throw error;
-      setExperience((prev) => [data as ExperienceRow, ...prev]);
-      setNewExperience(emptyExperience);
-      setExperienceMsg("Experience added");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setExperienceMsg(`Failed to add experience: ${msg}`);
-      console.error("Add experience error", err);
-    }
-  };
-
-  const saveExperience = async (row: ExperienceRow) => {
+  const handleSaveExperience = async (row: ExperienceRow) => {
     if (!row.id) return;
     setExperienceMsg(null);
+    markSaving(`exp-${row.id}`, true);
     const { id, ...payload } = row;
-    try {
-      const { error } = await supabase.from("experience").update(payload).eq("id", id);
-      if (error) throw error;
-      setExperienceMsg("Experience updated");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setExperienceMsg(`Failed to update experience: ${msg}`);
-      console.error("Save experience error", err);
-    }
+    const { error } = await updateItem("experience", id, payload);
+    markSaving(`exp-${row.id}`, false);
+    if (error) { setExperienceMsg(`Failed to update experience: ${error}`); return; }
+    setExperienceMsg("✓ Experience updated");
   };
 
-  const deleteExperience = async (id?: Id) => {
-    if (!id) return;
-    if (!confirm("Delete this experience?")) return;
+  const handleDeleteExperience = async (id?: Id) => {
+    if (!id || !confirm("Delete this experience?")) return;
     setExperienceMsg(null);
-    try {
-      const { error } = await supabase.from("experience").delete().eq("id", id);
-      if (error) throw error;
-      setExperience((prev) => prev.filter((e) => e.id !== id));
-      setExperienceMsg("Experience deleted");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setExperienceMsg(`Failed to delete experience: ${msg}`);
-      console.error("Delete experience error", err);
-    }
+    const { error } = await deleteItem("experience", id);
+    if (error) { setExperienceMsg(`Failed to delete experience: ${error}`); return; }
+    setExperience((prev) => prev.filter((e) => e.id !== id));
+    setExperienceMsg("✓ Experience deleted");
   };
 
-  const loadVolunteering = async () => {
+  /* ---------------------------------------------------------------- */
+  /*  Volunteering                                                     */
+  /* ---------------------------------------------------------------- */
+
+  const handleAddVolunteer = async () => {
     setVolunteerMsg(null);
-    const { data, error } = await supabase.from("volunteering").select("*");
-    if (error) {
-      setVolunteerMsg(`Failed to load volunteering: ${error.message}`);
-      console.error("Load volunteering error", error);
-      return;
-    }
-    if (data) setVolunteering(data as VolunteeringRow[]);
+    markSaving("newVol", true);
+    const { error, data } = await saveSection<VolunteeringRow>("volunteering", newVolunteer);
+    markSaving("newVol", false);
+    if (error) { setVolunteerMsg(`Failed to add volunteering: ${error}`); return; }
+    if (data) setVolunteering((prev) => [data, ...prev]);
+    setNewVolunteer(emptyVolunteer);
+    setVolunteerMsg("✓ Volunteering added");
   };
 
-  const addVolunteer = async () => {
-    setVolunteerMsg(null);
-    try {
-      const { data, error } = await supabase.from("volunteering").insert(newVolunteer).select().single();
-      if (error) throw error;
-      setVolunteering((prev) => [data as VolunteeringRow, ...prev]);
-      setNewVolunteer(emptyVolunteer);
-      setVolunteerMsg("Volunteering added");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setVolunteerMsg(`Failed to add volunteering: ${msg}`);
-      console.error("Add volunteering error", err);
-    }
-  };
-
-  const saveVolunteer = async (row: VolunteeringRow) => {
+  const handleSaveVolunteer = async (row: VolunteeringRow) => {
     if (!row.id) return;
     setVolunteerMsg(null);
+    markSaving(`vol-${row.id}`, true);
     const { id, ...payload } = row;
-    try {
-      const { error } = await supabase.from("volunteering").update(payload).eq("id", id);
-      if (error) throw error;
-      setVolunteerMsg("Volunteering updated");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setVolunteerMsg(`Failed to update volunteering: ${msg}`);
-      console.error("Save volunteering error", err);
-    }
+    const { error } = await updateItem("volunteering", id, payload);
+    markSaving(`vol-${row.id}`, false);
+    if (error) { setVolunteerMsg(`Failed to update volunteering: ${error}`); return; }
+    setVolunteerMsg("✓ Volunteering updated");
   };
 
-  const deleteVolunteer = async (id?: Id) => {
-    if (!id) return;
-    if (!confirm("Delete this volunteering item?")) return;
+  const handleDeleteVolunteer = async (id?: Id) => {
+    if (!id || !confirm("Delete this volunteering item?")) return;
     setVolunteerMsg(null);
-    try {
-      const { error } = await supabase.from("volunteering").delete().eq("id", id);
-      if (error) throw error;
-      setVolunteering((prev) => prev.filter((v) => v.id !== id));
-      setVolunteerMsg("Volunteering deleted");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setVolunteerMsg(`Failed to delete volunteering: ${msg}`);
-      console.error("Delete volunteering error", err);
-    }
+    const { error } = await deleteItem("volunteering", id);
+    if (error) { setVolunteerMsg(`Failed to delete volunteering: ${error}`); return; }
+    setVolunteering((prev) => prev.filter((v) => v.id !== id));
+    setVolunteerMsg("✓ Volunteering deleted");
   };
 
-  const loadCertificates = async () => {
+  /* ---------------------------------------------------------------- */
+  /*  Certificates                                                     */
+  /* ---------------------------------------------------------------- */
+
+  const handleAddCertificate = async () => {
     setCertificateMsg(null);
-    const { data, error } = await supabase.from("certificates").select("*");
-    if (error) {
-      setCertificateMsg(`Failed to load certificates: ${error.message}`);
-      console.error("Load certificates error", error);
-      return;
-    }
-    if (data) setCertificates(data as CertificateRow[]);
+    markSaving("newCert", true);
+    const { error, data } = await saveSection<CertificateRow>("certificates", newCertificate);
+    markSaving("newCert", false);
+    if (error) { setCertificateMsg(`Failed to add certificate: ${error}`); return; }
+    if (data) setCertificates((prev) => [data, ...prev]);
+    setNewCertificate(emptyCertificate);
+    setCertificateMsg("✓ Certificate added");
   };
 
-  const addCertificate = async () => {
-    setCertificateMsg(null);
-    try {
-      const { data, error } = await supabase.from("certificates").insert(newCertificate).select().single();
-      if (error) throw error;
-      setCertificates((prev) => [data as CertificateRow, ...prev]);
-      setNewCertificate(emptyCertificate);
-      setCertificateMsg("Certificate added");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setCertificateMsg(`Failed to add certificate: ${msg}`);
-      console.error("Add certificate error", err);
-    }
-  };
-
-  const saveCertificate = async (row: CertificateRow) => {
+  const handleSaveCertificate = async (row: CertificateRow) => {
     if (!row.id) return;
     setCertificateMsg(null);
+    markSaving(`cert-${row.id}`, true);
     const { id, ...payload } = row;
-    try {
-      const { error } = await supabase.from("certificates").update(payload).eq("id", id);
-      if (error) throw error;
-      setCertificateMsg("Certificate updated");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setCertificateMsg(`Failed to update certificate: ${msg}`);
-      console.error("Save certificate error", err);
-    }
+    const { error } = await updateItem("certificates", id, payload);
+    markSaving(`cert-${row.id}`, false);
+    if (error) { setCertificateMsg(`Failed to update certificate: ${error}`); return; }
+    setCertificateMsg("✓ Certificate updated");
   };
 
-  const deleteCertificate = async (id?: Id) => {
-    if (!id) return;
-    if (!confirm("Delete this certificate?")) return;
+  const handleDeleteCertificate = async (id?: Id) => {
+    if (!id || !confirm("Delete this certificate?")) return;
     setCertificateMsg(null);
-    try {
-      const { error } = await supabase.from("certificates").delete().eq("id", id);
-      if (error) throw error;
-      setCertificates((prev) => prev.filter((c) => c.id !== id));
-      setCertificateMsg("Certificate deleted");
-    } catch (err) {
-      const msg = getErrorMessage(err);
-      setCertificateMsg(`Failed to delete certificate: ${msg}`);
-      console.error("Delete certificate error", err);
-    }
+    const { error } = await deleteItem("certificates", id);
+    if (error) { setCertificateMsg(`Failed to delete certificate: ${error}`); return; }
+    setCertificates((prev) => prev.filter((c) => c.id !== id));
+    setCertificateMsg("✓ Certificate deleted");
   };
+
+  /* ---------------------------------------------------------------- */
+  /*  Shared UI                                                        */
+  /* ---------------------------------------------------------------- */
 
   const Section = ({
     title,
@@ -405,11 +332,41 @@ export default function AdminPage() {
           <h2 className="text-xl font-semibold text-white">{title}</h2>
           {description ? <p className="text-sm text-slate-400">{description}</p> : null}
         </div>
-        {message ? <p className={message.startsWith("Failed") ? errClass : okClass}>{message}</p> : null}
+        {message ? <p className={message.startsWith("Failed") || message.startsWith("✗") ? errClass : okClass}>{message}</p> : null}
       </div>
       <div className="mt-4 space-y-4">{children}</div>
     </section>
   );
+
+  const SaveBtn = ({ onClick, label, savingKey }: { onClick: () => void; label: string; savingKey?: string }) => (
+    <button
+      onClick={onClick}
+      disabled={savingKey ? saving[savingKey] : false}
+      className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400 disabled:opacity-60 disabled:cursor-wait"
+    >
+      {savingKey && saving[savingKey] ? "Saving..." : label}
+    </button>
+  );
+
+  const DeleteBtn = ({ onClick }: { onClick: () => void }) => (
+    <button
+      onClick={onClick}
+      className="rounded-lg border border-red-500/60 px-3 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/10"
+    >
+      Delete
+    </button>
+  );
+
+  if (loading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+        <div className="text-center">
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
+          <p className="mt-4 text-sm text-slate-400">Loading admin data…</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100">
@@ -430,81 +387,46 @@ export default function AdminPage() {
         <p className="text-sm text-slate-400">Edit portfolio content from one page.</p>
 
         <div className="space-y-8">
+          {/* ── Profile ─────────────────────────────────────────── */}
           <Section title="Profile" description="Main profile and hero information" message={profileMsg}>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                 Name
-                <input
-                  className={inputClass}
-                  value={profile.name ?? ""}
-                  onChange={(e) => setProfile((p) => ({ ...p, name: e.target.value }))}
-                />
+                <input className={inputClass} value={profile.name ?? ""} onChange={(e) => setProfile((p) => ({ ...p, name: e.target.value }))} />
               </label>
               <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                 Title
-                <input
-                  className={inputClass}
-                  value={profile.title ?? ""}
-                  onChange={(e) => setProfile((p) => ({ ...p, title: e.target.value }))}
-                />
+                <input className={inputClass} value={profile.title ?? ""} onChange={(e) => setProfile((p) => ({ ...p, title: e.target.value }))} />
               </label>
               <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                 Location
-                <input
-                  className={inputClass}
-                  value={profile.location ?? ""}
-                  onChange={(e) => setProfile((p) => ({ ...p, location: e.target.value }))}
-                />
+                <input className={inputClass} value={profile.location ?? ""} onChange={(e) => setProfile((p) => ({ ...p, location: e.target.value }))} />
               </label>
               <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                 Email
-                <input
-                  className={inputClass}
-                  value={profile.email ?? ""}
-                  onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))}
-                />
+                <input className={inputClass} value={profile.email ?? ""} onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))} />
               </label>
               <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                 Phone
-                <input
-                  className={inputClass}
-                  value={profile.phone ?? ""}
-                  onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))}
-                />
+                <input className={inputClass} value={profile.phone ?? ""} onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))} />
               </label>
               <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                 Languages (comma separated)
-                <input
-                  className={inputClass}
-                  value={profile.languages ?? ""}
-                  onChange={(e) => setProfile((p) => ({ ...p, languages: e.target.value }))}
-                />
+                <input className={inputClass} value={profile.languages ?? ""} onChange={(e) => setProfile((p) => ({ ...p, languages: e.target.value }))} />
               </label>
             </div>
-            <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400 block">
+            <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
               Short bio
-              <textarea
-                className={textAreaClass}
-                value={profile.bio ?? ""}
-                onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))}
-              />
+              <textarea className={textAreaClass} value={profile.bio ?? ""} onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))} />
             </label>
-            <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400 block">
+            <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
               Education
-              <textarea
-                className={textAreaClass}
-                value={profile.education ?? ""}
-                onChange={(e) => setProfile((p) => ({ ...p, education: e.target.value }))}
-              />
+              <textarea className={textAreaClass} value={profile.education ?? ""} onChange={(e) => setProfile((p) => ({ ...p, education: e.target.value }))} />
             </label>
-            <button
-              onClick={saveProfile}
-              className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
-            >
-              Save Profile
-            </button>
+            <SaveBtn onClick={handleSaveProfile} label="Save Profile" savingKey="profile" />
           </Section>
 
+          {/* ── Projects ────────────────────────────────────────── */}
           <Section title="Projects" description="Basic project details" message={projectMsg}>
             <div className="rounded-xl border border-emerald-500/10 bg-white/5 p-4">
               <p className="mb-2 text-sm font-semibold text-emerald-300">Add new project</p>
@@ -532,21 +454,14 @@ export default function AdminPage() {
               </label>
               <label className="mt-3 block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                 Status
-                <select
-                  className={inputClass}
-                  value={newProject.status ?? "draft"}
-                  onChange={(e) => setNewProject((p) => ({ ...p, status: e.target.value }))}
-                >
+                <select className={inputClass} value={newProject.status ?? "draft"} onChange={(e) => setNewProject((p) => ({ ...p, status: e.target.value }))}>
                   <option value="draft">draft</option>
                   <option value="published">published</option>
                 </select>
               </label>
-              <button
-                onClick={createProject}
-                className="mt-3 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
-              >
-                Save project
-              </button>
+              <div className="mt-3">
+                <SaveBtn onClick={handleCreateProject} label="Save project" savingKey="newProject" />
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -559,93 +474,35 @@ export default function AdminPage() {
                     <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                       <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                         Title
-                        <input
-                          className={inputClass}
-                          value={project.title ?? ""}
-                          onChange={(e) =>
-                            setProjects((prev) =>
-                              prev.map((p, i) => (i === idx ? { ...p, title: e.target.value } : p))
-                            )
-                          }
-                        />
+                        <input className={inputClass} value={project.title ?? ""} onChange={(e) => setProjects((prev) => prev.map((p, i) => (i === idx ? { ...p, title: e.target.value } : p)))} />
                       </label>
                       <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                         Slug
-                        <input
-                          className={inputClass}
-                          value={project.slug ?? ""}
-                          onChange={(e) =>
-                            setProjects((prev) =>
-                              prev.map((p, i) => (i === idx ? { ...p, slug: e.target.value } : p))
-                            )
-                          }
-                        />
+                        <input className={inputClass} value={project.slug ?? ""} onChange={(e) => setProjects((prev) => prev.map((p, i) => (i === idx ? { ...p, slug: e.target.value } : p)))} />
                       </label>
                       <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                         Live URL
-                        <input
-                          className={inputClass}
-                          value={project.live_url ?? ""}
-                          onChange={(e) =>
-                            setProjects((prev) =>
-                              prev.map((p, i) => (i === idx ? { ...p, live_url: e.target.value } : p))
-                            )
-                          }
-                        />
+                        <input className={inputClass} value={project.live_url ?? ""} onChange={(e) => setProjects((prev) => prev.map((p, i) => (i === idx ? { ...p, live_url: e.target.value } : p)))} />
                       </label>
                       <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                         Repo URL
-                        <input
-                          className={inputClass}
-                          value={project.repo_url ?? ""}
-                          onChange={(e) =>
-                            setProjects((prev) =>
-                              prev.map((p, i) => (i === idx ? { ...p, repo_url: e.target.value } : p))
-                            )
-                          }
-                        />
+                        <input className={inputClass} value={project.repo_url ?? ""} onChange={(e) => setProjects((prev) => prev.map((p, i) => (i === idx ? { ...p, repo_url: e.target.value } : p)))} />
                       </label>
                     </div>
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Short description
-                      <textarea
-                        className={textAreaClass}
-                        value={project.description ?? ""}
-                        onChange={(e) =>
-                          setProjects((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, description: e.target.value } : p))
-                          )
-                        }
-                      />
+                      <textarea className={textAreaClass} value={project.description ?? ""} onChange={(e) => setProjects((prev) => prev.map((p, i) => (i === idx ? { ...p, description: e.target.value } : p)))} />
                     </label>
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Status
-                      <select
-                        className={inputClass}
-                        value={project.status ?? "draft"}
-                        onChange={(e) =>
-                          setProjects((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, status: e.target.value } : p))
-                          )
-                        }
-                      >
+                      <select className={inputClass} value={project.status ?? "draft"} onChange={(e) => setProjects((prev) => prev.map((p, i) => (i === idx ? { ...p, status: e.target.value } : p)))}>
                         <option value="draft">draft</option>
                         <option value="published">published</option>
                       </select>
                     </label>
                     <div className="flex gap-2">
-                      <button
-                        onClick={() => updateProject(project)}
-                        className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-emerald-400"
-                      >
-                        Update
-                      </button>
-                      <button
-                        onClick={() => deleteProject(project.id)}
-                        className="rounded-lg border border-red-500/60 px-3 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/10"
-                      >
-                        Delete
-                      </button>
+                      <SaveBtn onClick={() => handleUpdateProject(project)} label="Update" savingKey={`proj-${project.id}`} />
+                      <DeleteBtn onClick={() => handleDeleteProject(project.id)} />
                     </div>
                   </div>
                 ))
@@ -653,6 +510,7 @@ export default function AdminPage() {
             </div>
           </Section>
 
+          {/* ── Experience ──────────────────────────────────────── */}
           <Section title="Experience" description="Work history" message={experienceMsg}>
             <div className="rounded-xl border border-emerald-500/10 bg-white/5 p-4 space-y-3">
               <p className="text-sm font-semibold text-emerald-300">Add new experience</p>
@@ -674,12 +532,7 @@ export default function AdminPage() {
                 Summary
                 <textarea className={textAreaClass} value={newExperience.summary ?? ""} onChange={(e) => setNewExperience((p) => ({ ...p, summary: e.target.value }))} />
               </label>
-              <button
-                onClick={addExperience}
-                className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
-              >
-                Add experience
-              </button>
+              <SaveBtn onClick={handleAddExperience} label="Add experience" savingKey="newExp" />
             </div>
 
             <div className="space-y-4">
@@ -692,66 +545,24 @@ export default function AdminPage() {
                     <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                       <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                         Company
-                        <input
-                          className={inputClass}
-                          value={item.company ?? ""}
-                          onChange={(e) =>
-                            setExperience((prev) =>
-                              prev.map((p, i) => (i === idx ? { ...p, company: e.target.value } : p))
-                            )
-                          }
-                        />
+                        <input className={inputClass} value={item.company ?? ""} onChange={(e) => setExperience((prev) => prev.map((p, i) => (i === idx ? { ...p, company: e.target.value } : p)))} />
                       </label>
                       <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                         Role
-                        <input
-                          className={inputClass}
-                          value={item.role ?? ""}
-                          onChange={(e) =>
-                            setExperience((prev) =>
-                              prev.map((p, i) => (i === idx ? { ...p, role: e.target.value } : p))
-                            )
-                          }
-                        />
+                        <input className={inputClass} value={item.role ?? ""} onChange={(e) => setExperience((prev) => prev.map((p, i) => (i === idx ? { ...p, role: e.target.value } : p)))} />
                       </label>
                       <label className="space-y-1 text-xs uppercase tracking-wide text-slate-400">
                         Location
-                        <input
-                          className={inputClass}
-                          value={item.location ?? ""}
-                          onChange={(e) =>
-                            setExperience((prev) =>
-                              prev.map((p, i) => (i === idx ? { ...p, location: e.target.value } : p))
-                            )
-                          }
-                        />
+                        <input className={inputClass} value={item.location ?? ""} onChange={(e) => setExperience((prev) => prev.map((p, i) => (i === idx ? { ...p, location: e.target.value } : p)))} />
                       </label>
                     </div>
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Summary
-                      <textarea
-                        className={textAreaClass}
-                        value={item.summary ?? ""}
-                        onChange={(e) =>
-                          setExperience((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, summary: e.target.value } : p))
-                          )
-                        }
-                      />
+                      <textarea className={textAreaClass} value={item.summary ?? ""} onChange={(e) => setExperience((prev) => prev.map((p, i) => (i === idx ? { ...p, summary: e.target.value } : p)))} />
                     </label>
                     <div className="flex gap-2">
-                      <button
-                        onClick={() => saveExperience(item)}
-                        className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-emerald-400"
-                      >
-                        Update
-                      </button>
-                      <button
-                        onClick={() => deleteExperience(item.id)}
-                        className="rounded-lg border border-red-500/60 px-3 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/10"
-                      >
-                        Delete
-                      </button>
+                      <SaveBtn onClick={() => handleSaveExperience(item)} label="Update" savingKey={`exp-${item.id}`} />
+                      <DeleteBtn onClick={() => handleDeleteExperience(item.id)} />
                     </div>
                   </div>
                 ))
@@ -759,6 +570,7 @@ export default function AdminPage() {
             </div>
           </Section>
 
+          {/* ── Volunteering ────────────────────────────────────── */}
           <Section title="Volunteering" description="Volunteering entries" message={volunteerMsg}>
             <div className="rounded-xl border border-emerald-500/10 bg-white/5 p-4 space-y-3">
               <p className="text-sm font-semibold text-emerald-300">Add new volunteering</p>
@@ -768,22 +580,13 @@ export default function AdminPage() {
               </label>
               <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                 Organization
-                <input
-                  className={inputClass}
-                  value={newVolunteer.organization ?? ""}
-                  onChange={(e) => setNewVolunteer((p) => ({ ...p, organization: e.target.value }))}
-                />
+                <input className={inputClass} value={newVolunteer.organization ?? ""} onChange={(e) => setNewVolunteer((p) => ({ ...p, organization: e.target.value }))} />
               </label>
               <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                 Description
                 <textarea className={textAreaClass} value={newVolunteer.description ?? ""} onChange={(e) => setNewVolunteer((p) => ({ ...p, description: e.target.value }))} />
               </label>
-              <button
-                onClick={addVolunteer}
-                className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
-              >
-                Add volunteering
-              </button>
+              <SaveBtn onClick={handleAddVolunteer} label="Add volunteering" savingKey="newVol" />
             </div>
 
             <div className="space-y-4">
@@ -795,53 +598,19 @@ export default function AdminPage() {
                   <div key={`${item.id ?? idx}`} className="space-y-2 rounded-xl border border-emerald-500/10 bg-slate-900/50 p-4">
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Title
-                      <input
-                        className={inputClass}
-                        value={item.title ?? ""}
-                        onChange={(e) =>
-                          setVolunteering((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, title: e.target.value } : p))
-                          )
-                        }
-                      />
+                      <input className={inputClass} value={item.title ?? ""} onChange={(e) => setVolunteering((prev) => prev.map((p, i) => (i === idx ? { ...p, title: e.target.value } : p)))} />
                     </label>
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Organization
-                      <input
-                        className={inputClass}
-                        value={item.organization ?? ""}
-                        onChange={(e) =>
-                          setVolunteering((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, organization: e.target.value } : p))
-                          )
-                        }
-                      />
+                      <input className={inputClass} value={item.organization ?? ""} onChange={(e) => setVolunteering((prev) => prev.map((p, i) => (i === idx ? { ...p, organization: e.target.value } : p)))} />
                     </label>
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Description
-                      <textarea
-                        className={textAreaClass}
-                        value={item.description ?? ""}
-                        onChange={(e) =>
-                          setVolunteering((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, description: e.target.value } : p))
-                          )
-                        }
-                      />
+                      <textarea className={textAreaClass} value={item.description ?? ""} onChange={(e) => setVolunteering((prev) => prev.map((p, i) => (i === idx ? { ...p, description: e.target.value } : p)))} />
                     </label>
                     <div className="flex gap-2">
-                      <button
-                        onClick={() => saveVolunteer(item)}
-                        className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-emerald-400"
-                      >
-                        Update
-                      </button>
-                      <button
-                        onClick={() => deleteVolunteer(item.id)}
-                        className="rounded-lg border border-red-500/60 px-3 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/10"
-                      >
-                        Delete
-                      </button>
+                      <SaveBtn onClick={() => handleSaveVolunteer(item)} label="Update" savingKey={`vol-${item.id}`} />
+                      <DeleteBtn onClick={() => handleDeleteVolunteer(item.id)} />
                     </div>
                   </div>
                 ))
@@ -849,6 +618,7 @@ export default function AdminPage() {
             </div>
           </Section>
 
+          {/* ── Certificates ────────────────────────────────────── */}
           <Section title="Certificates" description="Certificates list" message={certificateMsg}>
             <div className="rounded-xl border border-emerald-500/10 bg-white/5 p-4 space-y-3">
               <p className="text-sm font-semibold text-emerald-300">Add new certificate</p>
@@ -868,12 +638,7 @@ export default function AdminPage() {
                 Verification URL
                 <input className={inputClass} value={newCertificate.verify_url ?? ""} onChange={(e) => setNewCertificate((p) => ({ ...p, verify_url: e.target.value }))} />
               </label>
-              <button
-                onClick={addCertificate}
-                className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400"
-              >
-                Add certificate
-              </button>
+              <SaveBtn onClick={handleAddCertificate} label="Add certificate" savingKey="newCert" />
             </div>
 
             <div className="space-y-4">
@@ -885,65 +650,23 @@ export default function AdminPage() {
                   <div key={`${item.id ?? idx}`} className="space-y-2 rounded-xl border border-emerald-500/10 bg-slate-900/50 p-4">
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Name
-                      <input
-                        className={inputClass}
-                        value={item.name ?? ""}
-                        onChange={(e) =>
-                          setCertificates((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, name: e.target.value } : p))
-                          )
-                        }
-                      />
+                      <input className={inputClass} value={item.name ?? ""} onChange={(e) => setCertificates((prev) => prev.map((p, i) => (i === idx ? { ...p, name: e.target.value } : p)))} />
                     </label>
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Issuer
-                      <input
-                        className={inputClass}
-                        value={item.issuer ?? ""}
-                        onChange={(e) =>
-                          setCertificates((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, issuer: e.target.value } : p))
-                          )
-                        }
-                      />
+                      <input className={inputClass} value={item.issuer ?? ""} onChange={(e) => setCertificates((prev) => prev.map((p, i) => (i === idx ? { ...p, issuer: e.target.value } : p)))} />
                     </label>
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Issue date
-                      <input
-                        className={inputClass}
-                        value={item.issue_date ?? ""}
-                        onChange={(e) =>
-                          setCertificates((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, issue_date: e.target.value } : p))
-                          )
-                        }
-                      />
+                      <input className={inputClass} value={item.issue_date ?? ""} onChange={(e) => setCertificates((prev) => prev.map((p, i) => (i === idx ? { ...p, issue_date: e.target.value } : p)))} />
                     </label>
                     <label className="block space-y-1 text-xs uppercase tracking-wide text-slate-400">
                       Verification URL
-                      <input
-                        className={inputClass}
-                        value={item.verify_url ?? ""}
-                        onChange={(e) =>
-                          setCertificates((prev) =>
-                            prev.map((p, i) => (i === idx ? { ...p, verify_url: e.target.value } : p))
-                          )
-                        }
-                      />
+                      <input className={inputClass} value={item.verify_url ?? ""} onChange={(e) => setCertificates((prev) => prev.map((p, i) => (i === idx ? { ...p, verify_url: e.target.value } : p)))} />
                     </label>
                     <div className="flex gap-2">
-                      <button
-                        onClick={() => saveCertificate(item)}
-                        className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-emerald-400"
-                      >
-                        Update
-                      </button>
-                      <button
-                        onClick={() => deleteCertificate(item.id)}
-                        className="rounded-lg border border-red-500/60 px-3 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/10"
-                      >
-                        Delete
-                      </button>
+                      <SaveBtn onClick={() => handleSaveCertificate(item)} label="Update" savingKey={`cert-${item.id}`} />
+                      <DeleteBtn onClick={() => handleDeleteCertificate(item.id)} />
                     </div>
                   </div>
                 ))

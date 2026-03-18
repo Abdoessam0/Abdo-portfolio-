@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { EXPERIENCE } from "@/data/experience";
 import { PROFILE } from "@/data/profile";
+import { PROJECTS } from "@/data/projects";
 
 type ExperiencePageProps = {
   params: Promise<{ slug: string }>;
@@ -11,16 +13,24 @@ type ExperiencePageProps = {
 
 const siteOrigin = new URL(PROFILE.links.portfolio).origin;
 
-const getExperience = (slug: string) => EXPERIENCE.find((item) => item.slug === slug);
+function getExperience(slug: string) {
+  return EXPERIENCE.find((item) => item.slug === slug);
+}
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export async function generateMetadata({ params }: ExperiencePageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ExperiencePageProps): Promise<Metadata> {
   const { slug } = await params;
   const experience = getExperience(slug);
   if (!experience) return {};
+
   const canonical = `${siteOrigin}/experience/${experience.slug}`;
+  const image = experience.gallery?.[0]
+    ? `${siteOrigin}${experience.gallery[0].src}`
+    : `${siteOrigin}/opengraph-image`;
 
   return {
     title: `${experience.company} - ${experience.role}`,
@@ -31,27 +41,20 @@ export async function generateMetadata({ params }: ExperiencePageProps): Promise
       description: experience.summary,
       url: canonical,
       type: "article",
-      images: experience.gallery?.length
-        ? [
-            {
-              url: `${siteOrigin}${experience.gallery[0].src}`,
-              width: experience.gallery[0].width,
-              height: experience.gallery[0].height,
-              alt: experience.gallery[0].alt,
-            },
-          ]
-        : undefined,
+      images: [
+        { url: image, width: 1200, height: 630, alt: experience.company },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${experience.company} - ${experience.role}`,
       description: experience.summary,
-      images: experience.gallery?.length ? [`${siteOrigin}${experience.gallery[0].src}`] : undefined,
+      images: [image],
     },
   };
 }
 
-const ExperiencePage = async ({ params }: ExperiencePageProps) => {
+export default async function ExperiencePage({ params }: ExperiencePageProps) {
   const { slug } = await params;
   const experience = getExperience(slug);
 
@@ -59,157 +62,170 @@ const ExperiencePage = async ({ params }: ExperiencePageProps) => {
     notFound();
   }
 
+  const relatedProjects = PROJECTS.filter((project) =>
+    experience.projectSlugs?.includes(project.slug),
+  );
+
   return (
-    <section className="space-y-10 py-12 sm:py-16">
-      <header className="space-y-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">{experience.period}</p>
-        <h1 className="text-3xl font-semibold text-ink sm:text-4xl">{experience.company}</h1>
-        <p className="text-base font-semibold text-muted">
-          {experience.role} — {experience.location}
-        </p>
-        <p className="max-w-3xl text-sm text-ink/80">{experience.summary}</p>
-        {experience.links?.length ? (
-          <div className="flex flex-wrap gap-3 text-sm font-semibold text-accent">
-            {experience.links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        ) : null}
-      </header>
+    <section className="space-y-8 py-8 sm:space-y-10 sm:py-10">
+      <Link
+        href="/#experience"
+        className="inline-flex items-center gap-2 text-sm text-soft transition hover:text-white"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to experience
+      </Link>
 
-      {experience.metrics?.length ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {experience.metrics.map((metric) => (
-            <div key={metric.label} className="rounded-3xl border border-outline bg-panel/80 p-5 shadow-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">{metric.label}</p>
-              <p className="text-2xl font-semibold text-ink">{metric.value}</p>
-              {metric.helper ? <p className="text-xs text-muted">{metric.helper}</p> : null}
+      <header className="section-frame overflow-hidden p-6 sm:p-8">
+        <div className="grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <p className="pill-label">{experience.period}</p>
+              <div>
+                <p className="text-sm uppercase tracking-[0.24em] text-soft">
+                  {experience.company}
+                </p>
+                <h1 className="mt-3 font-heading text-4xl font-semibold tracking-[-0.05em] text-white sm:text-5xl">
+                  {experience.role}
+                </h1>
+                <p className="mt-3 text-base leading-8 text-soft">
+                  {experience.location}
+                </p>
+              </div>
+              <p className="max-w-3xl text-base leading-8 text-muted">
+                {experience.summary}
+              </p>
             </div>
-          ))}
-        </div>
-      ) : null}
 
-      <section className="rounded-3xl border border-outline bg-panel/80 p-6 shadow-card">
-        <h2 className="text-lg font-semibold text-ink">What I did</h2>
-        <ul className="mt-4 space-y-3 text-sm text-ink/80">
-          {experience.impact.map((item) => (
-            <li key={item} className="flex gap-3">
-              <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 rounded-full bg-accent" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-ink/90">
-          {experience.stack.map((tech) => (
-            <span key={tech} className="rounded-full border border-outline px-3 py-1 text-muted">
-              {tech}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      {experience.projects?.length ? (
-        <section className="space-y-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Projects</p>
-            <h2 className="text-2xl font-semibold text-ink">Launch stack</h2>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {experience.projects.map((project) => (
-              <article
-                key={project.title}
-                className="flex h-full flex-col rounded-3xl border border-outline bg-panel/80 p-5 shadow-card"
-              >
-                <div className="space-y-1">
-                  <h3 className="text-lg font-semibold text-ink">{project.title}</h3>
-                  <p className="text-sm text-ink/80">{project.summary}</p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {experience.metrics?.map((metric) => (
+                <div
+                  key={metric.label}
+                  className="rounded-[1.45rem] border border-white/8 bg-white/[0.03] px-4 py-4"
+                >
+                  <p className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">
+                    {metric.label}
+                  </p>
+                  <p className="mt-3 text-sm font-medium text-white">
+                    {metric.value}
+                  </p>
+                  {metric.helper ? (
+                    <p className="mt-2 text-xs text-muted">{metric.helper}</p>
+                  ) : null}
                 </div>
-                <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-ink/90">
-                  {project.tech.map((tech) => (
-                    <span key={tech} className="rounded-full border border-outline px-3 py-1 text-muted">
-                      {tech}
-                    </span>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="font-heading text-2xl font-semibold text-white">
+                What I did
+              </h2>
+              <ul className="space-y-3">
+                {experience.impact.map((item) => (
+                  <li
+                    key={item}
+                    className="flex gap-3 text-sm leading-7 text-soft"
+                  >
+                    <span className="mt-[0.85rem] h-1.5 w-1.5 shrink-0 rounded-full bg-brand-glow" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="font-heading text-2xl font-semibold text-white">
+                Stack and focus
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {experience.stack.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-white/10 px-3 py-1 text-xs text-soft"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {relatedProjects.length ? (
+              <div className="space-y-4">
+                <h2 className="font-heading text-2xl font-semibold text-white">
+                  Related projects
+                </h2>
+                <div className="grid gap-3 md:grid-cols-2">
+                  {relatedProjects.map((project) => (
+                    <Link
+                      key={project.slug}
+                      href={`/projects/${project.slug}`}
+                      className="rounded-[1.45rem] border border-white/8 bg-white/[0.03] p-4 transition hover:border-brand/30"
+                    >
+                      <p className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">
+                        {project.context}
+                      </p>
+                      <p className="mt-3 text-base font-medium text-white">
+                        {project.title}
+                      </p>
+                      <p className="mt-3 text-sm leading-7 text-muted">
+                        {project.summary}
+                      </p>
+                    </Link>
                   ))}
                 </div>
-                <div className="mt-5 flex flex-wrap gap-3 text-sm font-semibold text-accent">
-                  {project.links.live ? (
-                    <Link
-                      href={project.links.live}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                    >
-                      Live
-                    </Link>
-                  ) : null}
-                  {project.links.repo ? (
-                    <Link
-                      href={project.links.repo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                    >
-                      Repo
-                    </Link>
-                  ) : null}
-                </div>
-              </article>
-            ))}
+              </div>
+            ) : null}
           </div>
-        </section>
-      ) : null}
 
-      {experience.gallery?.length ? (
-        <section className="space-y-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Gallery</p>
-            <h2 className="text-2xl font-semibold text-ink">On-site proof</h2>
-          </div>
-          <div className="grid gap-4 lg:grid-cols-2">
-            {experience.gallery.map((media) => (
+          <div className="space-y-4">
+            {experience.gallery?.map((item) => (
               <div
-                key={media.src}
-                className="overflow-hidden rounded-3xl border border-outline bg-panel shadow-card"
-                style={{ aspectRatio: "16 / 9" }}
+                key={item.src}
+                className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.03]"
               >
                 <Image
-                  src={media.src}
-                  alt={media.alt}
-                  width={media.width}
-                  height={media.height}
+                  src={item.src}
+                  alt={item.alt}
+                  width={item.width}
+                  height={item.height}
                   className="h-full w-full object-cover"
-                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  sizes="(min-width: 1280px) 34vw, 100vw"
                 />
               </div>
             ))}
-          </div>
-        </section>
-      ) : null}
 
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <Link
-          href="/#experience"
-          className="inline-flex items-center rounded-full border border-accent/50 px-5 py-2 text-sm font-semibold text-ink transition hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          Back to experience
-        </Link>
-        <Link
-          href={PROFILE.links.calendly ?? "#contact"}
-          className="inline-flex items-center rounded-full bg-accent px-5 py-2 text-sm font-semibold text-canvas transition hover:shadow-accent/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          Book a call
-        </Link>
-      </div>
+            <div className="rounded-[1.8rem] border border-white/10 bg-[linear-gradient(145deg,rgba(91,124,255,0.12),rgba(139,109,255,0.05),rgba(53,214,164,0.05))] p-5">
+              <p className="pill-label">Next step</p>
+              <p className="mt-4 text-sm leading-7 text-soft">
+                This role reflects the kind of work I am looking to deepen:
+                product-facing engineering with strong UI quality, reliable
+                systems thinking, and real business responsibility.
+              </p>
+              <div className="mt-5 flex flex-col gap-3 text-sm font-medium">
+                {experience.links?.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-between rounded-2xl border border-white/10 px-4 py-3 text-white transition hover:border-brand/30"
+                  >
+                    <span>{link.label}</span>
+                    <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                ))}
+                <Link
+                  href="/#contact"
+                  className="inline-flex items-center justify-between rounded-2xl border border-white/10 px-4 py-3 text-white transition hover:border-brand/30"
+                >
+                  <span>Get in touch</span>
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
     </section>
   );
-};
-
-export default ExperiencePage;
+}

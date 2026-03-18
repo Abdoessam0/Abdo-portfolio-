@@ -1,0 +1,107 @@
+{
+  "profile": {
+    "id": "1",
+    "name": "Abdelrahman Mohamed",
+    "title": "Software Engineer",
+    "bio": "Full-stack engineer building modern web applications with strong frontend quality and reliable backend systems.",
+    "location": "Egyptian, based in Turkiye",
+    "email": "abdoessammo@gmail.com",
+    "phone": "+905527508202",
+    "languages": "Arabic, English, Turkish",
+    "education": "Computer Engineering"
+  },
+  "projects": [
+    {
+      "title": "A",
+      "slug": "",
+      "description": "",
+      "live_url": "",
+      "repo_url": "",
+      "status": "published",
+      "id": "p1773787146409"
+    },
+    {
+      "id": "p1",
+      "title": "Üstünler Et Borsası",
+      "slug": "ustunler-et-borsasi",
+      "description": "Digital marketplace connecting livestock suppliers and meat buyers.",
+      "live_url": "https://ustunleretborsasi.com/",
+      "repo_url": "",
+      "status": "published"
+    },
+    {
+      "id": "p2",
+      "title": "BELS Başvuru Sistemi",
+      "slug": "bels-digital-application-system",
+      "description": "Admissions workflow for Bilkent Erzurum Laboratory School.",
+      "live_url": "https://basvuru.bels.k12.tr/",
+      "repo_url": "",
+      "status": "published"
+    },
+    {
+      "id": "p3",
+      "title": "Erzurum Şikayet",
+      "slug": "erzurum-sikayet",
+      "description": "City-scale complaint and review platform.",
+      "live_url": "https://www.erzurumsikayet.com/",
+      "repo_url": "https://github.com/Abdoessam0/erzurumsikayet",
+      "status": "published"
+    },
+    {
+      "id": "p4",
+      "title": "Real Estate Platforms",
+      "slug": "real-estate-platforms",
+      "description": "Multi-site real-estate platforms for RE/MAX Wise.",
+      "live_url": "https://www.realestate-lisbon.com/",
+      "repo_url": "",
+      "status": "published"
+    }
+  ],
+  "experience": [
+    {
+      "id": "e1",
+      "company": "RE/MAX Wise",
+      "role": "Software Developer",
+      "location": "Lisbon, Portugal",
+      "summary": "Built production real-estate platforms with reusable UI, SEO-safe routing, and accessibility."
+    },
+    {
+      "id": "e2",
+      "company": "NFS Soft",
+      "role": "Software Developer",
+      "location": "Erzurum, Türkiye",
+      "summary": "Worked on multilingual websites and business-facing web products."
+    },
+    {
+      "id": "e3",
+      "company": "AFAQY",
+      "role": "Technical Support Engineer",
+      "location": "Riyadh, Saudi Arabia",
+      "summary": "Supported fleet systems, diagnostics, and customer enablement for GPS operations."
+    }
+  ],
+  "volunteering": [
+    {
+      "id": "v1",
+      "title": "Erasmus+ Youth Exchange",
+      "organization": "EU Erasmus+ Programme",
+      "description": "Participated in international youth exchanges in Romania and Turkiye."
+    }
+  ],
+  "certificates": [
+    {
+      "id": "c1",
+      "name": "RE/MAX Wise Erasmus+ Internship",
+      "issuer": "RE/MAX Wise / Erasmus+",
+      "issue_date": "2025",
+      "verify_url": ""
+    },
+    {
+      "id": "c2",
+      "name": "WordPress Development Internship",
+      "issuer": "NFS Soft",
+      "issue_date": "2023",
+      "verify_url": ""
+    }
+  ]
+}

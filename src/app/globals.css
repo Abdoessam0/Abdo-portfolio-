@@ -1,23 +1,44 @@
-/* src/app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: var(--font-jakarta), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color-scheme: dark;
-  background-color: #05070d;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @layer base {
+  * {
+    border-color: rgba(148, 163, 195, 0.08);
+  }
+
   body {
     margin: 0;
     min-height: 100vh;
-    background: radial-gradient(circle at 20% 20%, rgba(78, 241, 157, 0.08), transparent 25%),
-      radial-gradient(circle at 80% 10%, rgba(78, 241, 157, 0.05), transparent 30%),
-      radial-gradient(circle at 50% 80%, rgba(78, 241, 157, 0.06), transparent 30%), #05070d;
-    @apply bg-canvas text-ink antialiased;
+    background:
+      radial-gradient(
+        circle at top left,
+        rgba(91, 124, 255, 0.18),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 85% 12%,
+        rgba(139, 109, 255, 0.14),
+        transparent 24%
+      ),
+      radial-gradient(
+        circle at 50% 110%,
+        rgba(53, 214, 164, 0.08),
+        transparent 24%
+      ),
+      #060816;
+    @apply bg-canvas font-sans text-ink;
     font-feature-settings: "ss01", "cv02", "cv03", "cv11";
   }
 
@@ -26,29 +47,62 @@
     text-decoration: none;
   }
 
-  a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-
-  ::selection {
-    background-color: rgba(78, 241, 157, 0.35);
-    color: #05070d;
-  }
-
   img {
     max-width: 100%;
     height: auto;
   }
 
+  ::selection {
+    background-color: rgba(91, 124, 255, 0.3);
+    color: #f4f7ff;
+  }
+
   *:focus-visible {
-    outline: 2px solid #4ef19d;
+    outline: 2px solid #8ba4ff;
     outline-offset: 3px;
   }
 }
 
+@layer components {
+  .glass-panel {
+    @apply border border-white/10 bg-white/[0.04] shadow-card shadow-black/20 backdrop-blur-xl;
+  }
+
+  .section-frame {
+    @apply rounded-[2rem] border border-white/10 bg-white/[0.03] shadow-card shadow-black/20 backdrop-blur-xl;
+  }
+
+  .pill-label {
+    @apply inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-soft;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #f4f7ff 0%, #b7c5ff 52%, #67d4ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: theme("backgroundImage.grid-fade");
+    background-size: 42px 42px;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

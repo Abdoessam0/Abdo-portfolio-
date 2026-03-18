@@ -1,4 +1,3 @@
-// src/data/volunteering.ts
 export type Volunteering = {
   id: string;
   title: string;
@@ -6,6 +5,7 @@ export type Volunteering = {
   location: string;
   period: string;
   description: string;
+  link?: string;
 };
 
 export const VOLUNTEERING: Volunteering[] = [
@@ -14,24 +14,29 @@ export const VOLUNTEERING: Volunteering[] = [
     title: "Volunteer Facilitator",
     organization: "Youth Summer Fest (Erasmus+)",
     location: "Romania",
-    period: "Aug–Sep 2025",
-    description: "Facilitated activities and supported international teams during Youth Summer Fest as part of Erasmus+.",
+    period: "Aug 2025 – Sep 2025",
+    description:
+      "Facilitated daily workshops on communication, teamwork, and cultural exchange. Coordinated with international volunteers across community events.",
+    link: "https://drive.google.com/file/d/1dULg04Jqy3ZqeVKu06cIHWwz4e3cXqDf/view",
   },
   {
-    id: "snowboardcross-translator",
+    id: "snowboard-worldcup",
     title: "Volunteer Translator",
-    organization: "Snowboardcross World Cup",
+    organization: "Snowboardcross World Cup – FIS",
     location: "Erzurum, Türkiye",
-    period: "Feb–Mar 2025",
-    description: "Provided translation and logistics support for athletes and organizers during the Snowboardcross World Cup.",
+    period: "Feb 2025 – Mar 2025",
+    description:
+      "Translated documents and facilitated communication between Turkish and English teams across 15+ participating countries.",
   },
   {
-    id: "structured-dialogue",
+    id: "erasmus-structured-dialogue",
     title: "Structured Dialogue Participant",
-    organization: "Erasmus+ International Forum",
+    organization: "Erasmus+ Forum",
     location: "Istanbul, Türkiye",
-    period: "2021–2023",
-    description: "Participated in the “Geleneksel Spor ve Oyunların İhyası” forum, contributing to dialogue on traditional sports.",
+    period: "Mar 2021 – Apr 2023",
+    description:
+      "Engaged in structured discussions between youth, policymakers, and experts promoting democratic participation and intercultural dialogue.",
+    link: "https://drive.google.com/file/d/1dJCdqpPfBo0MSSCwXojSMVXQ3QibRE8R/view",
   },
   {
     id: "damla-volunteering",
@@ -39,6 +44,8 @@ export const VOLUNTEERING: Volunteering[] = [
     organization: "Damla Volunteering Movement",
     location: "Erzincan, Türkiye",
     period: "Sep 2023",
-    description: "Supported community initiatives and cultural exchange during the Damla Volunteering Movement.",
+    description:
+      "Collaborated with 31 international volunteers from 6 countries on community engagement and social inclusion initiatives.",
+    link: "https://drive.google.com/file/d/1T8WTFdzybIOUB4qDH6RzjK2jq-I8RPtw/view",
   },
 ];

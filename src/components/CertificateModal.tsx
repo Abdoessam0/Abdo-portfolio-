@@ -18,7 +18,7 @@ const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const open = Boolean(certificate);
   const fileUrl = certificate ? `/certificates/${certificate.file}` : "";
-  const isPdf = useMemo(() => (certificate ? certificate.file.toLowerCase().endsWith(".pdf") : false), [certificate]);
+  const isPdf = useMemo(() => (certificate?.file ? certificate.file.toLowerCase().endsWith(".pdf") : false), [certificate]);
 
   useEffect(() => {
     if (!open || !dialogRef.current) return;
@@ -111,7 +111,7 @@ const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-outline/60 p-4 text-sm text-muted">
           <div className="space-y-1">
             {certificate.credentialId ? <p>ID: {certificate.credentialId}</p> : null}
-            <p>{certificate.skills.join(" / ")}</p>
+            {certificate.skills?.length ? <p>{certificate.skills.join(" / ")}</p> : null}
           </div>
           <div className="flex flex-wrap items-center gap-4">
             {certificate.verifyUrl ? (

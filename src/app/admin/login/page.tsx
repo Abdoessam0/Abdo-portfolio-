@@ -3,24 +3,34 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const ADMIN_PASSWORD = "Memabdo321";
-
 export default function AdminLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (submitting) return;
     setSubmitting(true);
+    setError(null);
 
-    if (password === ADMIN_PASSWORD) {
-      // Store simple auth flag (non-HttpOnly by requirement).
-      document.cookie = `admin-auth=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
-      router.push("/admin");
-    } else {
-      alert("Wrong password");
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+
+      if (res.ok) {
+        router.push("/admin");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError((data as { error?: string }).error || "Wrong password");
+        setSubmitting(false);
+      }
+    } catch {
+      setError("Network error. Please try again.");
       setSubmitting(false);
     }
   };
@@ -51,6 +61,12 @@ export default function AdminLoginPage() {
               required
             />
           </div>
+
+          {error && (
+            <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">
+              {error}
+            </p>
+          )}
 
           <button
             type="submit"
