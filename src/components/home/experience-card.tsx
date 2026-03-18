@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -31,6 +31,15 @@ export function ExperienceCard({
     }
   };
 
+  const prevImg = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveImg((i) => (i === 0 ? gallery.length - 1 : i - 1));
+  };
+  const nextImg = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveImg((i) => (i === gallery.length - 1 ? 0 : i + 1));
+  };
+
   return (
     <motion.article
       whileHover={reducedMotion ? undefined : { y: -4 }}
@@ -42,6 +51,7 @@ export function ExperienceCard({
       onClick={() => router.push(href)}
       onKeyDown={onKeyDown}
     >
+      {/* ── Left: info ── */}
       <div className="space-y-5">
         <div className="flex flex-wrap items-center gap-3">
           <span className="pill-label">{experience.period}</span>
@@ -155,63 +165,123 @@ export function ExperienceCard({
         </Link>
       </div>
 
-      {/* Gallery section */}
-      <div className="relative">
-        <div className="absolute inset-0 rounded-[1.7rem] bg-[linear-gradient(145deg,rgba(91,124,255,0.18),rgba(139,109,255,0.08),rgba(53,214,164,0.08))] blur-xl" />
-        <div className="relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.04]">
-          {gallery.length > 0 ? (
-            <Image
-              src={gallery[activeImg]?.src ?? gallery[0].src}
-              alt={gallery[activeImg]?.alt ?? gallery[0].alt}
-              width={gallery[activeImg]?.width ?? gallery[0].width}
-              height={gallery[activeImg]?.height ?? gallery[0].height}
-              sizes="(min-width: 1024px) 34vw, 100vw"
-              className="aspect-[5/4] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-            />
-          ) : (
-            <div className="aspect-[5/4] w-full bg-[linear-gradient(145deg,rgba(91,124,255,0.18),rgba(139,109,255,0.08),rgba(53,214,164,0.08))]" />
-          )}
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_20%,rgba(6,8,22,0.72)_100%)]" />
-
-          {/* Photo thumbnails strip */}
-          {gallery.length > 1 ? (
-            <div className="absolute bottom-16 left-4 right-4 flex gap-2 overflow-x-auto pb-1">
-              {gallery.map((img, idx) => (
-                <button
-                  key={img.src}
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveImg(idx);
-                  }}
-                  className={`h-10 w-14 shrink-0 overflow-hidden rounded-lg border-2 transition ${
-                    idx === activeImg
-                      ? "border-brand-glow shadow-[0_0_8px_rgba(139,164,255,0.4)]"
-                      : "border-white/20 opacity-70 hover:opacity-100"
-                  }`}
-                  aria-label={`View photo ${idx + 1}`}
+      {/* ── Right: gallery ── */}
+      <div className="relative flex flex-col gap-3">
+        {/* Main image */}
+        <div className="relative">
+          <div className="absolute inset-0 rounded-[1.7rem] bg-[linear-gradient(145deg,rgba(91,124,255,0.18),rgba(139,109,255,0.08),rgba(53,214,164,0.08))] blur-xl" />
+          <div className="relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.04]">
+            {gallery.length > 0 ? (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeImg}
+                  initial={reducedMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <Image
-                    src={img.src}
-                    alt={img.alt}
-                    width={56}
-                    height={40}
-                    className="h-full w-full object-cover"
+                    src={gallery[activeImg].src}
+                    alt={gallery[activeImg].alt}
+                    width={gallery[activeImg].width}
+                    height={gallery[activeImg].height}
+                    sizes="(min-width: 1024px) 34vw, 100vw"
+                    className="aspect-[4/3] w-full object-cover"
                   />
-                </button>
-              ))}
-            </div>
-          ) : null}
+                </motion.div>
+              </AnimatePresence>
+            ) : (
+              <div className="aspect-[4/3] w-full bg-[linear-gradient(145deg,rgba(91,124,255,0.18),rgba(139,109,255,0.08),rgba(53,214,164,0.08))]" />
+            )}
 
-          <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/10 bg-[rgba(7,10,22,0.62)] p-4 backdrop-blur-xl">
-            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-muted">
-              What stands out
-            </p>
-            <p className="mt-2 text-sm leading-7 text-soft">
-              {experience.impact[0]}
-            </p>
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(6,8,22,0.6)_100%)]" />
+
+            {/* Navigation arrows */}
+            {gallery.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={prevImg}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/80 backdrop-blur-sm transition hover:border-white/40 hover:bg-black/60 hover:text-white"
+                  aria-label="Previous photo"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={nextImg}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/80 backdrop-blur-sm transition hover:border-white/40 hover:bg-black/60 hover:text-white"
+                  aria-label="Next photo"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </>
+            )}
+
+            {/* Caption overlay */}
+            <div className="absolute bottom-3 left-3 right-3 rounded-xl border border-white/10 bg-[rgba(7,10,22,0.65)] px-4 py-3 backdrop-blur-xl">
+              <p className="text-xs leading-5 text-soft">
+                {gallery[activeImg]?.alt ?? experience.impact[0]}
+              </p>
+            </div>
+
+            {/* Dot indicators */}
+            {gallery.length > 1 && (
+              <div className="absolute right-4 top-4 flex gap-1.5">
+                {gallery.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveImg(idx);
+                    }}
+                    className={`h-2 w-2 rounded-full transition-all ${
+                      idx === activeImg
+                        ? "w-5 bg-brand-glow shadow-[0_0_6px_rgba(139,164,255,0.5)]"
+                        : "bg-white/40 hover:bg-white/70"
+                    }`}
+                    aria-label={`View photo ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Thumbnail strip */}
+        {gallery.length > 1 && (
+          <div className="flex gap-2 overflow-x-auto rounded-2xl border border-white/8 bg-white/[0.03] p-2">
+            {gallery.map((img, idx) => (
+              <button
+                key={img.src}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveImg(idx);
+                }}
+                className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-all ${
+                  idx === activeImg
+                    ? "border-brand-glow ring-1 ring-brand-glow/30 shadow-[0_0_12px_rgba(139,164,255,0.25)]"
+                    : "border-white/10 opacity-60 hover:opacity-100 hover:border-white/30"
+                }`}
+                aria-label={img.alt}
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={80}
+                  height={56}
+                  className="h-full w-full object-cover"
+                />
+                {idx === activeImg && (
+                  <div className="absolute inset-0 border-2 border-brand-glow/40 rounded-[10px]" />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </motion.article>
   );
