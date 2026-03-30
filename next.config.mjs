@@ -20,6 +20,10 @@ const nextConfig = {
         source: "/certificates/:path*.pdf",
         headers: [{ key: "Content-Disposition", value: "inline" }],
       },
+      {
+        source: "/images/afaqy/:path*.pdf",
+        headers: [{ key: "Content-Disposition", value: "inline" }],
+      },
     ];
   },
 };

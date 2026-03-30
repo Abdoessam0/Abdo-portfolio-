@@ -111,7 +111,7 @@ export default function OpengraphImage() {
             >
               <span>Frontend systems</span>
               <span>Production platforms</span>
-              <span>SEO • performance • UI quality</span>
+              <span>SEO / performance / UI quality</span>
             </div>
           </div>
         </div>

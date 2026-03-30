@@ -104,16 +104,17 @@ export type Profile = {
 export const PROFILE: Profile = {
   person: {
     name: "Abdelrahman Mohamed",
-    role: "Software Engineer",
+    role: "Frontend Software Engineer",
     summary:
-      "Full-stack computer engineering graduate building responsive, high-performance web apps with React, Next.js, and TypeScript.",
-    location: "Ankara, Türkiye",
+      "Software engineer building clean, fast, production-ready web products with a frontend-first mindset and full-stack capability.",
+    location: "Based in Turkey",
     nationality: "Egyptian",
-    base: "Türkiye",
-    languages: ["Arabic", "English (C1)", "Turkish (C1)"],
+    base: "Turkey",
+    languages: ["Arabic", "English", "Turkish"],
     timezone: "GMT+3",
     phone: "+905527508202",
-    availability: "Open to full-time software engineering roles",
+    availability:
+      "Open to frontend and full-stack roles, freelance work, and product collaborations.",
     dob: "19/07/2002",
   },
   socials: {
@@ -128,15 +129,16 @@ export const PROFILE: Profile = {
     resume: "/cv.pdf",
   },
   hero: {
-    eyebrow: "Software Engineer",
-    headline: "Building clean, production-ready web apps.",
+    eyebrow: "Software engineer, frontend-first",
+    headline: "Clean, fast, production-ready products.",
     subheadline:
-      "Full-stack developer focused on fast UI, real products, and reliable systems.",
-    description: "",
+      "Frontend-first with full-stack capability, focused on UI quality, performance, and maintainable systems.",
+    description:
+      "Always learning, refining, and shipping web products built for real use.",
     proofStrip: [
-      { label: "Recent work", value: "RE/MAX Wise, NFS Soft, AFAQY" },
-      { label: "Core stack", value: "Next.js, TypeScript, Tailwind" },
-      { label: "Focus", value: "UI, SEO, performance" },
+      { label: "Recent work", value: "RE/MAX Lisbon, AFAQY, Easy4Learning" },
+      { label: "Core stack", value: "Next.js, React, TypeScript, Tailwind" },
+      { label: "Focus", value: "UI, performance, SEO, maintainability" },
     ],
     ctas: [
       {
@@ -155,83 +157,85 @@ export const PROFILE: Profile = {
   heroImage: {
     src: "/profile-image.jpg",
     alt: "Portrait of Abdelrahman Mohamed",
-    width: 400,
-    height: 400,
+    width: 482,
+    height: 775,
   },
   metrics: [
     { label: "Projects", value: "8+", helper: "Shipped platforms" },
-    { label: "Markets", value: "3", helper: "Real estate, education, ops" },
-    { label: "Languages", value: "3", helper: "Arabic, English, Turkish" },
     { label: "Focus", value: "Frontend", helper: "UI, SEO, performance" },
+    { label: "Languages", value: "3", helper: "Arabic, English, Turkish" },
+    {
+      label: "Delivery",
+      value: "Full-stack",
+      helper: "Frontend to API integration",
+    },
   ],
   factCards: [
     {
       label: "Who I am",
-      value: "Full-stack engineer",
-      description:
-        "Building responsive, high-performance web applications with clean interfaces.",
+      value: "Software engineer",
+      description: "Frontend-first with practical full-stack capability.",
     },
     {
       label: "Background",
-      value: "Egyptian, based in Türkiye",
-      description:
-        "Comfortable working across multicultural teams and international contexts.",
+      value: "UI, performance, systems",
+      description: "Focused on clean products that stay fast and maintainable.",
     },
     {
       label: "Languages",
-      value: "Arabic, English (C1), Turkish (C1)",
+      value: "Arabic, English, Turkish",
       description:
-        "Clear communication in three languages across product and delivery work.",
+        "Clear communication across engineering, product, and delivery work.",
     },
   ],
   about: {
-    intro: "I build software that's fast, clean, and ready for real users.",
+    intro: "Software engineer, frontend-first with full-stack capability.",
     story: [
-      "Computer engineering graduate with hands-on production experience.",
-      "I care about clean UI, SEO, performance, and maintainable systems.",
-      "Recent work with RE/MAX Wise, NFS Soft, and AFAQY across real estate, education, and fleet operations.",
+      "I build clean, fast, production-ready products with a strong focus on UI quality, performance, and maintainable systems.",
+      "I keep learning, refining the details, and improving how products feel in real use.",
     ],
     focusAreas: [
       {
         title: "Frontend-first",
         description:
-          "React, Next.js, TypeScript, Tailwind — premium UI with reusable components.",
+          "Clean interfaces, reusable UI, and responsive product work.",
       },
       {
         title: "Full-stack capable",
         description:
-          "Node.js, Express, Spring Boot, Supabase, REST APIs — end-to-end delivery.",
+          "Comfortable across APIs, backend integration, and end-to-end delivery.",
       },
       {
-        title: "Cross-cultural",
+        title: "Always improving",
         description:
-          "Egyptian, based in Türkiye, worked in Portugal — Arabic, English, and Turkish.",
+          "Always learning, refining, and raising production quality.",
       },
     ],
     principles: [
-      "Clean systems that scale as products grow.",
-      "SEO and performance from day one.",
-      "Interfaces that feel fast, clear, and credible.",
+      "Clean UI and clear hierarchy.",
+      "Performance where it matters.",
+      "Maintainable systems.",
+      "Steady product improvement.",
     ],
   },
   education: [
     {
       degree: "Bachelor of Computer Engineering",
-      institution: "Atatürk University",
-      location: "Erzurum, Türkiye",
-      period: "Sep 2021 – Jun 2026",
+      institution: "Ataturk University",
+      location: "Erzurum, Turkey",
+      period: "Sep 2021 - Jun 2026",
     },
     {
       degree: "Full-Stack Software Engineer Diploma",
       institution: "ALX",
       location: "Remote",
-      period: "Oct 2023 – Nov 2024",
+      period: "Oct 2023 - Nov 2024",
     },
   ],
   skills: [
     {
       title: "Frontend",
-      summary: "Modern product UI and component systems.",
+      summary: "Modern frontend architecture and product UI implementation.",
       items: [
         "React",
         "Next.js 14/15",
@@ -245,7 +249,7 @@ export const PROFILE: Profile = {
     },
     {
       title: "Backend / APIs",
-      summary: "Server-side and data layer.",
+      summary: "Server-side logic, data access, and integration work.",
       items: [
         "Node.js",
         "Express",
@@ -260,7 +264,7 @@ export const PROFILE: Profile = {
     },
     {
       title: "Cloud & DevOps",
-      summary: "Deployment and infrastructure.",
+      summary: "Deployment, hosting, and lightweight delivery infrastructure.",
       items: [
         "Vercel",
         "Supabase",
@@ -272,7 +276,7 @@ export const PROFILE: Profile = {
     },
     {
       title: "Tools & Design",
-      summary: "Day-to-day engineering and design tools.",
+      summary: "Engineering, collaboration, and product workflow tools.",
       items: [
         "Git / GitHub",
         "Figma",
@@ -284,7 +288,8 @@ export const PROFILE: Profile = {
     },
     {
       title: "SEO & Performance",
-      summary: "Built to rank and load fast.",
+      summary:
+        "Technical quality that improves speed, discoverability, and accessibility.",
       items: [
         "Technical SEO",
         "Metadata / JSON-LD",
@@ -296,36 +301,37 @@ export const PROFILE: Profile = {
   ],
   contact: {
     eyebrow: "Contact",
-    title: "Interested in working together?",
-    description: "Email or LinkedIn is the best place to start.",
-    availability: "Open to full-time software engineering roles.",
+    title: "Let's build something solid.",
+    description: "Email or LinkedIn works best.",
+    availability:
+      "Open to frontend and full-stack roles, freelance work, and product collaborations.",
     channels: [
       {
         label: "Email",
-        href: "mailto:abdoessammo@gmail.com",
+        href: "mailto:abdoessammo@gmail.com?subject=Portfolio%20Inquiry",
         value: "abdoessammo@gmail.com",
-        note: "Best for hiring conversations.",
+        note: "Best for roles, projects, and direct outreach.",
         kind: "email",
       },
       {
         label: "LinkedIn",
         href: "https://linkedin.com/in/abdo-mo",
         value: "linkedin.com/in/abdo-mo",
-        note: "Quick profile view.",
+        note: "Best for hiring conversations and introductions.",
         kind: "linkedin",
       },
       {
         label: "GitHub",
         href: "https://github.com/Abdoessam0",
         value: "github.com/Abdoessam0",
-        note: "Code and project history.",
+        note: "Code samples and technical project history.",
         kind: "github",
       },
       {
         label: "WhatsApp",
         href: "https://wa.me/905527508202?text=Hi%20Abdelrahman,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
         value: "+90 552 750 8202",
-        note: "Fast reply.",
+        note: "Fast follow-up for active conversations.",
         kind: "whatsapp",
       },
       {

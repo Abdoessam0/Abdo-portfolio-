@@ -4,8 +4,10 @@ export type Volunteering = {
   organization: string;
   location: string;
   period: string;
-  description: string;
+  summary: string;
+  highlights: string[];
   link?: string;
+  linkLabel?: string;
 };
 
 export const VOLUNTEERING: Volunteering[] = [
@@ -14,38 +16,58 @@ export const VOLUNTEERING: Volunteering[] = [
     title: "Volunteer Facilitator",
     organization: "Youth Summer Fest (Erasmus+)",
     location: "Romania",
-    period: "Aug 2025 – Sep 2025",
-    description:
-      "Facilitated daily workshops on communication, teamwork, and cultural exchange. Coordinated with international volunteers across community events.",
+    period: "08/2025 - 09/2025",
+    summary: "Facilitated youth workshops and community activities.",
+    highlights: [
+      "Supported activity planning, schedule coordination, and daily program delivery.",
+      "Worked with international volunteers across streets, parks, and youth centers.",
+      "Strengthened leadership, teamwork, and intercultural communication in live community settings.",
+    ],
     link: "https://drive.google.com/file/d/1dULg04Jqy3ZqeVKu06cIHWwz4e3cXqDf/view",
+    linkLabel: "View document",
   },
   {
     id: "snowboard-worldcup",
     title: "Volunteer Translator",
-    organization: "Snowboardcross World Cup – FIS",
-    location: "Erzurum, Türkiye",
-    period: "Feb 2025 – Mar 2025",
-    description:
-      "Translated documents and facilitated communication between Turkish and English teams across 15+ participating countries.",
+    organization: "Turkiye Kayak Federasyonu & FIS",
+    location: "Erzurum (Palandoken), Turkiye",
+    period: "25/02/2025 - 03/03/2025",
+    summary: "Handled live translation and document support during the event.",
+    highlights: [
+      "Supported coordination across technical teams and 15+ participant countries.",
+      "Contributed to ski track preparation, field support, and overnight maintenance.",
+      "Provided language support across multiple event management roles.",
+    ],
   },
   {
     id: "erasmus-structured-dialogue",
     title: "Structured Dialogue Participant",
-    organization: "Erasmus+ Forum",
-    location: "Istanbul, Türkiye",
-    period: "Mar 2021 – Apr 2023",
-    description:
-      "Engaged in structured discussions between youth, policymakers, and experts promoting democratic participation and intercultural dialogue.",
+    organization:
+      'Erasmus+ "Geleneksel Spor ve Oyunlarin Ihyasi" International Forum',
+    location: "Istanbul, Turkiye",
+    period: "01/03/2021 - 30/04/2023",
+    summary:
+      "Joined youth dialogue sessions and intercultural collaboration activities.",
+    highlights: [
+      "Developed skills in policy debate, intercultural communication, and collaborative problem solving.",
+      "Contributed to youth policy discussions at national and European levels.",
+    ],
     link: "https://drive.google.com/file/d/1dJCdqpPfBo0MSSCwXojSMVXQ3QibRE8R/view",
+    linkLabel: "View document",
   },
   {
     id: "damla-volunteering",
     title: "Volunteer Participant",
     organization: "Damla Volunteering Movement",
-    location: "Erzincan, Türkiye",
-    period: "Sep 2023",
-    description:
-      "Collaborated with 31 international volunteers from 6 countries on community engagement and social inclusion initiatives.",
+    location: "Erzincan, Turkiye",
+    period: "08/09/2023 - 17/09/2023",
+    summary: "Supported community volunteering and local inclusion activities.",
+    highlights: [
+      "Collaborated with 31 volunteers from Turkiye, Indonesia, Sudan, Egypt, Yemen, and Syria.",
+      "Supported community engagement activities and local inclusion initiatives.",
+      "Strengthened teamwork, leadership, and intercultural communication in the field.",
+    ],
     link: "https://drive.google.com/file/d/1T8WTFdzybIOUB4qDH6RzjK2jq-I8RPtw/view",
+    linkLabel: "View document",
   },
 ];

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, FileText } from "lucide-react";
+import { CompactMediaGallery } from "@/components/ui/compact-media-gallery";
 import { EXPERIENCE } from "@/data/experience";
 import { PROFILE } from "@/data/profile";
 import { PROJECTS } from "@/data/projects";
@@ -17,8 +17,9 @@ function getExperience(slug: string) {
   return EXPERIENCE.find((item) => item.slug === slug);
 }
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export function generateStaticParams() {
+  return EXPERIENCE.map((item) => ({ slug: item.slug }));
+}
 
 export async function generateMetadata({
   params,
@@ -62,12 +63,16 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
     notFound();
   }
 
+  const gallery = experience.gallery ?? [];
+  const primaryDocument = experience.documents?.find((document) =>
+    document.href.toLowerCase().endsWith(".pdf"),
+  );
   const relatedProjects = PROJECTS.filter((project) =>
     experience.projectSlugs?.includes(project.slug),
   );
 
   return (
-    <section className="space-y-8 py-8 sm:space-y-10 sm:py-10">
+    <section className="space-y-6 py-8 sm:space-y-8 sm:py-10">
       <Link
         href="/#experience"
         className="inline-flex items-center gap-2 text-sm text-soft transition hover:text-white"
@@ -76,55 +81,58 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
         Back to experience
       </Link>
 
-      <header className="section-frame overflow-hidden p-6 sm:p-8">
-        <div className="grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <p className="pill-label">{experience.period}</p>
-              <div>
-                <p className="text-sm uppercase tracking-[0.24em] text-soft">
-                  {experience.company}
-                </p>
-                <h1 className="mt-3 font-heading text-4xl font-semibold tracking-[-0.05em] text-white sm:text-5xl">
-                  {experience.role}
-                </h1>
-                <p className="mt-3 text-base leading-8 text-soft">
-                  {experience.location}
-                </p>
-              </div>
-              <p className="max-w-3xl text-base leading-8 text-muted">
+      <article className="section-frame p-5 sm:p-6 lg:p-7">
+        <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
+          <div className="space-y-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="pill-label">{experience.period}</span>
+              <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-soft">
+                {experience.location}
+              </span>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-sm uppercase tracking-[0.24em] text-muted">
+                {experience.company}
+              </p>
+              <h1 className="font-heading text-3xl font-semibold tracking-[-0.05em] text-white sm:text-4xl">
+                {experience.role}
+              </h1>
+              <p className="max-w-3xl text-sm leading-7 text-soft sm:text-base">
                 {experience.summary}
               </p>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3">
-              {experience.metrics?.map((metric) => (
-                <div
-                  key={metric.label}
-                  className="rounded-[1.45rem] border border-white/8 bg-white/[0.03] px-4 py-4"
-                >
-                  <p className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">
-                    {metric.label}
-                  </p>
-                  <p className="mt-3 text-sm font-medium text-white">
-                    {metric.value}
-                  </p>
-                  {metric.helper ? (
-                    <p className="mt-2 text-xs text-muted">{metric.helper}</p>
-                  ) : null}
-                </div>
-              ))}
-            </div>
+            {experience.metrics?.length ? (
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {experience.metrics.map((metric) => (
+                  <div
+                    key={metric.label}
+                    className="rounded-[1.2rem] border border-white/8 bg-white/[0.03] px-4 py-3"
+                  >
+                    <p className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">
+                      {metric.label}
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-white">
+                      {metric.value}
+                    </p>
+                    {metric.helper ? (
+                      <p className="mt-1 text-xs text-muted">{metric.helper}</p>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            ) : null}
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <h2 className="font-heading text-2xl font-semibold text-white">
-                What I did
+                What I worked on
               </h2>
-              <ul className="space-y-3">
+              <ul className="grid gap-3">
                 {experience.impact.map((item) => (
                   <li
                     key={item}
-                    className="flex gap-3 text-sm leading-7 text-soft"
+                    className="flex gap-3 rounded-[1.2rem] border border-white/8 bg-white/[0.03] px-4 py-3 text-sm leading-7 text-soft"
                   >
                     <span className="mt-[0.85rem] h-1.5 w-1.5 shrink-0 rounded-full bg-brand-glow" />
                     <span>{item}</span>
@@ -133,16 +141,13 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <h2 className="font-heading text-2xl font-semibold text-white">
                 Stack and focus
               </h2>
               <div className="flex flex-wrap gap-2">
                 {experience.stack.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/10 px-3 py-1 text-xs text-soft"
-                  >
+                  <span key={item} className="tech-badge">
                     {item}
                   </span>
                 ))}
@@ -150,7 +155,7 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
             </div>
 
             {relatedProjects.length ? (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <h2 className="font-heading text-2xl font-semibold text-white">
                   Related projects
                 </h2>
@@ -159,15 +164,15 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
                     <Link
                       key={project.slug}
                       href={`/projects/${project.slug}`}
-                      className="rounded-[1.45rem] border border-white/8 bg-white/[0.03] p-4 transition hover:border-brand/30"
+                      className="rounded-[1.2rem] border border-white/8 bg-white/[0.03] p-4 transition hover:border-brand/30"
                     >
                       <p className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">
                         {project.context}
                       </p>
-                      <p className="mt-3 text-base font-medium text-white">
+                      <p className="mt-2 text-base font-medium text-white">
                         {project.title}
                       </p>
-                      <p className="mt-3 text-sm leading-7 text-muted">
+                      <p className="mt-2 text-sm leading-6 text-muted">
                         {project.summary}
                       </p>
                     </Link>
@@ -177,31 +182,52 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
             ) : null}
           </div>
 
-          <div className="space-y-4">
-            {experience.gallery?.map((item) => (
-              <div
-                key={item.src}
-                className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.03]"
-              >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  width={item.width}
-                  height={item.height}
-                  className="h-full w-full object-cover"
-                  sizes="(min-width: 1280px) 34vw, 100vw"
-                />
-              </div>
-            ))}
+          <aside className="space-y-4">
+            <CompactMediaGallery
+              items={gallery}
+              imageSizes="(min-width: 1280px) 34vw, 100vw"
+              priority
+            />
 
-            <div className="rounded-[1.8rem] border border-white/10 bg-[linear-gradient(145deg,rgba(91,124,255,0.12),rgba(139,109,255,0.05),rgba(53,214,164,0.05))] p-5">
-              <p className="pill-label">Next step</p>
-              <p className="mt-4 text-sm leading-7 text-soft">
-                This role reflects the kind of work I am looking to deepen:
-                product-facing engineering with strong UI quality, reliable
-                systems thinking, and real business responsibility.
-              </p>
-              <div className="mt-5 flex flex-col gap-3 text-sm font-medium">
+            {experience.documents?.length ? (
+              <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
+                <p className="pill-label">Documents</p>
+                <p className="mt-4 text-sm leading-6 text-muted">
+                  Supporting material from this role, including the AFAQY
+                  experience PDF and certificate.
+                </p>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {experience.documents.map((document) => (
+                    <a
+                      key={document.href}
+                      href={document.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-soft transition hover:border-brand/30 hover:text-white"
+                    >
+                      <FileText className="h-3.5 w-3.5" />
+                      {document.label}
+                    </a>
+                  ))}
+                </div>
+
+                {primaryDocument ? (
+                  <div className="mt-4 overflow-hidden rounded-[1.2rem] border border-white/10 bg-white">
+                    <iframe
+                      title={`${experience.company} document preview`}
+                      src={`${primaryDocument.href}#view=FitH`}
+                      loading="lazy"
+                      className="h-[24rem] w-full md:h-[30rem]"
+                    />
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+
+            <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
+              <p className="pill-label">Links</p>
+              <div className="mt-4 flex flex-col gap-3 text-sm font-medium">
                 {experience.links?.map((link) => (
                   <a
                     key={link.href}
@@ -223,9 +249,9 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
                 </Link>
               </div>
             </div>
-          </div>
+          </aside>
         </div>
-      </header>
+      </article>
     </section>
   );
 }

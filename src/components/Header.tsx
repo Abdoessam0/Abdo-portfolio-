@@ -5,14 +5,15 @@ import { Download, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { PROFILE } from "@/data/profile";
 import { BrandMark } from "@/components/home/brand-mark";
+import { PROFILE } from "@/data/profile";
 
 const navItems = [
   { id: "about", label: "About" },
   { id: "projects", label: "Projects" },
   { id: "experience", label: "Experience" },
   { id: "skills", label: "Skills" },
+  { id: "credentials", label: "Credentials" },
   { id: "contact", label: "Contact" },
 ];
 
@@ -24,7 +25,7 @@ export default function Header() {
   const pathname = usePathname();
   const currentPath = pathname ?? "/";
   const [menuOpen, setMenuOpen] = useState(false);
-  const [active, setActive] = useState<string>("");
+  const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
   const hrefs = useMemo(
@@ -47,8 +48,9 @@ export default function Header() {
     }
 
     const ids = navItems.map((item) => item.id);
+    let ticking = false;
 
-    const onScroll = () => {
+    const updateState = () => {
       setScrolled(window.scrollY > 16);
 
       let current = "";
@@ -60,12 +62,26 @@ export default function Header() {
       }
 
       setActive(current);
+      ticking = false;
     };
 
-    onScroll();
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateState);
+    };
+
+    updateState();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [currentPath]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
     <>
@@ -78,7 +94,12 @@ export default function Header() {
           }`}
         >
           <Link href="/" aria-label="Go to homepage" className="shrink-0">
-            <BrandMark />
+            <span className="sm:hidden">
+              <BrandMark compact />
+            </span>
+            <span className="hidden sm:inline-flex">
+              <BrandMark />
+            </span>
           </Link>
 
           <nav className="hidden items-center gap-2 lg:flex">
@@ -124,11 +145,7 @@ export default function Header() {
             aria-controls="mobile-nav"
             aria-label="Toggle navigation menu"
           >
-            {menuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </header>

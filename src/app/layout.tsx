@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 import { Inter, Sora } from "next/font/google";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -31,12 +32,12 @@ export const metadata: Metadata = {
   applicationName: `${PROFILE.person.name} Portfolio`,
   keywords: [
     "Abdelrahman Mohamed",
-    "Software Engineer",
-    "Frontend Engineer",
+    "Frontend Software Engineer",
     "Next.js",
+    "React",
     "TypeScript",
     "Portfolio",
-    "RE/MAX Wise",
+    "Technical SEO",
   ],
   authors: [{ name: PROFILE.person.name, url: PROFILE.socials.linkedin }],
   creator: PROFILE.person.name,
@@ -81,7 +82,7 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <html
@@ -98,22 +99,23 @@ export default function RootLayout({
         </a>
 
         <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-grid opacity-[0.22]" />
-          <div className="absolute -left-20 top-0 h-[26rem] w-[26rem] rounded-full bg-brand/20 blur-[140px]" />
-          <div className="absolute right-[-4rem] top-[8%] h-[24rem] w-[24rem] rounded-full bg-violet/16 blur-[150px]" />
-          <div className="absolute bottom-[-8rem] left-[28%] h-[24rem] w-[24rem] rounded-full bg-emerald/10 blur-[150px]" />
-          <div className="absolute inset-0 animate-aurora bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_40%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,8,22,0.08),rgba(6,8,22,0.72)_45%,rgba(6,8,22,0.95))]" />
+          <div className="absolute inset-0 bg-grid opacity-[0.16]" />
+          <div className="absolute -left-24 top-0 h-[28rem] w-[28rem] rounded-full bg-brand/15 blur-[150px]" />
+          <div className="absolute right-[-6rem] top-[8%] h-[24rem] w-[24rem] rounded-full bg-violet/10 blur-[150px]" />
+          <div className="absolute bottom-[-10rem] left-[25%] h-[24rem] w-[24rem] rounded-full bg-emerald/8 blur-[150px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,8,22,0.08),rgba(6,8,22,0.62)_42%,rgba(6,8,22,0.92))]" />
         </div>
 
-        <Header />
-        <main
-          id="content"
-          className="mx-auto w-full max-w-[1280px] px-3 pb-16 pt-6 sm:px-5 sm:pt-8"
-        >
-          {children}
-        </main>
-        <Footer />
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main
+            id="content"
+            className="mx-auto flex w-full max-w-[1280px] flex-1 px-4 pb-20 pt-8 sm:px-6 sm:pt-10 lg:px-8"
+          >
+            <div className="w-full">{children}</div>
+          </main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

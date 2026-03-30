@@ -1,11 +1,17 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, Code2, Download, Gauge, Layers3 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { PROFILE } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
+
+const heroBadges = [
+  { icon: Code2, label: "Next.js" },
+  { icon: Layers3, label: "TypeScript" },
+  { icon: Gauge, label: "SEO + performance" },
+];
 
 export function HeroSection() {
   const reducedMotion = useReducedMotion();
@@ -17,21 +23,23 @@ export function HeroSection() {
       id="hero"
       className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(16,23,43,0.92),rgba(10,16,32,0.82),rgba(12,20,38,0.96))] px-5 py-8 shadow-card shadow-black/25 sm:px-8 sm:py-10 lg:px-10 lg:py-12"
     >
-      {/* Background — reduced to 2 subtle glows */}
       <div className="absolute inset-0 bg-grid opacity-[0.06]" />
       <div className="absolute -left-16 top-10 h-48 w-48 rounded-full bg-brand/10 blur-[120px]" />
       <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-violet/8 blur-[140px]" />
 
-      <div className="relative grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        {/* Text content */}
+      <div className="relative grid gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
         <div className="space-y-6">
           <Reveal className="space-y-4">
             <div className="space-y-3">
-              <h1 className="max-w-2xl font-sans text-[2.4rem] font-semibold leading-[1.05] tracking-[-0.04em] text-white sm:text-[3.2rem] lg:text-[3.6rem] lg:leading-[0.97]">
+              <p className="pill-label">{PROFILE.hero.eyebrow}</p>
+              <h1 className="max-w-2xl font-heading text-hero font-semibold text-white">
                 {PROFILE.hero.headline}
               </h1>
               <p className="max-w-xl text-balance text-base leading-relaxed text-soft sm:text-lg">
                 {PROFILE.hero.subheadline}
+              </p>
+              <p className="max-w-xl text-sm leading-6 text-muted sm:text-base">
+                {PROFILE.hero.description}
               </p>
             </div>
           </Reveal>
@@ -55,28 +63,57 @@ export function HeroSection() {
             </a>
           </Reveal>
 
-          {/* Compact proof line */}
-          <Reveal delay={0.12}>
-            <p className="text-sm text-muted">
-              <span className="text-soft">Recent work:</span>{" "}
-              {PROFILE.hero.trustedBy.join(" · ")}
-              <span className="mx-2 text-white/20">|</span>
-              <span className="text-soft">Stack:</span>{" "}
-              Next.js, TypeScript, Tailwind
-            </p>
+          <Reveal className="grid gap-3 sm:grid-cols-3" delay={0.12}>
+            {PROFILE.hero.proofStrip.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-[1.2rem] border border-white/8 bg-white/[0.03] px-4 py-3"
+              >
+                <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
+                  {item.label}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-soft">{item.value}</p>
+              </div>
+            ))}
           </Reveal>
         </div>
 
-        {/* Hero image — cleaner with fewer decorative layers */}
         <Reveal
           delay={0.1}
           className="relative mx-auto w-full max-w-[20rem] lg:ml-auto lg:max-w-[22rem]"
         >
-          <div className="pointer-events-none absolute inset-x-6 top-3 h-[85%] rounded-[999px] bg-[radial-gradient(circle_at_center,rgba(53,214,164,0.2),rgba(53,214,164,0.06)_50%,transparent_74%)] blur-[40px]" />
-          <div className="pointer-events-none absolute inset-x-8 top-5 bottom-5 rounded-[999px] border border-emerald/15 opacity-60" />
+          {heroBadges.map((badge, index) => {
+            const positions = [
+              "left-[-0.75rem] top-10",
+              "right-[-0.75rem] top-20",
+              "left-4 bottom-24",
+            ];
+            const Icon = badge.icon;
+
+            return (
+              <motion.div
+                key={badge.label}
+                animate={reducedMotion ? undefined : { y: [0, -6, 0] }}
+                transition={
+                  reducedMotion
+                    ? undefined
+                    : {
+                        duration: 4 + index,
+                        repeat: Number.POSITIVE_INFINITY,
+                        ease: "easeInOut",
+                        delay: index * 0.4,
+                      }
+                }
+                className={`absolute z-10 hidden items-center gap-2 rounded-full border border-white/10 bg-[rgba(8,12,24,0.8)] px-3 py-1.5 text-xs font-medium text-soft backdrop-blur-xl md:inline-flex ${positions[index]}`}
+              >
+                <Icon className="h-3.5 w-3.5 text-brand-glow" />
+                {badge.label}
+              </motion.div>
+            );
+          })}
 
           <motion.div
-            animate={reducedMotion ? undefined : { y: [0, -12, 0] }}
+            animate={reducedMotion ? undefined : { y: [0, -10, 0] }}
             transition={
               reducedMotion
                 ? undefined
@@ -88,17 +125,36 @@ export function HeroSection() {
             }
             className="relative"
           >
-            <div className="relative overflow-hidden rounded-[999px] border border-emerald/25 bg-[linear-gradient(180deg,rgba(8,21,23,0.86),rgba(7,14,20,0.84))] p-2.5 shadow-[0_0_0_1px_rgba(53,214,164,0.12),0_0_28px_rgba(53,214,164,0.16),0_20px_60px_rgba(5,8,18,0.5)]">
-              <div className="relative aspect-[0.75] overflow-hidden rounded-[999px] border border-white/8 bg-[#d8d6cd]">
+            <div className="relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-2 shadow-glow-sm">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.35rem] border border-white/8 bg-[#d8d6cd]">
                 <Image
                   src={PROFILE.heroImage.src}
                   alt={PROFILE.heroImage.alt}
                   fill
                   priority
                   sizes="(min-width: 1024px) 22rem, 80vw"
-                  className="object-contain object-bottom"
+                  className="object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,16,30,0.02),transparent_30%,rgba(10,16,30,0.12)_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_35%,rgba(10,16,30,0.08)_62%,rgba(10,16,30,0.18)_100%)]" />
+              </div>
+
+              <div className="mt-3 flex items-center justify-between rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3">
+                <div>
+                  <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
+                    Availability
+                  </p>
+                  <p className="mt-1 text-sm font-medium text-white">
+                    Open to work
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
+                    Focus
+                  </p>
+                  <p className="mt-1 text-sm font-medium text-white">
+                    Frontend + full-stack
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>

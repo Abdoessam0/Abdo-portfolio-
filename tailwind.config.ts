@@ -18,43 +18,71 @@ const config: Config = {
         xl: "2.5rem",
       },
       screens: {
-        "2xl": "1240px",
+        "2xl": "1280px",
       },
     },
     extend: {
       colors: {
-        canvas: "#060816",
-        surface: "#0b1020",
-        panel: "#10172b",
-        elevated: "#131d35",
+        canvas: "#060d1a",
+        surface: "#0a1322",
+        panel: "#0f1a2c",
+        elevated: "#12203a",
         ink: "#f4f7ff",
-        muted: "#94a3c3",
-        soft: "#c7d2ea",
-        line: "#243252",
+        muted: "#90a0bc",
+        soft: "#cbd7ea",
+        line: "#1f2d46",
         brand: {
-          DEFAULT: "#5b7cff",
-          soft: "#2d3f84",
-          glow: "#8ba4ff",
+          DEFAULT: "#5f84e8",
+          soft: "#26437f",
+          glow: "#97b4ff",
         },
-        violet: "#8b6dff",
-        emerald: "#35d6a4",
+        violet: "#4c6dbe",
+        emerald: "#31c39c",
+        accent: {
+          cyan: "#6fcdf5",
+          rose: "#ff6b8a",
+          amber: "#ffb547",
+        },
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
         heading: ["var(--font-display)", ...defaultTheme.fontFamily.sans],
       },
+      fontSize: {
+        hero: [
+          "clamp(2.5rem, 5vw, 3.9rem)",
+          { lineHeight: "1.02", letterSpacing: "-0.05em" },
+        ],
+        section: [
+          "clamp(1.8rem, 3vw, 2.6rem)",
+          { lineHeight: "1.1", letterSpacing: "-0.04em" },
+        ],
+        "card-title": [
+          "clamp(1.25rem, 2vw, 1.75rem)",
+          { lineHeight: "1.16", letterSpacing: "-0.03em" },
+        ],
+      },
+      spacing: {
+        "18": "4.5rem",
+        "22": "5.5rem",
+        "26": "6.5rem",
+        "30": "7.5rem",
+      },
+      maxWidth: {
+        "8xl": "1400px",
+      },
       boxShadow: {
         card: "0 20px 80px rgba(2, 6, 23, 0.45)",
         soft: "0 12px 36px rgba(8, 15, 35, 0.28)",
-        glow: "0 0 0 1px rgba(139, 164, 255, 0.12), 0 24px 80px rgba(91, 124, 255, 0.18)",
-        inset: "inset 0 1px 0 rgba(255, 255, 255, 0.06)",
+        glow: "0 0 0 1px rgba(151, 180, 255, 0.12), 0 24px 80px rgba(58, 94, 168, 0.2)",
+        "glow-sm":
+          "0 0 0 1px rgba(151, 180, 255, 0.08), 0 8px 24px rgba(58, 94, 168, 0.14)",
+      },
+      borderRadius: {
+        "4xl": "2rem",
+        "5xl": "2.5rem",
       },
       keyframes: {
-        aurora: {
-          "0%": { transform: "translate3d(-8%, -6%, 0) rotate(0deg)" },
-          "50%": { transform: "translate3d(8%, 5%, 0) rotate(5deg)" },
-          "100%": { transform: "translate3d(-8%, -6%, 0) rotate(0deg)" },
-        },
         float: {
           "0%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
@@ -64,11 +92,15 @@ const config: Config = {
           "0%, 100%": { opacity: "0.45" },
           "50%": { opacity: "0.9" },
         },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
       },
       animation: {
-        aurora: "aurora 24s ease-in-out infinite",
         float: "float 7s ease-in-out infinite",
         glow: "pulseGlow 7s ease-in-out infinite",
+        shimmer: "shimmer 3s ease-in-out infinite",
       },
       backgroundImage: {
         "grid-fade":

@@ -14,14 +14,14 @@ export function ExperienceSection() {
       <Reveal>
         <SectionHeading
           eyebrow="Experience"
-          title="Where I've shipped real work"
-          description="Production roles at RE/MAX Wise, NFS Soft, and AFAQY."
+          title="Production work and delivery context"
+          description="Frontend engineering, technical operations, and real product delivery across websites, systems, and support workflows."
         />
       </Reveal>
 
       <div className="space-y-5">
         {featuredExperience.map((experience, index) => (
-          <Reveal key={experience.id} delay={index * 0.06}>
+          <Reveal key={experience.id} delay={index * 0.05}>
             <ExperienceCard
               experience={experience}
               relatedProjects={PROJECTS.filter((project) =>

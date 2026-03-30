@@ -1,7 +1,7 @@
 type SectionHeadingProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
   align?: "left" | "center";
 };
 
@@ -14,15 +14,17 @@ export function SectionHeading({
   const alignment = align === "center" ? "mx-auto text-center" : "";
 
   return (
-    <div className={`max-w-2xl space-y-3 ${alignment}`.trim()}>
+    <div className={`max-w-2xl space-y-4 ${alignment}`.trim()}>
       <p className="pill-label">{eyebrow}</p>
-      <div className="space-y-2.5">
-        <h2 className="font-heading text-[2rem] font-semibold tracking-[-0.04em] text-white sm:text-[2.35rem]">
+      <div className="space-y-3">
+        <h2 className="font-heading text-section font-bold text-white">
           {title}
         </h2>
-        <p className="text-sm leading-7 text-muted sm:text-base">
-          {description}
-        </p>
+        {description ? (
+          <p className="max-w-xl text-[0.95rem] leading-relaxed text-muted sm:text-base">
+            {description}
+          </p>
+        ) : null}
       </div>
     </div>
   );

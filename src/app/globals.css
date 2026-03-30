@@ -11,33 +11,35 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 @layer base {
   * {
-    border-color: rgba(148, 163, 195, 0.08);
+    border-color: rgba(145, 162, 194, 0.1);
   }
 
   body {
     margin: 0;
     min-height: 100vh;
+    overflow-x: hidden;
     background:
       radial-gradient(
         circle at top left,
-        rgba(91, 124, 255, 0.18),
-        transparent 30%
+        rgba(95, 132, 232, 0.22),
+        transparent 32%
       ),
       radial-gradient(
-        circle at 85% 12%,
-        rgba(139, 109, 255, 0.14),
-        transparent 24%
+        circle at 84% 10%,
+        rgba(46, 76, 132, 0.16),
+        transparent 26%
       ),
       radial-gradient(
         circle at 50% 110%,
-        rgba(53, 214, 164, 0.08),
+        rgba(111, 205, 245, 0.08),
         transparent 24%
       ),
-      #060816;
+      #060d1a;
     @apply bg-canvas font-sans text-ink;
     font-feature-settings: "ss01", "cv02", "cv03", "cv11";
   }
@@ -52,35 +54,76 @@ html {
     height: auto;
   }
 
+  iframe {
+    max-width: 100%;
+  }
+
+  section[id] {
+    scroll-margin-top: 6.5rem;
+  }
+
   ::selection {
-    background-color: rgba(91, 124, 255, 0.3);
+    background-color: rgba(95, 132, 232, 0.3);
     color: #f4f7ff;
   }
 
   *:focus-visible {
-    outline: 2px solid #8ba4ff;
+    outline: 2px solid #97b4ff;
     outline-offset: 3px;
   }
 }
 
 @layer components {
   .glass-panel {
-    @apply border border-white/10 bg-white/[0.04] shadow-card shadow-black/20 backdrop-blur-xl;
+    @apply border border-white/10 bg-[rgba(13,20,36,0.78)] shadow-card shadow-black/25 backdrop-blur-xl;
   }
 
   .section-frame {
-    @apply rounded-[2rem] border border-white/10 bg-white/[0.03] shadow-card shadow-black/20 backdrop-blur-xl;
+    @apply rounded-[2rem] border border-white/[0.09] bg-[rgba(11,17,31,0.82)] shadow-card shadow-black/25 backdrop-blur-xl;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(16, 25, 43, 0.94) 58%,
+      rgba(8, 14, 26, 0.98)
+    );
+  }
+
+  .section-frame:hover {
+    border-color: rgba(151, 180, 255, 0.2);
   }
 
   .pill-label {
-    @apply inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-soft;
+    @apply inline-flex items-center rounded-full border border-white/10 bg-[rgba(13,20,35,0.84)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-soft;
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, #f4f7ff 0%, #b7c5ff 52%, #67d4ff 100%);
+    background: linear-gradient(135deg, #f4f7ff 0%, #c7d8ff 48%, #78cdef 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px rgba(151, 180, 255, 0.12),
+      0 24px 60px rgba(58, 94, 168, 0.16);
+  }
+
+  .tech-badge {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-[rgba(12,18,32,0.78)] px-3 py-1 text-xs font-medium text-soft transition-colors;
+  }
+
+  .tech-badge:hover {
+    @apply border-brand/25 bg-brand/[0.07] text-brand-glow;
+  }
+
+  .section-divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-white/[0.08] to-transparent;
   }
 }
 

@@ -7,9 +7,6 @@ import { ProjectsSection } from "@/components/home/projects-section";
 import { SkillsSection } from "@/components/home/skills-section";
 import { PROFILE } from "@/data/profile";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -50,11 +47,17 @@ export default function HomePage() {
 
       <div className="space-y-16 sm:space-y-20 lg:space-y-24">
         <HeroSection />
+        <div className="section-divider" />
         <ProjectsSection />
+        <div className="section-divider" />
         <ExperienceSection />
+        <div className="section-divider" />
         <AboutSection />
+        <div className="section-divider" />
         <SkillsSection />
+        <div className="section-divider" />
         <CredentialsSection />
+        <div className="section-divider" />
         <ContactSection />
       </div>
     </>

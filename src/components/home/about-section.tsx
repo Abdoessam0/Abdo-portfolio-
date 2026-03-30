@@ -1,11 +1,18 @@
 "use client";
 
-import { CheckCircle2, Languages, MapPin } from "lucide-react";
+import { CheckCircle2, Languages, ServerCog } from "lucide-react";
 import { PROFILE } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
 
-const iconMap = [CheckCircle2, MapPin, Languages];
+const iconMap = [CheckCircle2, ServerCog, Languages];
+
+const whatIDo = [
+  "Build clean, responsive interfaces.",
+  "Ship reusable frontend systems.",
+  "Connect products to APIs and backend services.",
+  "Improve performance, accessibility, and technical SEO.",
+];
 
 export function AboutSection() {
   return (
@@ -13,8 +20,8 @@ export function AboutSection() {
       <Reveal>
         <SectionHeading
           eyebrow="About"
-          title="Frontend-first. Product-minded."
-          description="Polished interfaces, clean systems, and production-tested delivery."
+          title="Software engineer, frontend-first."
+          description="Full-stack capable, always improving, and focused on clean UI, performance, and maintainable systems."
         />
       </Reveal>
 
@@ -34,6 +41,20 @@ export function AboutSection() {
               ))}
             </div>
 
+            <div className="rounded-[1.2rem] border border-white/8 bg-white/[0.03] p-4">
+              <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
+                What I do
+              </p>
+              <ul className="mt-3 grid gap-2.5 text-sm text-soft sm:grid-cols-2">
+                {whatIDo.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <span className="mt-[0.42rem] h-1.5 w-1.5 rounded-full bg-brand-glow/80" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             <div className="grid gap-3 pt-1 sm:grid-cols-3">
               {PROFILE.about.focusAreas.map((item) => (
                 <div
@@ -50,49 +71,54 @@ export function AboutSection() {
           </div>
         </div>
 
-        <div className="section-frame p-5 sm:p-6">
-          <p className="pill-label">At a glance</p>
+        <div className="space-y-4">
+          <div className="section-frame p-5 sm:p-6">
+            <p className="pill-label">At a glance</p>
 
-          <div className="mt-4 space-y-3">
-            {PROFILE.factCards.map((card, index) => {
-              const Icon = iconMap[index] ?? CheckCircle2;
-              return (
-                <Reveal
-                  key={card.label}
-                  delay={index * 0.05}
-                  className="rounded-[1.2rem] border border-white/8 bg-white/[0.03] p-4"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">
-                      <Icon className="h-4.5 w-4.5" />
+            <div className="mt-4 space-y-3">
+              {PROFILE.factCards.map((card, index) => {
+                const Icon = iconMap[index] ?? CheckCircle2;
+                return (
+                  <Reveal
+                    key={card.label}
+                    delay={index * 0.05}
+                    className="rounded-[1.2rem] border border-white/8 bg-white/[0.03] p-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">
+                        <Icon className="h-4.5 w-4.5" />
+                      </div>
+                      <div>
+                        <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
+                          {card.label}
+                        </p>
+                        <h3 className="mt-1.5 text-base font-semibold text-white">
+                          {card.value}
+                        </h3>
+                        <p className="mt-2 text-sm leading-6 text-muted">
+                          {card.description}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
-                        {card.label}
-                      </p>
-                      <h3 className="mt-1.5 text-base font-semibold text-white">
-                        {card.value}
-                      </h3>
-                      <p className="mt-2 text-sm leading-6 text-muted">
-                        {card.description}
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
+                  </Reveal>
+                );
+              })}
+            </div>
           </div>
 
-          <Reveal className="mt-4 rounded-[1.2rem] border border-white/8 bg-[linear-gradient(145deg,rgba(91,124,255,0.08),rgba(139,109,255,0.04),rgba(53,214,164,0.03))] px-4 py-4">
-            <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
-              Recent context
-            </p>
-            <p className="mt-2 text-sm leading-6 text-soft">
-              RE/MAX Wise for production real-estate platforms. NFS Soft for
-              multilingual business websites. AFAQY for support, diagnostics,
-              and reliability.
-            </p>
-          </Reveal>
+          <div className="section-frame p-5 sm:p-6">
+            <p className="pill-label">How I work</p>
+            <div className="mt-4 space-y-2.5">
+              {PROFILE.about.principles.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-[1.1rem] border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-soft"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </Reveal>
     </section>

@@ -8,15 +8,26 @@ type RevealProps = {
   className?: string;
   delay?: number;
   y?: number;
+  once?: boolean;
 };
 
-export function Reveal({ children, className, delay = 0, y = 20 }: RevealProps) {
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  y = 24,
+  once = true,
+}: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const inView = useInView(ref, { once, margin: "-80px" });
   const reducedMotion = useReducedMotion();
 
   if (reducedMotion) {
-    return <div ref={ref} className={className}>{children}</div>;
+    return (
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+    );
   }
 
   return (
@@ -26,7 +37,7 @@ export function Reveal({ children, className, delay = 0, y = 20 }: RevealProps) 
       initial={{ opacity: 0, y }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y }}
       transition={{
-        duration: 0.5,
+        duration: 0.55,
         delay,
         ease: [0.22, 1, 0.36, 1],
       }}

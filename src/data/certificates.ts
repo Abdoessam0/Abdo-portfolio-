@@ -52,7 +52,7 @@ export const CERTIFICATES: Certificate[] = [
   },
   {
     id: "vtest-english",
-    title: "Vtest English Exam – CEFR C1.1",
+    title: "Vtest English Exam - CEFR C1.1",
     issuer: "Vtest",
     date: "2024",
     description:
@@ -61,11 +61,10 @@ export const CERTIFICATES: Certificate[] = [
   },
   {
     id: "rosetta-english",
-    title: "Rosetta Stone English – CEFR C1",
+    title: "Rosetta Stone English - CEFR C1",
     issuer: "Rosetta Stone",
     date: "2024",
-    description:
-      "English language proficiency at CEFR C1 level.",
+    description: "English language proficiency at CEFR C1 level.",
     link: "https://drive.google.com/file/d/1S0MxDsl8DGfv_ZB6YlQXSW_KBtK_JcEU/view",
   },
 ];
