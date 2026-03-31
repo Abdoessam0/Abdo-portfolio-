@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ExternalLink, FileText } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { CompactMediaGallery } from "@/components/ui/compact-media-gallery";
 import type { Experience } from "@/data/experience";
@@ -19,6 +20,7 @@ export function ExperienceCard({
   const reducedMotion = useReducedMotion();
   const href = `/experience/${experience.slug}`;
   const gallery = experience.gallery ?? [];
+  const isAfaqyCollage = experience.slug === "afaqy" && gallery.length >= 2;
 
   return (
     <motion.article
@@ -158,10 +160,63 @@ export function ExperienceCard({
         </div>
 
         <div className="lg:max-w-[30rem] lg:justify-self-end">
-          <CompactMediaGallery
-            items={gallery}
-            imageSizes="(min-width: 1024px) 32vw, 100vw"
-          />
+          {isAfaqyCollage ? (
+            <div className="space-y-3">
+              <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[rgba(9,15,28,0.88)] p-2">
+                <div className="relative overflow-hidden rounded-[1.2rem] border border-white/8">
+                  <Image
+                    src={gallery[0].src}
+                    alt={gallery[0].alt}
+                    width={gallery[0].width}
+                    height={gallery[0].height}
+                    sizes="(min-width: 1024px) 32vw, 100vw"
+                    className="aspect-[4/3] w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,11,22,0.08),rgba(7,11,22,0.16)_45%,rgba(4,8,16,0.76)_100%)]" />
+                  <div className="absolute bottom-3 left-3 right-3 rounded-[1rem] border border-white/10 bg-[rgba(7,11,22,0.74)] px-3 py-2.5 backdrop-blur-xl">
+                    <p className="text-[0.65rem] uppercase tracking-[0.22em] text-muted">
+                      AFAQY team
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-soft">
+                      {gallery[0].alt}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-[0.9fr_1.1fr]">
+                <div className="overflow-hidden rounded-[1.35rem] border border-white/10 bg-[rgba(9,15,28,0.88)] p-2">
+                  <div className="relative overflow-hidden rounded-[1rem] border border-white/8">
+                    <Image
+                      src={gallery[1].src}
+                      alt={gallery[1].alt}
+                      width={gallery[1].width}
+                      height={gallery[1].height}
+                      sizes="(min-width: 1024px) 14vw, 100vw"
+                      className="aspect-[4/5] w-full object-cover object-top"
+                    />
+                  </div>
+                </div>
+
+                <div className="rounded-[1.35rem] border border-white/10 bg-[linear-gradient(160deg,rgba(18,28,48,0.84),rgba(7,12,24,0.96))] p-4">
+                  <p className="pill-label">Moments</p>
+                  <p className="mt-4 text-sm font-medium text-white">
+                    Technical support work in Riyadh with team collaboration and
+                    on-site certificate handoff.
+                  </p>
+                  <p className="mt-3 text-sm leading-6 text-muted">
+                    Added real internship photos to replace the placeholder
+                    graphic so the section reflects the actual AFAQY experience.
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <CompactMediaGallery
+              items={gallery}
+              imageSizes="(min-width: 1024px) 32vw, 100vw"
+            />
+          )}
         </div>
       </div>
     </motion.article>

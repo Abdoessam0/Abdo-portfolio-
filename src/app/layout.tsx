@@ -79,11 +79,7 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
@@ -99,11 +95,13 @@ export default function RootLayout({
         </a>
 
         <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-grid opacity-[0.16]" />
+          <div className="absolute inset-0 bg-grid opacity-[0.12]" />
+          <div className="absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_top,rgba(111,205,245,0.12),transparent_58%)]" />
           <div className="absolute -left-24 top-0 h-[28rem] w-[28rem] rounded-full bg-brand/15 blur-[150px]" />
-          <div className="absolute right-[-6rem] top-[8%] h-[24rem] w-[24rem] rounded-full bg-violet/10 blur-[150px]" />
-          <div className="absolute bottom-[-10rem] left-[25%] h-[24rem] w-[24rem] rounded-full bg-emerald/8 blur-[150px]" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,8,22,0.08),rgba(6,8,22,0.62)_42%,rgba(6,8,22,0.92))]" />
+          <div className="absolute right-[-6rem] top-[8%] h-[24rem] w-[24rem] rounded-full bg-accent-cyan/10 blur-[160px]" />
+          <div className="absolute bottom-[-10rem] left-[22%] h-[20rem] w-[20rem] rounded-full bg-accent-amber/10 blur-[150px]" />
+          <div className="absolute bottom-[-8rem] right-[18%] h-[20rem] w-[20rem] rounded-full bg-emerald/8 blur-[170px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,8,22,0.04),rgba(6,8,22,0.56)_40%,rgba(6,8,22,0.92))]" />
         </div>
 
         <div className="flex min-h-screen flex-col">

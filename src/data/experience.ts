@@ -5,6 +5,7 @@ export type ExperienceMedia = {
   alt: string;
   width: number;
   height: number;
+  fit?: "cover" | "contain";
 };
 
 export type ExperienceLink = {
@@ -169,16 +170,16 @@ export const EXPERIENCE: Experience[] = [
     ],
     gallery: [
       {
-        src: "/experience/afaqy-lab.svg",
-        alt: "AFAQY support and fleet operations visual",
-        width: 800,
-        height: 640,
+        src: "/images/afaqy/WhatsApp%20Image%202026-03-30%20at%2010.18.35%20PM%20(1).jpeg",
+        alt: "Group photo with Abdelrahman and the AFAQY team in Riyadh",
+        width: 2048,
+        height: 1152,
       },
       {
-        src: "/certificates/afaqy-support.svg",
-        alt: "AFAQY support workflow visual",
-        width: 480,
-        height: 360,
+        src: "/images/afaqy/WhatsApp%20Image%202026-03-30%20at%2010.18.35%20PM.jpeg",
+        alt: "Abdelrahman receiving the AFAQY experience certificate with a team member in Riyadh",
+        width: 1152,
+        height: 2048,
       },
     ],
   },

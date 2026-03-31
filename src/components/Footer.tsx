@@ -24,7 +24,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/[0.06] px-4 pb-8 pt-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1280px]">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+        <div className="section-frame flex flex-col gap-6 p-5 sm:p-6 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-3">
             <BrandMark />
             <p className="max-w-xs text-sm leading-relaxed text-muted">
@@ -61,7 +61,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-2 border-t border-white/[0.06] pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-6 flex flex-col gap-2 px-1 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
             &copy; {year} {PROFILE.person.name}. All rights reserved.
           </p>

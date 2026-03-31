@@ -30,6 +30,18 @@ export function AboutSection() {
           <div className="space-y-5">
             <p className="pill-label">{PROFILE.about.intro}</p>
 
+            <div className="flex flex-wrap gap-2">
+              {[
+                PROFILE.person.base,
+                PROFILE.person.nationality,
+                PROFILE.person.timezone,
+              ].map((item) => (
+                <span key={item} className="tech-badge">
+                  {item}
+                </span>
+              ))}
+            </div>
+
             <div className="space-y-3">
               {PROFILE.about.story.map((paragraph) => (
                 <p
@@ -107,16 +119,42 @@ export function AboutSection() {
           </div>
 
           <div className="section-frame p-5 sm:p-6">
-            <p className="pill-label">How I work</p>
-            <div className="mt-4 space-y-2.5">
-              {PROFILE.about.principles.map((item) => (
-                <div
-                  key={item}
-                  className="rounded-[1.1rem] border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-soft"
-                >
-                  {item}
+            <div className="space-y-5">
+              <div>
+                <p className="pill-label">Education</p>
+                <div className="mt-4 space-y-3">
+                  {PROFILE.education.map((item) => (
+                    <div
+                      key={`${item.degree}-${item.period}`}
+                      className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3.5"
+                    >
+                      <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
+                        {item.period}
+                      </p>
+                      <p className="mt-2 text-sm font-medium text-white">
+                        {item.degree}
+                      </p>
+                      <p className="mt-1 text-sm text-soft">
+                        {item.institution}
+                      </p>
+                      <p className="mt-1 text-xs text-muted">{item.location}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              <div className="section-divider" />
+
+              <div>
+                <p className="pill-label">How I work</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {PROFILE.about.principles.map((item) => (
+                    <span key={item} className="tech-badge">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

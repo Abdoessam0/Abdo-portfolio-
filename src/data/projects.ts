@@ -3,6 +3,7 @@ export type ProjectImage = {
   alt: string;
   width: number;
   height: number;
+  fit?: "cover" | "contain";
 };
 
 export type ProjectMetric = {

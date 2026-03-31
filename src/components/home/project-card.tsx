@@ -27,72 +27,71 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <motion.article
       whileHover={reducedMotion ? undefined : { y: -4 }}
       transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-      className="group section-frame card-hover flex h-full flex-col gap-4 p-4 sm:p-5"
+      className="group section-frame card-hover flex h-full flex-col overflow-hidden p-0"
     >
-      <div className="flex items-start gap-3">
+      <div className="relative aspect-[16/10] overflow-hidden border-b border-white/8">
         {project.cover ? (
-          <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-[1rem] border border-white/10 bg-[rgba(11,17,31,0.9)] sm:h-[4.4rem] sm:w-[5.5rem]">
-            <Image
-              src={project.cover.src}
-              alt={project.cover.alt}
-              width={project.cover.width}
-              height={project.cover.height}
-              sizes="88px"
-              className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
-            />
-          </div>
+          <Image
+            src={project.cover.src}
+            alt={project.cover.alt}
+            width={project.cover.width}
+            height={project.cover.height}
+            sizes="(min-width: 1280px) 28vw, (min-width: 640px) 46vw, 100vw"
+            className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+          />
         ) : (
-          <div className="flex h-16 w-20 shrink-0 items-center justify-center rounded-[1rem] border border-white/10 bg-[linear-gradient(135deg,rgba(95,132,232,0.18),rgba(111,205,245,0.08),rgba(14,22,38,0.9))] text-brand-glow sm:h-[4.4rem] sm:w-[5.5rem]">
+          <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,rgba(95,132,232,0.18),rgba(111,205,245,0.08),rgba(14,22,38,0.9))] text-brand-glow">
             <Code2 className="h-4.5 w-4.5" />
           </div>
         )}
 
-        <div className="min-w-0 flex-1 space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
-              {project.context}
-            </p>
-            <span
-              className={`rounded-full px-2.5 py-1 text-[0.68rem] font-medium ${
-                project.archived
-                  ? "bg-white/10 text-soft"
-                  : "bg-brand/15 text-brand-glow"
-              }`}
-            >
-              {project.status}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted">
-            <CalendarDays className="h-3.5 w-3.5 text-brand-glow/80" />
-            <span>{project.timeline}</span>
-          </div>
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,11,22,0.16),rgba(7,11,22,0.28)_38%,rgba(4,8,16,0.88)_100%)]" />
+        <div className="absolute left-4 top-4 inline-flex max-w-[72%] rounded-full border border-white/14 bg-black/35 px-3 py-1.5 text-[0.68rem] uppercase tracking-[0.18em] text-soft backdrop-blur-xl">
+          {project.context}
+        </div>
+        <div
+          className={`absolute right-4 top-4 rounded-full px-3 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.18em] backdrop-blur-xl ${
+            project.archived
+              ? "border border-white/12 bg-black/35 text-soft"
+              : "border border-brand/20 bg-brand/15 text-brand-glow"
+          }`}
+        >
+          {project.status}
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col">
-        <div>
+      <div className="flex flex-1 flex-col gap-4 p-5 sm:p-6">
+        <div className="flex items-center gap-1.5 text-xs text-muted">
+          <CalendarDays className="h-3.5 w-3.5 text-brand-glow/80" />
+          <span>{project.timeline}</span>
+        </div>
+
+        <div className="space-y-2">
           <h3 className="font-heading text-[1.15rem] font-semibold tracking-[-0.03em] text-white sm:text-[1.22rem]">
             {project.title}
           </h3>
-          <p className="mt-2 min-h-[4.5rem] text-sm leading-6 text-muted">
-            {project.summary}
-          </p>
+          <p className="text-sm leading-6 text-muted">{project.summary}</p>
         </div>
 
         {project.metrics?.length ? (
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="grid gap-2 sm:grid-cols-2">
             {project.metrics.slice(0, 2).map((metric) => (
-              <span
+              <div
                 key={metric.label}
-                className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[0.68rem] uppercase tracking-[0.18em] text-soft"
+                className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-2.5"
               >
-                {metric.label}: {metric.value}
-              </span>
+                <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+                  {metric.label}
+                </p>
+                <p className="mt-1 text-sm font-medium text-soft">
+                  {metric.value}
+                </p>
+              </div>
             ))}
           </div>
         ) : null}
 
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2">
           {project.stack.slice(0, 3).map((item) => (
             <span key={item} className="tech-badge">
               {item}
@@ -100,7 +99,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           ))}
         </div>
 
-        <div className="mt-auto flex flex-wrap items-center gap-3 pt-4 text-sm font-medium">
+        <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-white/8 pt-4 text-sm font-medium">
           <Link
             href={detailHref}
             className="inline-flex items-center gap-2 text-white transition hover:text-brand-glow"
