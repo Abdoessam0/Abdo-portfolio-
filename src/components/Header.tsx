@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { BrandMark } from "@/components/home/brand-mark";
 import { PROFILE } from "@/data/profile";
+import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 const navItems = [
   { id: "about", label: "About" },
@@ -27,6 +28,8 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const { isCompactViewport, shouldUseLiteEffects, shouldUseLiteMotion } =
+    useMobileOptimization();
 
   const hrefs = useMemo(
     () =>
@@ -47,34 +50,80 @@ export default function Header() {
       return;
     }
 
-    const ids = navItems.map((item) => item.id);
-    let ticking = false;
+    if (isCompactViewport) {
+      setActive("");
+      return;
+    }
 
-    const updateState = () => {
-      setScrolled(window.scrollY > 16);
+    const sectionEntries = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const target = entry.target as HTMLElement;
+          if (entry.isIntersecting) {
+            sectionEntries.set(target.id, entry.intersectionRatio);
+          } else {
+            sectionEntries.delete(target.id);
+          }
+        }
 
-      let current = "";
-      for (const id of ids) {
-        const node = document.getElementById(id);
-        if (!node) continue;
-        const top = node.getBoundingClientRect().top;
-        if (top <= 140) current = id;
+        let nextActive = "";
+        let bestRatio = 0;
+
+        for (const item of navItems) {
+          const ratio = sectionEntries.get(item.id) ?? 0;
+          if (ratio >= bestRatio) {
+            nextActive = item.id;
+            bestRatio = ratio;
+          }
+        }
+
+        setActive(nextActive);
+      },
+      {
+        rootMargin: "-24% 0px -52% 0px",
+        threshold: [0.15, 0.35, 0.6],
       }
+    );
 
-      setActive(current);
-      ticking = false;
+    navItems.forEach((item) => {
+      const node = document.getElementById(item.id);
+      if (node) {
+        observer.observe(node);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [currentPath, isCompactViewport]);
+
+  useEffect(() => {
+    if (shouldUseLiteEffects) {
+      setScrolled(true);
+      return;
+    }
+
+    let frame = 0;
+
+    const updateScrolled = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 16);
     };
 
     const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(updateState);
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateScrolled);
     };
 
-    updateState();
+    updateScrolled();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [currentPath]);
+
+    return () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [shouldUseLiteEffects]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -85,12 +134,12 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 px-3 pt-3 sm:px-5">
+      <header className="sticky top-0 z-50 px-2.5 pt-2.5 sm:px-5 sm:pt-3">
         <div
-          className={`mx-auto flex max-w-[1280px] items-center justify-between rounded-[1.6rem] border px-4 py-3 transition-all duration-300 sm:px-5 ${
+          className={`mx-auto flex max-w-[1280px] items-center justify-between rounded-[1.45rem] border px-3.5 py-2.5 transition-all duration-300 sm:rounded-[1.6rem] sm:px-5 sm:py-3 ${
             scrolled
-              ? "border-white/12 bg-[rgba(7,11,22,0.82)] shadow-glow shadow-brand/10 backdrop-blur-2xl"
-              : "border-white/8 bg-[rgba(7,11,22,0.62)] shadow-[0_18px_60px_rgba(2,6,23,0.16)] backdrop-blur-xl"
+              ? "border-white/12 bg-[rgba(7,11,22,0.9)] shadow-[0_12px_30px_rgba(2,6,23,0.24)] backdrop-blur-md sm:shadow-glow sm:shadow-brand/10 sm:backdrop-blur-2xl"
+              : "border-white/8 bg-[rgba(7,11,22,0.82)] shadow-[0_12px_30px_rgba(2,6,23,0.2)] backdrop-blur-sm sm:bg-[rgba(7,11,22,0.62)] sm:shadow-[0_18px_60px_rgba(2,6,23,0.16)] sm:backdrop-blur-xl"
           }`}
         >
           <Link href="/" aria-label="Go to homepage" className="shrink-0">
@@ -139,7 +188,7 @@ export default function Header() {
 
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.05] p-3 text-white transition hover:border-brand/40 hover:bg-white/[0.08] lg:hidden"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.05] p-3 text-white transition hover:border-brand/40 hover:bg-white/[0.08] lg:hidden"
             onClick={() => setMenuOpen((value) => !value)}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
@@ -160,15 +209,20 @@ export default function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-[rgba(3,6,16,0.62)] px-3 pt-24 backdrop-blur-xl lg:hidden"
+            transition={{ duration: shouldUseLiteMotion ? 0.16 : 0.2 }}
+            className="fixed inset-0 z-40 bg-[rgba(3,6,16,0.74)] px-3 pt-20 backdrop-blur-sm sm:pt-24 sm:backdrop-blur-xl lg:hidden"
           >
             <motion.div
               id="mobile-nav"
-              initial={{ opacity: 0, y: -16 }}
+              initial={
+                shouldUseLiteMotion ? { opacity: 0 } : { opacity: 0, y: -16 }
+              }
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.22 }}
-              className="mx-auto max-w-[1280px] rounded-[1.8rem] border border-white/10 bg-[rgba(11,16,32,0.96)] p-5 shadow-card"
+              exit={
+                shouldUseLiteMotion ? { opacity: 0 } : { opacity: 0, y: -16 }
+              }
+              transition={{ duration: shouldUseLiteMotion ? 0.16 : 0.22 }}
+              className="mx-auto max-w-[1280px] rounded-[1.55rem] border border-white/10 bg-[rgba(11,16,32,0.98)] p-4 shadow-[0_12px_30px_rgba(2,6,23,0.28)] sm:rounded-[1.8rem] sm:p-5 sm:shadow-card"
             >
               <div className="space-y-2">
                 {hrefs.map((item) => (
@@ -176,7 +230,7 @@ export default function Header() {
                     key={item.id}
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
-                    className="flex items-center justify-between rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white transition hover:border-brand/30 hover:bg-white/[0.08]"
+                    className="flex min-h-12 items-center justify-between rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white transition hover:border-brand/30 hover:bg-white/[0.08]"
                   >
                     <span>{item.label}</span>
                     <span className="text-muted">#{item.id}</span>
@@ -193,7 +247,7 @@ export default function Header() {
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => setMenuOpen(false)}
-                  className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-canvas"
+                  className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-canvas"
                 >
                   <Download className="h-4 w-4" />
                   Download CV

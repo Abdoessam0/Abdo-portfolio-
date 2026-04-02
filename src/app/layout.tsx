@@ -32,12 +32,12 @@ export const metadata: Metadata = {
   applicationName: `${PROFILE.person.name} Portfolio`,
   keywords: [
     "Abdelrahman Mohamed",
-    "Frontend Software Engineer",
+    "Software Engineer",
     "Next.js",
     "React",
     "TypeScript",
+    "Node.js",
     "Portfolio",
-    "Technical SEO",
   ],
   authors: [{ name: PROFILE.person.name, url: PROFILE.socials.linkedin }],
   creator: PROFILE.person.name,
@@ -95,12 +95,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </a>
 
         <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-grid opacity-[0.12]" />
-          <div className="absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_top,rgba(111,205,245,0.12),transparent_58%)]" />
-          <div className="absolute -left-24 top-0 h-[28rem] w-[28rem] rounded-full bg-brand/15 blur-[150px]" />
-          <div className="absolute right-[-6rem] top-[8%] h-[24rem] w-[24rem] rounded-full bg-accent-cyan/10 blur-[160px]" />
-          <div className="absolute bottom-[-10rem] left-[22%] h-[20rem] w-[20rem] rounded-full bg-accent-amber/10 blur-[150px]" />
-          <div className="absolute bottom-[-8rem] right-[18%] h-[20rem] w-[20rem] rounded-full bg-emerald/8 blur-[170px]" />
+          <div className="absolute inset-0 bg-grid opacity-[0.08] sm:opacity-[0.12]" />
+          <div className="absolute inset-x-0 top-0 h-[24rem] bg-[radial-gradient(circle_at_top,rgba(111,205,245,0.1),transparent_58%)] sm:h-[34rem] sm:bg-[radial-gradient(circle_at_top,rgba(111,205,245,0.12),transparent_58%)]" />
+          <div className="absolute -left-10 top-3 h-40 w-40 rounded-full bg-brand/12 blur-[90px] sm:-left-24 sm:top-0 sm:h-[28rem] sm:w-[28rem] sm:bg-brand/15 sm:blur-[150px]" />
+          <div className="absolute right-[-2rem] top-[6%] h-36 w-36 rounded-full bg-accent-cyan/8 blur-[88px] sm:right-[-6rem] sm:top-[8%] sm:h-[24rem] sm:w-[24rem] sm:bg-accent-cyan/10 sm:blur-[160px]" />
+          <div className="absolute bottom-[-4rem] left-[16%] h-28 w-28 rounded-full bg-accent-amber/8 blur-[85px] sm:bottom-[-10rem] sm:left-[22%] sm:h-[20rem] sm:w-[20rem] sm:bg-accent-amber/10 sm:blur-[150px]" />
+          <div className="absolute bottom-[-4rem] right-[10%] h-28 w-28 rounded-full bg-emerald/6 blur-[90px] sm:bottom-[-8rem] sm:right-[18%] sm:h-[20rem] sm:w-[20rem] sm:bg-emerald/8 sm:blur-[170px]" />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,8,22,0.04),rgba(6,8,22,0.56)_40%,rgba(6,8,22,0.92))]" />
         </div>
 
@@ -108,7 +108,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Header />
           <main
             id="content"
-            className="mx-auto flex w-full max-w-[1280px] flex-1 px-4 pb-20 pt-8 sm:px-6 sm:pt-10 lg:px-8"
+            className="mx-auto flex w-full max-w-[1280px] flex-1 px-3 pb-16 pt-5 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8"
           >
             <div className="w-full">{children}</div>
           </main>

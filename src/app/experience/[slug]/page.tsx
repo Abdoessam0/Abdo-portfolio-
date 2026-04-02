@@ -72,7 +72,7 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
   );
 
   return (
-    <section className="space-y-6 py-8 sm:space-y-8 sm:py-10">
+    <section className="space-y-6 py-6 sm:space-y-8 sm:py-10">
       <Link
         href="/#experience"
         className="inline-flex items-center gap-2 text-sm text-soft transition hover:text-white"
@@ -81,7 +81,7 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
         Back to experience
       </Link>
 
-      <article className="section-frame p-5 sm:p-6 lg:p-7">
+      <article className="section-frame p-4 sm:p-6 lg:p-7">
         <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
@@ -185,7 +185,7 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
           <aside className="space-y-4">
             <CompactMediaGallery
               items={gallery}
-              imageSizes="(min-width: 1280px) 34vw, 100vw"
+              imageSizes="(min-width: 1280px) 34vw, (min-width: 1024px) 40vw, 92vw"
               priority
             />
 
@@ -218,7 +218,7 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
                       title={`${experience.company} document preview`}
                       src={`${primaryDocument.href}#view=FitH`}
                       loading="lazy"
-                      className="h-[24rem] w-full md:h-[30rem]"
+                      className="h-[20rem] w-full sm:h-[24rem] md:h-[30rem]"
                     />
                   </div>
                 ) : null}

@@ -14,8 +14,8 @@ export function ExperienceSection() {
       <Reveal>
         <SectionHeading
           eyebrow="Experience"
-          title="Production work and delivery context"
-          description="Frontend engineering, technical operations, and real product delivery across websites, systems, and support workflows."
+          title="Work experience"
+          description="Real work across websites, systems, and support."
         />
       </Reveal>
 

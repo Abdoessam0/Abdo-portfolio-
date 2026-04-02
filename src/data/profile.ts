@@ -104,9 +104,9 @@ export type Profile = {
 export const PROFILE: Profile = {
   person: {
     name: "Abdelrahman Mohamed",
-    role: "Frontend Software Engineer",
+    role: "Software Engineer",
     summary:
-      "Software engineer building clean, fast, production-ready web products with a frontend-first mindset and full-stack capability.",
+      "Full-Stack Software Engineer with a frontend-first approach. I build fast, reliable web applications with clean UI and strong performance.",
     location: "Based in Turkey",
     nationality: "Egyptian",
     base: "Turkey",
@@ -114,7 +114,7 @@ export const PROFILE: Profile = {
     timezone: "GMT+3",
     phone: "+905527508202",
     availability:
-      "Open to frontend and full-stack roles, freelance work, and product collaborations.",
+      "Open to full-time roles, freelance work, and collaborations.",
     dob: "19/07/2002",
   },
   socials: {
@@ -129,16 +129,16 @@ export const PROFILE: Profile = {
     resume: "/cv.pdf",
   },
   hero: {
-    eyebrow: "Software engineer, frontend-first",
-    headline: "Clean, fast, production-ready products.",
+    eyebrow: "Full-Stack Software Engineer, frontend-first",
+    headline:
+      "Full-Stack Software Engineer building fast, reliable web applications.",
     subheadline:
-      "Frontend-first with full-stack capability, focused on UI quality, performance, and maintainable systems.",
-    description:
-      "Always learning, refining, and shipping web products built for real use.",
+      "Focused on clean UI, strong performance, and systems that can grow. I work with Next.js, React, TypeScript, and real production apps.",
+    description: "I build products for real use, not just demos.",
     proofStrip: [
-      { label: "Recent work", value: "RE/MAX Lisbon, AFAQY, Easy4Learning" },
-      { label: "Core stack", value: "Next.js, React, TypeScript, Tailwind" },
-      { label: "Focus", value: "UI, performance, SEO, maintainability" },
+      { label: "Recent work", value: "RE/MAX Wise, AFAQY, NFS Soft" },
+      { label: "Core stack", value: "Next.js, React, TypeScript, Node.js" },
+      { label: "Focus", value: "UI, performance, and full-stack apps" },
     ],
     ctas: [
       {
@@ -161,61 +161,59 @@ export const PROFILE: Profile = {
     height: 775,
   },
   metrics: [
-    { label: "Projects", value: "8+", helper: "Shipped platforms" },
-    { label: "Focus", value: "Frontend", helper: "UI, SEO, performance" },
+    { label: "Projects", value: "8+", helper: "Websites and systems" },
+    { label: "Role", value: "Full-stack", helper: "Frontend-first approach" },
     { label: "Languages", value: "3", helper: "Arabic, English, Turkish" },
     {
-      label: "Delivery",
-      value: "Full-stack",
-      helper: "Frontend to API integration",
+      label: "Work",
+      value: "Production",
+      helper: "Real products and client work",
     },
   ],
   factCards: [
     {
-      label: "Who I am",
-      value: "Software engineer",
-      description: "Frontend-first with practical full-stack capability.",
+      label: "Role",
+      value: "Full-Stack Engineer",
+      description: "Frontend-first with real product work.",
     },
     {
-      label: "Background",
-      value: "UI, performance, systems",
-      description: "Focused on clean products that stay fast and maintainable.",
+      label: "Builds",
+      value: "Web apps and systems",
+      description: "Websites, dashboards, and full-stack tools.",
     },
     {
-      label: "Languages",
-      value: "Arabic, English, Turkish",
-      description:
-        "Clear communication across engineering, product, and delivery work.",
+      label: "Focus",
+      value: "UI, performance, clean code",
+      description: "Built for real use and easier maintenance.",
     },
   ],
   about: {
-    intro: "Software engineer, frontend-first with full-stack capability.",
+    intro: "Full-Stack Software Engineer, frontend-first.",
     story: [
-      "I build clean, fast, production-ready products with a strong focus on UI quality, performance, and maintainable systems.",
-      "I keep learning, refining the details, and improving how products feel in real use.",
+      "I'm a Full-Stack Software Engineer with a frontend-first approach and a Computer Engineering background.",
+      "I build web applications with Next.js, React, TypeScript, and modern tools.",
+      "I've worked on real products for RE/MAX Wise, AFAQY, and NFS Soft, including websites, dashboards, and full-stack systems.",
+      "I care about clean UI, good usability, and code that is easy to maintain.",
     ],
     focusAreas: [
       {
         title: "Frontend-first",
-        description:
-          "Clean interfaces, reusable UI, and responsive product work.",
+        description: "Clean UI, responsive layout, and clear user flow.",
       },
       {
-        title: "Full-stack capable",
-        description:
-          "Comfortable across APIs, backend integration, and end-to-end delivery.",
+        title: "Full-stack work",
+        description: "APIs, backend integration, and real app features.",
       },
       {
-        title: "Always improving",
-        description:
-          "Always learning, refining, and raising production quality.",
+        title: "Real products",
+        description: "Built for real use, not just demo projects.",
       },
     ],
     principles: [
-      "Clean UI and clear hierarchy.",
-      "Performance where it matters.",
-      "Maintainable systems.",
-      "Steady product improvement.",
+      "Clean UI",
+      "Performance",
+      "Responsive design",
+      "Maintainable code",
     ],
   },
   education: [
@@ -223,115 +221,93 @@ export const PROFILE: Profile = {
       degree: "Bachelor of Computer Engineering",
       institution: "Ataturk University",
       location: "Erzurum, Turkey",
-      period: "Sep 2021 - Jun 2026",
+      period: "2021 to 2026",
     },
     {
       degree: "Full-Stack Software Engineer Diploma",
       institution: "ALX",
       location: "Remote",
-      period: "Oct 2023 - Nov 2024",
+      period: "2023 to 2024",
     },
   ],
   skills: [
     {
       title: "Frontend",
-      summary: "Modern frontend architecture and product UI implementation.",
+      summary: "Build responsive UI with modern React tools.",
       items: [
+        "Next.js",
         "React",
-        "Next.js 14/15",
         "TypeScript",
         "Tailwind CSS",
         "Framer Motion",
-        "Redux Toolkit",
-        "React Query",
-        "Context API",
       ],
     },
     {
-      title: "Backend / APIs",
-      summary: "Server-side logic, data access, and integration work.",
+      title: "Backend",
+      summary: "Build APIs, server logic, and app features.",
       items: [
         "Node.js",
         "Express",
-        "Java (Spring Boot)",
         "REST APIs",
-        "PHP (Laravel)",
-        "MongoDB",
-        "PostgreSQL",
-        "MySQL",
-        "SQL Server",
+        "Java",
+        "PHP/Laravel basics",
       ],
     },
     {
-      title: "Cloud & DevOps",
-      summary: "Deployment, hosting, and lightweight delivery infrastructure.",
-      items: [
-        "Vercel",
-        "Supabase",
-        "Docker (basics)",
-        "GitHub Actions",
-        "CI/CD",
-        "cPanel",
-      ],
+      title: "Database",
+      summary: "Work with SQL and NoSQL data.",
+      items: ["Supabase", "MySQL", "MongoDB", "PostgreSQL", "SQL Server"],
     },
     {
-      title: "Tools & Design",
-      summary: "Engineering, collaboration, and product workflow tools.",
-      items: [
-        "Git / GitHub",
-        "Figma",
-        "Postman",
-        "VS Code",
-        "next-intl",
-        "Leaflet",
-      ],
+      title: "Tools",
+      summary: "Daily tools for building and shipping.",
+      items: ["Git", "GitHub", "Vercel", "Postman", "Figma", "Docker basics"],
     },
     {
-      title: "SEO & Performance",
-      summary:
-        "Technical quality that improves speed, discoverability, and accessibility.",
+      title: "Focus",
+      summary: "What I care about in real work.",
       items: [
-        "Technical SEO",
-        "Metadata / JSON-LD",
-        "Semantic HTML",
-        "Core Web Vitals",
+        "Responsive UI",
+        "Performance",
         "Accessibility",
+        "SEO",
+        "Maintainable code",
       ],
     },
   ],
   contact: {
     eyebrow: "Contact",
-    title: "Let's build something solid.",
-    description: "Email or LinkedIn works best.",
+    title: "Open to full-time roles, freelance work, and collaborations.",
+    description: "Best way to reach me is by email or LinkedIn.",
     availability:
-      "Open to frontend and full-stack roles, freelance work, and product collaborations.",
+      "If you want to talk about a role or a project, feel free to message me.",
     channels: [
       {
         label: "Email",
         href: "mailto:abdoessammo@gmail.com?subject=Portfolio%20Inquiry",
         value: "abdoessammo@gmail.com",
-        note: "Best for roles, projects, and direct outreach.",
+        note: "Best for direct contact.",
         kind: "email",
       },
       {
         label: "LinkedIn",
         href: "https://linkedin.com/in/abdo-mo",
         value: "linkedin.com/in/abdo-mo",
-        note: "Best for hiring conversations and introductions.",
+        note: "Best for roles and connections.",
         kind: "linkedin",
       },
       {
         label: "GitHub",
         href: "https://github.com/Abdoessam0",
         value: "github.com/Abdoessam0",
-        note: "Code samples and technical project history.",
+        note: "Code and project work.",
         kind: "github",
       },
       {
         label: "WhatsApp",
         href: "https://wa.me/905527508202?text=Hi%20Abdelrahman,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
         value: "+90 552 750 8202",
-        note: "Fast follow-up for active conversations.",
+        note: "Good for quick follow-up.",
         kind: "whatsapp",
       },
       {

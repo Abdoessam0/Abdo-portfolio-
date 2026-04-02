@@ -51,7 +51,7 @@ export const EXPERIENCE: Experience[] = [
     start: "2025-09",
     end: "2025-11",
     summary:
-      "Worked on production real-estate platforms with reusable frontend systems, technical SEO, and stronger launch quality.",
+      "Worked on real production real estate websites.",
     stack: [
       "Next.js 15",
       "TypeScript",
@@ -61,9 +61,9 @@ export const EXPERIENCE: Experience[] = [
       "Technical SEO",
     ],
     impact: [
-      "Built reusable layouts and shared UI patterns across multiple launches.",
-      "Worked on metadata, routing, internal linking, and SEO-safe delivery.",
-      "Improved responsiveness, accessibility, and public-facing trust signals.",
+      "Built reusable UI and shared layouts across multiple sites.",
+      "Improved page structure, routing, and internal links.",
+      "Helped keep launches clean and consistent.",
     ],
     metrics: [
       { label: "Sites", value: "3", helper: "Lisbon, Algarve, and 5 Steps" },
@@ -137,7 +137,7 @@ export const EXPERIENCE: Experience[] = [
     start: "2024-07",
     end: "2024-09",
     summary:
-      "Supported fleet operations, diagnostics, and customer enablement for connected vehicle systems with a focus on reliability.",
+      "Supported fleet systems used across 650+ GPS devices.",
     stack: [
       "Fleet systems",
       "Diagnostics",
@@ -147,9 +147,9 @@ export const EXPERIENCE: Experience[] = [
       "Operational reporting",
     ],
     impact: [
-      "Supported maintenance requests and fleet data for 650+ GPS-enabled vehicles.",
-      "Delivered customer guidance on AFAQY Pro and handled troubleshooting follow-up.",
-      "Maintained data accuracy across multiple operational platforms.",
+      "Helped with diagnostics, customer support, and follow-up.",
+      "Guided users on AFAQY Pro and handled day-to-day issues.",
+      "Helped keep data accurate across internal systems.",
     ],
     metrics: [
       { label: "Devices", value: "650+", helper: "Fleet GPS systems" },
@@ -194,7 +194,7 @@ export const EXPERIENCE: Experience[] = [
     start: "2022-10",
     end: "2022-12",
     summary:
-      "Built multilingual websites with custom themes, responsive templates, and a strong focus on frontend quality.",
+      "Built multilingual websites and custom WordPress templates.",
     stack: [
       "WordPress",
       "PHP",
@@ -204,9 +204,9 @@ export const EXPERIENCE: Experience[] = [
       "cPanel",
     ],
     impact: [
-      "Built custom themes and templates for business and education websites.",
-      "Improved responsiveness, layout consistency, and content clarity across client pages.",
-      "Supported hosting, deployment, and PHP-level updates for client delivery.",
+      "Improved responsive layout and content structure.",
+      "Helped with hosting, updates, and client delivery.",
+      "Worked on websites for business and education clients.",
     ],
     metrics: [
       { label: "Strengths", value: "Frontend quality + content systems" },

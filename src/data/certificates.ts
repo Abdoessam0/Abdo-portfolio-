@@ -15,11 +15,11 @@ export type Certificate = {
 export const CERTIFICATES: Certificate[] = [
   {
     id: "remax-erasmus",
-    title: "RE/MAX Wise Erasmus+ Internship",
+    title: "RE/MAX Erasmus Traineeship",
     issuer: "RE/MAX Wise / Erasmus+",
     date: "2025",
     description:
-      "Software development internship building production real-estate platforms in Lisbon.",
+      "Internship work on real estate websites in Lisbon.",
     link: "https://drive.google.com/file/d/1osHUIPXYgXq8VExX5IS30YS8s0N7pkl4/view",
   },
   {
@@ -28,43 +28,42 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "AFAQY",
     date: "2024",
     description:
-      "Technical support engineering for fleet management and GPS operations in Riyadh.",
+      "Technical support work for fleet and GPS systems.",
     link: "https://drive.google.com/file/d/12n9q_PXELFOZc_10Ih2ru4vFmHvBB3Fl/view",
   },
   {
     id: "wordpress-internship",
-    title: "WordPress Development Internship",
+    title: "WordPress Internship",
     issuer: "NFS Soft",
     date: "2022",
     description:
-      "WordPress theme development, plugin customization, and responsive web design.",
+      "WordPress internship in website building and responsive layout.",
     file: "wordpress-internship.png",
     link: "https://drive.google.com/file/d/1cwgI7_pCaVFcKhjyxm98mqz1JYaoc_ga/view",
   },
   {
     id: "alx-fullstack",
-    title: "Full-Stack Software Engineer Diploma",
+    title: "ALX Full-Stack Software Engineer",
     issuer: "ALX",
     date: "2024",
     description:
-      "Intensive full-stack software engineering program covering front-end, back-end, and systems design.",
+      "Full-stack software engineering diploma.",
     link: "https://drive.google.com/file/d/14OYXQ_t77mkbKoG0yessXT2EesEtAi97/view",
   },
   {
     id: "vtest-english",
-    title: "Vtest English Exam - CEFR C1.1",
+    title: "English Exam Certificate",
     issuer: "Vtest",
     date: "2024",
-    description:
-      "Advanced English proficiency certification at CEFR C1.1 level.",
+    description: "English exam certificate.",
     link: "https://drive.google.com/file/d/1d5ZCyurh2emBA2YNlaBtu3_zn6qYeIqE/view",
   },
   {
     id: "rosetta-english",
-    title: "Rosetta Stone English - CEFR C1",
+    title: "English Proficiency Certificate",
     issuer: "Rosetta Stone",
     date: "2024",
-    description: "English language proficiency at CEFR C1 level.",
+    description: "English proficiency certificate.",
     link: "https://drive.google.com/file/d/1S0MxDsl8DGfv_ZB6YlQXSW_KBtK_JcEU/view",
   },
 ];

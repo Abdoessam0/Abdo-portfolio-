@@ -27,12 +27,12 @@ export function SectionHeading({
         <p className="pill-label">{eyebrow}</p>
         <span className="hidden h-px flex-1 bg-gradient-to-r from-white/0 via-brand-glow/45 to-white/0 sm:block" />
       </div>
-      <div className="space-y-3">
-        <h2 className="font-heading text-section font-bold text-white">
+      <div className="space-y-2.5 sm:space-y-3">
+        <h2 className="font-heading text-[1.65rem] font-bold leading-[1.08] tracking-[-0.04em] text-white sm:text-section">
           {title}
         </h2>
         {description ? (
-          <p className="max-w-xl text-[0.95rem] leading-relaxed text-muted sm:text-base">
+          <p className="max-w-xl text-[0.92rem] leading-7 text-muted sm:text-base">
             {description}
           </p>
         ) : null}

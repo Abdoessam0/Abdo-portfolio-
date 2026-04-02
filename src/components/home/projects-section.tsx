@@ -13,35 +13,35 @@ const projectHighlights = [
   {
     label: "Selected",
     value: `${selectedProjects.length} projects`,
-    helper: "Product, business, and platform delivery",
+    helper: "Websites, systems, and tools",
   },
   {
     label: "Live now",
     value: `${liveProjectCount} launched`,
-    helper: "Production work and active client sites",
+    helper: "Real client and production work",
   },
   {
-    label: "Strength",
-    value: "Frontend + delivery",
-    helper: "UI systems, structure, and launch quality",
+    label: "Focus",
+    value: "Full-stack work",
+    helper: "UI, performance, and clean code",
   },
 ];
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="space-y-7 py-4 sm:space-y-8">
+    <section id="projects" className="space-y-6 py-3 sm:space-y-8 sm:py-4">
       <Reveal className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading
           eyebrow="Projects"
           title="Selected work"
-          description="Shipped work with stronger product framing, clean interfaces, and real delivery context."
+          description="Selected work from real projects and production systems."
         />
 
         <div className="grid gap-3 sm:grid-cols-3 lg:w-[40rem]">
           {projectHighlights.map((item) => (
             <div
               key={item.label}
-              className="rounded-[1.25rem] border border-white/8 bg-white/[0.03] px-4 py-4"
+              className="rounded-[1.1rem] border border-white/8 bg-white/[0.03] px-4 py-3.5 sm:rounded-[1.25rem] sm:py-4"
             >
               <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
                 {item.label}

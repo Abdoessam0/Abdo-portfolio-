@@ -12,6 +12,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
+  overflow-x: clip;
 }
 
 @layer base {
@@ -22,7 +23,7 @@ html {
   body {
     margin: 0;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
     background:
       radial-gradient(
         circle at 12% 14%,
@@ -56,6 +57,7 @@ html {
   }
 
   img {
+    display: block;
     max-width: 100%;
     height: auto;
   }
@@ -220,6 +222,79 @@ html {
 
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@media (hover: none) {
+  .card-hover:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .deferred-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 920px;
+  }
+}
+
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background:
+      radial-gradient(
+        circle at 14% 12%,
+        rgba(95, 132, 232, 0.18),
+        transparent 24%
+      ),
+      radial-gradient(
+        circle at 84% 10%,
+        rgba(111, 205, 245, 0.1),
+        transparent 26%
+      ),
+      linear-gradient(180deg, #091220 0%, #050b16 52%, #040814 100%);
+    background-attachment: scroll;
+  }
+
+  section[id] {
+    scroll-margin-top: 5.5rem;
+  }
+
+  .glass-panel,
+  .section-frame {
+    box-shadow: 0 12px 36px rgba(2, 6, 23, 0.28);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .section-frame::before {
+    opacity: 0.4;
+  }
+
+  .section-frame::after {
+    opacity: 0.55;
+  }
+
+  .section-frame:hover {
+    border-color: rgba(255, 255, 255, 0.09);
+    box-shadow: 0 12px 36px rgba(2, 6, 23, 0.28);
+  }
+
+  .pill-label {
+    letter-spacing: 0.18em;
+  }
+
+  .tech-badge {
+    padding-inline: 0.7rem;
+    padding-block: 0.34rem;
+  }
+
+  .bg-grid {
+    background-size: 34px 34px;
   }
 }
 

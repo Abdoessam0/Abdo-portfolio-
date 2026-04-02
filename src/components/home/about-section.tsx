@@ -8,25 +8,25 @@ import { SectionHeading } from "@/components/home/section-heading";
 const iconMap = [CheckCircle2, ServerCog, Languages];
 
 const whatIDo = [
-  "Build clean, responsive interfaces.",
-  "Ship reusable frontend systems.",
-  "Connect products to APIs and backend services.",
-  "Improve performance, accessibility, and technical SEO.",
+  "Build web apps and websites.",
+  "Create clean, responsive UI.",
+  "Work with APIs and backend services.",
+  "Improve performance and code quality.",
 ];
 
 export function AboutSection() {
   return (
-    <section id="about" className="space-y-8 py-4 sm:space-y-10">
+    <section id="about" className="space-y-7 py-3 sm:space-y-10 sm:py-4">
       <Reveal>
         <SectionHeading
           eyebrow="About"
-          title="Software engineer, frontend-first."
-          description="Full-stack capable, always improving, and focused on clean UI, performance, and maintainable systems."
+          title="Full-Stack engineer, frontend-first."
+          description="I build web applications with clean UI, strong performance, and code that is easy to maintain."
         />
       </Reveal>
 
       <Reveal className="grid gap-4 xl:grid-cols-[1.14fr_0.86fr]">
-        <div className="section-frame p-6 sm:p-7">
+        <div className="section-frame p-4 sm:p-7">
           <div className="space-y-5">
             <p className="pill-label">{PROFILE.about.intro}</p>
 
@@ -84,7 +84,7 @@ export function AboutSection() {
         </div>
 
         <div className="space-y-4">
-          <div className="section-frame p-5 sm:p-6">
+          <div className="section-frame p-4 sm:p-6">
             <p className="pill-label">At a glance</p>
 
             <div className="mt-4 space-y-3">
@@ -118,7 +118,7 @@ export function AboutSection() {
             </div>
           </div>
 
-          <div className="section-frame p-5 sm:p-6">
+          <div className="section-frame p-4 sm:p-6">
             <div className="space-y-5">
               <div>
                 <p className="pill-label">Education</p>

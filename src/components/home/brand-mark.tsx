@@ -18,7 +18,7 @@ export function BrandMark({ compact = false, className = "" }: BrandMarkProps) {
             Abdelrahman
           </span>
           <span className="mt-0.5 text-[0.65rem] uppercase tracking-[0.22em] text-muted">
-            Frontend Engineer
+            Software Engineer
           </span>
         </div>
       )}

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { CompactMediaGallery } from "@/components/ui/compact-media-gallery";
 import type { Experience } from "@/data/experience";
 import type { Project } from "@/data/projects";
+import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 type ExperienceCardProps = {
   experience: Experience;
@@ -18,15 +19,18 @@ export function ExperienceCard({
   relatedProjects,
 }: ExperienceCardProps) {
   const reducedMotion = useReducedMotion();
+  const { shouldUseLiteMotion } = useMobileOptimization();
   const href = `/experience/${experience.slug}`;
   const gallery = experience.gallery ?? [];
   const isAfaqyCollage = experience.slug === "afaqy" && gallery.length >= 2;
 
   return (
     <motion.article
-      whileHover={reducedMotion ? undefined : { y: -4 }}
+      whileHover={
+        reducedMotion || shouldUseLiteMotion ? undefined : { y: -4 }
+      }
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-      className="section-frame overflow-hidden p-5 sm:p-6"
+      className="section-frame overflow-hidden p-4 sm:p-6"
     >
       <div className="grid gap-5 lg:grid-cols-[1.14fr_0.86fr]">
         <div className="space-y-4">
@@ -41,7 +45,7 @@ export function ExperienceCard({
             <p className="text-sm uppercase tracking-[0.24em] text-muted">
               {experience.company}
             </p>
-            <h3 className="mt-3 font-heading text-2xl font-semibold tracking-[-0.04em] text-white sm:text-[2rem]">
+            <h3 className="mt-3 font-heading text-[1.6rem] font-semibold tracking-[-0.04em] text-white sm:text-[2rem]">
               {experience.role}
             </h3>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
@@ -169,7 +173,8 @@ export function ExperienceCard({
                     alt={gallery[0].alt}
                     width={gallery[0].width}
                     height={gallery[0].height}
-                    sizes="(min-width: 1024px) 32vw, 100vw"
+                    quality={74}
+                    sizes="(min-width: 1280px) 32vw, (min-width: 1024px) 38vw, 92vw"
                     className="aspect-[4/3] w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,11,22,0.08),rgba(7,11,22,0.16)_45%,rgba(4,8,16,0.76)_100%)]" />
@@ -192,7 +197,8 @@ export function ExperienceCard({
                       alt={gallery[1].alt}
                       width={gallery[1].width}
                       height={gallery[1].height}
-                      sizes="(min-width: 1024px) 14vw, 100vw"
+                      quality={74}
+                      sizes="(min-width: 1280px) 14vw, (min-width: 1024px) 18vw, 44vw"
                       className="aspect-[4/5] w-full object-cover object-top"
                     />
                   </div>

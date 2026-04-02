@@ -74,7 +74,7 @@ export default async function ProjectDetailPage({
   );
 
   return (
-    <section className="space-y-6 py-8 sm:space-y-8 sm:py-10">
+    <section className="space-y-6 py-6 sm:space-y-8 sm:py-10">
       <Link
         href="/#projects"
         className="inline-flex items-center gap-2 text-sm text-soft transition hover:text-white"
@@ -83,7 +83,7 @@ export default async function ProjectDetailPage({
         Back to projects
       </Link>
 
-      <article className="section-frame p-5 sm:p-6 lg:p-7">
+      <article className="section-frame p-4 sm:p-6 lg:p-7">
         <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
@@ -160,7 +160,7 @@ export default async function ProjectDetailPage({
           <aside className="space-y-4">
             <CompactMediaGallery
               items={projectMedia}
-              imageSizes="(min-width: 1280px) 34vw, 100vw"
+              imageSizes="(min-width: 1280px) 34vw, (min-width: 1024px) 40vw, 92vw"
               priority
             />
 

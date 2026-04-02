@@ -12,25 +12,27 @@ import {
 import { PROFILE } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
+import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 const iconMap: Record<string, LucideIcon> = {
   Frontend: Code2,
-  "Backend / APIs": Database,
-  "Cloud & DevOps": Cloud,
-  "Tools & Design": Wrench,
-  "SEO & Performance": Search,
+  Backend: Database,
+  Database: Cloud,
+  Tools: Wrench,
+  Focus: Search,
 };
 
 export function SkillsSection() {
   const reducedMotion = useReducedMotion();
+  const { shouldUseLiteMotion } = useMobileOptimization();
 
   return (
     <section id="skills" className="space-y-8 py-4 sm:space-y-10">
       <Reveal>
         <SectionHeading
           eyebrow="Skills"
-          title="Technical toolkit"
-          description="Clean grouping, compact layout, and the core tools I use across frontend, backend integration, and production delivery."
+          title="Skills"
+          description="The tools and areas I use most in real work."
         />
       </Reveal>
 
@@ -41,9 +43,13 @@ export function SkillsSection() {
           return (
             <Reveal key={group.title} delay={index * 0.05} className="h-full">
               <motion.div
-                whileHover={reducedMotion ? undefined : { y: -4 }}
+                whileHover={
+                  reducedMotion || shouldUseLiteMotion
+                    ? undefined
+                    : { y: -4 }
+                }
                 transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                className="section-frame h-full p-5 sm:p-6"
+                className="section-frame h-full p-4 sm:p-6"
               >
                 <div className="flex h-full flex-col">
                   <div className="flex items-start gap-3">
@@ -54,7 +60,7 @@ export function SkillsSection() {
                       <p className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">
                         Capability
                       </p>
-                      <h3 className="mt-2 font-heading text-[1.35rem] font-semibold tracking-[-0.04em] text-white">
+                      <h3 className="mt-2 font-heading text-[1.2rem] font-semibold tracking-[-0.04em] text-white sm:text-[1.35rem]">
                         {group.title}
                       </h3>
                       <p className="mt-2 text-sm leading-6 text-muted">

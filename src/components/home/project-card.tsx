@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/data/projects";
+import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 type ProjectCardProps = {
   project: Project;
@@ -19,13 +20,16 @@ type ProjectCardProps = {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const reducedMotion = useReducedMotion();
+  const { shouldUseLiteMotion } = useMobileOptimization();
   const detailHref = `/projects/${project.slug}`;
   const primaryUrl = project.archived ? project.archiveUrl : project.liveUrl;
   const AccentIcon = project.archived ? Archive : ExternalLink;
 
   return (
     <motion.article
-      whileHover={reducedMotion ? undefined : { y: -4 }}
+      whileHover={
+        reducedMotion || shouldUseLiteMotion ? undefined : { y: -4 }
+      }
       transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
       className="group section-frame card-hover flex h-full flex-col overflow-hidden p-0"
     >
@@ -36,7 +40,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
             alt={project.cover.alt}
             width={project.cover.width}
             height={project.cover.height}
-            sizes="(min-width: 1280px) 28vw, (min-width: 640px) 46vw, 100vw"
+            quality={74}
+            sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 42vw, (min-width: 640px) 46vw, 92vw"
             className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
           />
         ) : (
@@ -46,13 +51,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
         )}
 
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,11,22,0.16),rgba(7,11,22,0.28)_38%,rgba(4,8,16,0.88)_100%)]" />
-        <div className="absolute left-4 top-4 inline-flex max-w-[72%] rounded-full border border-white/14 bg-black/35 px-3 py-1.5 text-[0.68rem] uppercase tracking-[0.18em] text-soft backdrop-blur-xl">
+        <div className="absolute left-3 top-3 inline-flex max-w-[72%] rounded-full border border-white/14 bg-[rgba(4,8,16,0.72)] px-3 py-1.5 text-[0.64rem] uppercase tracking-[0.16em] text-soft sm:left-4 sm:top-4 sm:text-[0.68rem] sm:tracking-[0.18em]">
           {project.context}
         </div>
         <div
-          className={`absolute right-4 top-4 rounded-full px-3 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.18em] backdrop-blur-xl ${
+          className={`absolute right-3 top-3 rounded-full px-3 py-1.5 text-[0.64rem] font-medium uppercase tracking-[0.16em] sm:right-4 sm:top-4 sm:text-[0.68rem] sm:tracking-[0.18em] ${
             project.archived
-              ? "border border-white/12 bg-black/35 text-soft"
+              ? "border border-white/12 bg-[rgba(4,8,16,0.72)] text-soft"
               : "border border-brand/20 bg-brand/15 text-brand-glow"
           }`}
         >
@@ -60,14 +65,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-4 p-5 sm:p-6">
+      <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
         <div className="flex items-center gap-1.5 text-xs text-muted">
           <CalendarDays className="h-3.5 w-3.5 text-brand-glow/80" />
           <span>{project.timeline}</span>
         </div>
 
         <div className="space-y-2">
-          <h3 className="font-heading text-[1.15rem] font-semibold tracking-[-0.03em] text-white sm:text-[1.22rem]">
+          <h3 className="font-heading text-[1.08rem] font-semibold tracking-[-0.03em] text-white sm:text-[1.22rem]">
             {project.title}
           </h3>
           <p className="text-sm leading-6 text-muted">{project.summary}</p>
@@ -102,7 +107,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-white/8 pt-4 text-sm font-medium">
           <Link
             href={detailHref}
-            className="inline-flex items-center gap-2 text-white transition hover:text-brand-glow"
+            className="inline-flex min-h-10 items-center gap-2 text-white transition hover:text-brand-glow"
           >
             {project.secondaryCtaLabel}
             <ArrowRight className="h-4 w-4" />
@@ -113,7 +118,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               href={primaryUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-muted transition hover:text-white"
+              className="inline-flex min-h-10 items-center gap-2 text-muted transition hover:text-white"
             >
               <AccentIcon className="h-4 w-4" />
               {project.primaryCtaLabel}
@@ -125,7 +130,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               href={project.repoUrl}
               target="_blank"
               rel="noreferrer"
-              className="ml-auto inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-soft transition hover:border-brand/30 hover:text-white"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-soft transition hover:border-brand/30 hover:text-white sm:ml-auto"
               aria-label={`Open ${project.title} repository`}
             >
               <Github className="h-4 w-4" />

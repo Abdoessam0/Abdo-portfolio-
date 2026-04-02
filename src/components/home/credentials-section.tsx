@@ -12,7 +12,6 @@ const highlightedCertificates = [
   "alx-fullstack",
   "wordpress-internship",
   "vtest-english",
-  "afaqy-support",
   "rosetta-english",
 ]
   .map((id) => CERTIFICATES.find((certificate) => certificate.id === id))
@@ -21,19 +20,24 @@ const highlightedCertificates = [
       Boolean(certificate),
   );
 
+const selectedVolunteering = VOLUNTEERING.filter((item) =>
+  ["damla-volunteering", "youth-summer-fest"].includes(item.id),
+);
+
 export function CredentialsSection() {
   return (
-    <section id="credentials" className="space-y-8 py-4 sm:space-y-10">
+    <section id="credentials" className="space-y-7 py-3 sm:space-y-10 sm:py-4">
       <Reveal>
         <SectionHeading
           eyebrow="Credentials"
-          title="Education, certificates, and volunteering"
+          title="Education and certificates"
+          description="Short and clear details from my education, certificates, and volunteering."
         />
       </Reveal>
 
       <div className="grid gap-4 xl:grid-cols-[1fr_1fr]">
         <div className="space-y-4">
-          <Reveal className="section-frame p-5 sm:p-6">
+          <Reveal className="section-frame p-4 sm:p-6">
             <div className="flex items-start gap-3">
               <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">
                 <GraduationCap className="h-4.5 w-4.5" />
@@ -62,7 +66,7 @@ export function CredentialsSection() {
             </div>
           </Reveal>
 
-          <Reveal className="section-frame p-5 sm:p-6">
+          <Reveal className="section-frame p-4 sm:p-6">
             <div className="flex items-start gap-3">
               <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-emerald">
                 <HandHeart className="h-4.5 w-4.5" />
@@ -70,7 +74,7 @@ export function CredentialsSection() {
               <div className="min-w-0">
                 <p className="text-sm font-medium text-white">Volunteering</p>
                 <div className="mt-3 grid gap-3 md:grid-cols-2">
-                  {VOLUNTEERING.map((item) => (
+                  {selectedVolunteering.map((item) => (
                     <div
                       key={item.id}
                       className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-4"
@@ -110,7 +114,7 @@ export function CredentialsSection() {
           </Reveal>
         </div>
 
-        <Reveal className="section-frame p-5 sm:p-6">
+        <Reveal className="section-frame p-4 sm:p-6">
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">
               <Award className="h-4.5 w-4.5" />

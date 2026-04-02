@@ -45,20 +45,32 @@ export default function HomePage() {
         }}
       />
 
-      <div className="space-y-16 sm:space-y-20 lg:space-y-24">
+      <div className="space-y-12 sm:space-y-20 lg:space-y-24">
         <HeroSection />
-        <div className="section-divider" />
-        <ProjectsSection />
-        <div className="section-divider" />
-        <ExperienceSection />
-        <div className="section-divider" />
-        <AboutSection />
-        <div className="section-divider" />
-        <SkillsSection />
-        <div className="section-divider" />
-        <CredentialsSection />
-        <div className="section-divider" />
-        <ContactSection />
+        <div className="deferred-section">
+          <div className="section-divider" />
+          <ProjectsSection />
+        </div>
+        <div className="deferred-section">
+          <div className="section-divider" />
+          <ExperienceSection />
+        </div>
+        <div className="deferred-section">
+          <div className="section-divider" />
+          <AboutSection />
+        </div>
+        <div className="deferred-section">
+          <div className="section-divider" />
+          <SkillsSection />
+        </div>
+        <div className="deferred-section">
+          <div className="section-divider" />
+          <CredentialsSection />
+        </div>
+        <div className="deferred-section">
+          <div className="section-divider" />
+          <ContactSection />
+        </div>
       </div>
     </>
   );

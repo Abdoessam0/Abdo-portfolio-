@@ -5,6 +5,7 @@ import { Download, Github, Linkedin, Mail, MessageCircle } from "lucide-react";
 import { PROFILE } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
+import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 const iconByKind = {
   email: Mail,
@@ -16,6 +17,8 @@ const iconByKind = {
 
 export function ContactSection() {
   const reducedMotion = useReducedMotion();
+  const { shouldUseLiteEffects, shouldUseLiteMotion } =
+    useMobileOptimization();
 
   return (
     <section id="contact" className="space-y-6 py-4 sm:space-y-7">
@@ -31,7 +34,7 @@ export function ContactSection() {
         <motion.div
           aria-hidden="true"
           animate={
-            reducedMotion
+            reducedMotion || shouldUseLiteMotion
               ? undefined
               : { x: [0, 20, 0], y: [0, -12, 0], opacity: [0.3, 0.65, 0.3] }
           }
@@ -40,12 +43,14 @@ export function ContactSection() {
             repeat: Number.POSITIVE_INFINITY,
             ease: "easeInOut",
           }}
-          className="pointer-events-none absolute -left-10 top-5 h-28 w-28 rounded-full bg-brand/12 blur-3xl"
+          className={`pointer-events-none absolute -left-8 top-5 h-20 w-20 rounded-full bg-brand/12 ${
+            shouldUseLiteEffects ? "blur-2xl" : "blur-3xl"
+          } sm:-left-10 sm:h-28 sm:w-28`}
         />
         <motion.div
           aria-hidden="true"
           animate={
-            reducedMotion
+            reducedMotion || shouldUseLiteMotion
               ? undefined
               : { x: [0, -16, 0], y: [0, 12, 0], opacity: [0.2, 0.45, 0.2] }
           }
@@ -55,12 +60,14 @@ export function ContactSection() {
             ease: "easeInOut",
             delay: 0.4,
           }}
-          className="pointer-events-none absolute bottom-0 right-0 h-32 w-32 rounded-full bg-accent-cyan/10 blur-3xl"
+          className={`pointer-events-none absolute bottom-0 right-0 h-24 w-24 rounded-full bg-accent-cyan/10 ${
+            shouldUseLiteEffects ? "blur-2xl" : "blur-3xl"
+          } sm:h-32 sm:w-32`}
         />
         <motion.div
           aria-hidden="true"
           animate={
-            reducedMotion
+            reducedMotion || shouldUseLiteMotion
               ? undefined
               : { opacity: [0.35, 0.9, 0.35], scaleX: [0.96, 1, 0.96] }
           }
@@ -69,7 +76,7 @@ export function ContactSection() {
             repeat: Number.POSITIVE_INFINITY,
             ease: "easeInOut",
           }}
-          className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-brand-glow/70 to-transparent"
+          className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-brand-glow/70 to-transparent sm:inset-x-10"
         />
 
         <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
@@ -77,7 +84,7 @@ export function ContactSection() {
             <p className="pill-label">Contact</p>
             <motion.div
               animate={
-                reducedMotion
+                reducedMotion || shouldUseLiteMotion
                   ? undefined
                   : { y: [0, -3, 0], opacity: [1, 0.92, 1] }
               }
@@ -86,11 +93,11 @@ export function ContactSection() {
                 repeat: Number.POSITIVE_INFINITY,
                 ease: "easeInOut",
               }}
-              className="mt-4 inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/[0.08] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-brand-glow"
+              className="mt-4 inline-flex min-h-9 items-center gap-2 rounded-full border border-brand/20 bg-brand/[0.08] px-3 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.18em] text-brand-glow sm:text-[0.68rem] sm:tracking-[0.22em]"
             >
               <motion.span
                 animate={
-                  reducedMotion
+                  reducedMotion || shouldUseLiteMotion
                     ? undefined
                     : { scale: [1, 1.5, 1], opacity: [0.7, 1, 0.7] }
                 }
@@ -101,9 +108,9 @@ export function ContactSection() {
                 }}
                 className="h-2 w-2 rounded-full bg-brand-glow"
               />
-              Available for new work
+              Open to work
             </motion.div>
-            <h3 className="mt-3 font-heading text-[1.7rem] font-semibold tracking-[-0.04em] text-white sm:text-[2rem]">
+            <h3 className="mt-3 font-heading text-[1.55rem] font-semibold tracking-[-0.04em] text-white sm:text-[2rem]">
               {PROFILE.contact.availability}
             </h3>
             <p className="mt-3 text-sm leading-6 text-muted">
@@ -133,7 +140,7 @@ export function ContactSection() {
                         ? undefined
                         : "noreferrer"
                     }
-                    className="flex h-full items-center gap-3 rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3 transition hover:border-brand/30 hover:bg-white/[0.05]"
+                    className="flex h-full min-h-16 items-center gap-3 rounded-[1.05rem] border border-white/8 bg-white/[0.03] px-4 py-3 transition hover:border-brand/30 hover:bg-white/[0.05] sm:rounded-[1.15rem]"
                   >
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">
                       <Icon className="h-5 w-5" />
@@ -142,7 +149,7 @@ export function ContactSection() {
                       <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
                         {channel.label}
                       </p>
-                      <p className="mt-1 text-sm font-medium text-white">
+                      <p className="mt-1 break-words text-sm font-medium text-white">
                         {channel.value}
                       </p>
                       <p className="mt-1 text-xs text-muted">{channel.note}</p>

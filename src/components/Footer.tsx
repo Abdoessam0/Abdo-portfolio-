@@ -22,14 +22,14 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/[0.06] px-4 pb-8 pt-10 sm:px-6 lg:px-8">
+    <footer className="border-t border-white/[0.06] px-3 pb-8 pt-8 sm:px-6 sm:pt-10 lg:px-8">
       <div className="mx-auto max-w-[1280px]">
-        <div className="section-frame flex flex-col gap-6 p-5 sm:p-6 lg:flex-row lg:items-start lg:justify-between">
+        <div className="section-frame flex flex-col gap-6 p-4 sm:p-6 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-3">
             <BrandMark />
             <p className="max-w-xs text-sm leading-relaxed text-muted">
-              Frontend-first software engineer focused on clean UI, strong
-              systems, and production-ready delivery.
+              Full-Stack software engineer building clean, reliable web
+              applications.
             </p>
           </div>
 
@@ -61,7 +61,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col gap-2 px-1 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-6 flex flex-col gap-2 px-1 text-xs leading-5 text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
             &copy; {year} {PROFILE.person.name}. All rights reserved.
           </p>

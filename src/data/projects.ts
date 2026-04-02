@@ -46,11 +46,11 @@ export const PROJECTS: Project[] = [
     context: "RE/MAX Wise / Production",
     employer: "RE/MAX Wise",
     summary:
-      "Production real-estate platform work focused on reusable UI, technical SEO, and launch quality.",
+      "Production real estate platform work for RE/MAX Wise. I built shared UI, improved page structure and routing, and helped keep multiple site launches consistent.",
     description:
-      "Built and improved public-facing real-estate experiences with stronger metadata handling, cleaner UI systems, and better production consistency.",
+      "I worked on shared UI, page structure, routing, and updates used across multiple site launches.",
     caseStudy:
-      "This work focused on platform quality across multiple launches. The value came from building frontend systems that stayed consistent, discoverable, and trustworthy in production.",
+      "This was real production work for RE/MAX Wise. I helped build shared UI and keep multiple launches clean and consistent.",
     role: "Software Developer",
     timeline: "Sep 2025 - Nov 2025",
     status: "Live",
@@ -113,13 +113,13 @@ export const PROJECTS: Project[] = [
       "Technical SEO",
     ],
     highlights: [
-      "Built reusable layouts and shared frontend patterns across multiple launches.",
-      "Worked on metadata structure, routing, internal linking, and SEO-safe delivery.",
-      "Improved interface consistency, responsiveness, and public-facing trust signals.",
+      "Built shared UI and reusable layouts.",
+      "Improved page structure and routing.",
+      "Helped keep launches consistent across sites.",
     ],
     metrics: [
-      { label: "Sites", value: "3 launches" },
-      { label: "Focus", value: "SEO + reusable UI" },
+      { label: "Sites", value: "3 live sites" },
+      { label: "Focus", value: "UI and SEO" },
     ],
     liveUrl: "https://www.realestate-lisbon.com/about",
     primaryCtaLabel: "Visit Project",
@@ -133,11 +133,11 @@ export const PROJECTS: Project[] = [
     context: "Freelance / Education Platform",
     employer: "Freelance",
     summary:
-      "Learning platform focused on clear structure, responsive templates, and better content readability.",
+      "An education website for courses and learning content. I improved page structure, readability, and responsive layout so the content is easier to follow.",
     description:
-      "Built and refined an education website with better hierarchy, clearer content flow, and cleaner product presentation.",
+      "I improved content layout, page structure, and responsive templates so lessons and course pages were easier to read.",
     caseStudy:
-      "The goal here was clarity. The platform needed a structure that made program content easier to scan, easier to trust, and easier to use across content-heavy pages.",
+      "This project was about clarity. I worked on layout and content structure so users could understand the site faster.",
     role: "WordPress / Web Developer",
     timeline: "2026",
     status: "Live",
@@ -154,13 +154,13 @@ export const PROJECTS: Project[] = [
       "Education UX",
     ],
     highlights: [
-      "Improved content hierarchy and readability for a learning-focused product.",
-      "Built responsive templates that keep program pages easier to scan.",
-      "Delivered a cleaner UI with stronger structure and clearer calls to action.",
+      "Improved page structure and readability.",
+      "Built responsive templates for course pages.",
+      "Made the content easier to scan and follow.",
     ],
     metrics: [
-      { label: "Context", value: "Education product" },
-      { label: "Focus", value: "Content UX + responsive UI" },
+      { label: "Context", value: "Education website" },
+      { label: "Focus", value: "Content and layout" },
     ],
     liveUrl: "https://easyforlearn.vercel.app",
     primaryCtaLabel: "Visit Project",
@@ -174,11 +174,11 @@ export const PROJECTS: Project[] = [
     context: "Freelance / Business Platform",
     employer: "Freelance",
     summary:
-      "Marketplace interface designed around trust, clear process, and a stronger first impression.",
+      "A business website built around trust and clear navigation. I improved the layout, page flow, and mobile experience to make the site easier to use.",
     description:
-      "Built a production business platform with cleaner hierarchy, clearer workflows, and more reliable product presentation.",
+      "I worked on layout, navigation, and responsive UI to make the site feel clearer and more reliable.",
     caseStudy:
-      "This project required a serious business tone and a straightforward interface. The work centered on clarity, trust, and a UI that supports transactions instead of noise.",
+      "This project needed a simple business feel. I focused on structure, trust, and an easier mobile experience.",
     role: "Software Engineer",
     timeline: "2026",
     status: "Live",
@@ -190,13 +190,13 @@ export const PROJECTS: Project[] = [
     },
     stack: ["Next.js", "React", "Responsive UI", "Business workflow UX"],
     highlights: [
-      "Focused the interface on trust, process clarity, and cleaner business presentation.",
-      "Reduced visual noise in favor of stronger structure and legibility.",
-      "Helped position the platform as an operational product rather than a generic website.",
+      "Improved layout and page flow.",
+      "Made the mobile experience easier to use.",
+      "Kept the UI clear and simple.",
     ],
     metrics: [
-      { label: "Context", value: "Marketplace UX" },
-      { label: "Audience", value: "Business buyers" },
+      { label: "Context", value: "Business website" },
+      { label: "Focus", value: "Layout and mobile UI" },
     ],
     liveUrl: "https://ustunleretborsasi.com/",
     primaryCtaLabel: "Visit Project",
@@ -210,11 +210,11 @@ export const PROJECTS: Project[] = [
     context: "Freelance / Education Platform",
     employer: "Freelance",
     summary:
-      "Admissions platform with clearer actions, better task flow, and a more official interface feel.",
+      "A school application system for online admissions. I worked on form flow, clearer actions, and a cleaner interface for students and parents.",
     description:
-      "Supported a real-world school application experience where workflow clarity and user confidence mattered.",
+      "I worked on the application flow and made the main actions easier for students and parents to follow.",
     caseStudy:
-      "This product needed to reduce friction and feel reliable. The work centered on hierarchy, predictable actions, and a cleaner admissions flow.",
+      "This project needed a clear application flow. I focused on task order, cleaner actions, and a simpler interface.",
     role: "Software Engineer",
     timeline: "2026",
     status: "Live",
@@ -231,13 +231,13 @@ export const PROJECTS: Project[] = [
       "Responsive interface",
     ],
     highlights: [
-      "Improved clarity around key actions such as applying and checking results.",
-      "Framed the product more like a system interface than a generic school site.",
-      "Supported a cleaner admissions workflow with better task focus.",
+      "Improved form flow and key actions.",
+      "Made the interface clearer for students and parents.",
+      "Helped the admissions process feel simpler.",
     ],
     metrics: [
-      { label: "Use case", value: "Admissions workflow" },
-      { label: "Priority", value: "Task clarity" },
+      { label: "Use case", value: "Online admissions" },
+      { label: "Focus", value: "Form flow" },
     ],
     liveUrl: "https://basvuru.bels.k12.tr/",
     primaryCtaLabel: "Visit Project",
@@ -251,11 +251,11 @@ export const PROJECTS: Project[] = [
     context: "Freelance / Civic Platform",
     employer: "Freelance",
     summary:
-      "Complaint platform with public submission flows, moderation, and dashboard-style service visibility.",
+      "A public complaint platform with admin features. I built user flows for complaints, content listing, and admin management.",
     description:
-      "Built a public feedback system with complaint workflows, listings, and admin-facing operational structure.",
+      "I built complaint flows, listings, and admin features for managing public reports.",
     caseStudy:
-      "The work centered on making a systems-heavy product easier to scan, easier to manage, and more credible for public users.",
+      "This project combined public forms with admin work. I focused on clear flows for users and simple tools for management.",
     role: "Full-stack Developer",
     timeline: "2026",
     status: "Live",
@@ -267,13 +267,13 @@ export const PROJECTS: Project[] = [
     },
     stack: ["Laravel", "Blade", "Alpine.js", "MySQL", "Role-based dashboards"],
     highlights: [
-      "Built around complaint submission, moderation, and city-level service visibility.",
-      "Presented dashboard-style information in a more legible public UI.",
-      "Balanced approachable UX with the structure expected from an admin-backed product.",
+      "Built complaint submission and listing flows.",
+      "Added admin features for management.",
+      "Kept the public UI clear and easy to use.",
     ],
     metrics: [
-      { label: "System feel", value: "Public + admin" },
-      { label: "Workflow", value: "Complaints + moderation" },
+      { label: "System", value: "Public and admin" },
+      { label: "Focus", value: "Complaints and management" },
     ],
     liveUrl: "https://www.erzurumsikayet.com/",
     repoUrl: "https://github.com/Abdoessam0/erzurumsikayet",
@@ -287,11 +287,11 @@ export const PROJECTS: Project[] = [
     priority: 6,
     context: "Independent / Property Marketplace",
     summary:
-      "Verification-first property marketplace built around trust signals, structure, and technical SEO.",
+      "A property marketplace for verified listings. I built the product with a focus on trust, SEO, bilingual pages, and clean browsing.",
     description:
-      "Designed a bilingual marketplace for verified developers, land listings, and projects with strong search visibility in mind.",
+      "I built pages for verified listings and worked on trust, SEO, and bilingual support.",
     caseStudy:
-      "This project combines product positioning, structured content, and SEO-aware implementation in a marketplace context.",
+      "This project was about trust and structure. I focused on clear browsing, SEO, and support for more than one language.",
     role: "Full-stack Developer",
     timeline: "2025",
     status: "Live",
@@ -310,9 +310,9 @@ export const PROJECTS: Project[] = [
       "Structured SEO",
     ],
     highlights: [
-      "Designed for trust-heavy property discovery with stronger content structure.",
-      "Implemented sitemaps, structured data, and hreflang foundations.",
-      "Positioned the experience as a product platform rather than a standard listing site.",
+      "Built pages for verified listings.",
+      "Worked on SEO and bilingual support.",
+      "Kept browsing clean and easy to follow.",
     ],
     liveUrl: "https://trustedbuildr.com/",
     repoUrl: "https://github.com/Abdoessam0/trustedbuildr",
@@ -326,19 +326,19 @@ export const PROJECTS: Project[] = [
     priority: 7,
     context: "Independent / Event Platform",
     summary:
-      "Event management system with ticketing, recommendations, and admin tooling.",
+      "An event management system prototype. I built core features for login, ticketing, event discovery, weather data, and admin tools.",
     description:
-      "Prototype event platform covering live weather, ticketing, authentication, discovery, and admin workflows.",
+      "I built the main app flow for users and admins, including tickets, weather data, and login.",
     caseStudy:
-      "This project demonstrates systems thinking across frontend, backend, and operational tooling.",
+      "This was a full-stack prototype with both user and admin features. I worked on the main flows and connected the app data together.",
     role: "Full-stack Developer",
     timeline: "2023",
     status: "Prototype",
     stack: ["React", "Node.js", "Express", "MongoDB", "JWT", "OpenWeather API"],
     highlights: [
-      "Combined ticketing, recommendations, weather data, and admin functionality in one platform.",
-      "Built secure authentication flows and data-backed event features.",
-      "Focused on system usability instead of isolated features.",
+      "Built login, ticketing, and event discovery.",
+      "Added weather data and admin tools.",
+      "Connected the main app flows into one system.",
     ],
     repoUrl: "https://github.com/Abdoessam0",
     primaryCtaLabel: "View Project",
@@ -351,19 +351,19 @@ export const PROJECTS: Project[] = [
     priority: 8,
     context: "Independent / Computer Vision",
     summary:
-      "Real-time detection workflow built around live capture, inference, and analytics visibility.",
+      "A computer vision project with live camera input. I built the interface for live detection, object tracking, and simple performance feedback.",
     description:
-      "Computer vision project combining live camera input, inference, and dashboard-style performance feedback.",
+      "I built the interface for live detection and simple analytics from camera input.",
     caseStudy:
-      "This project demonstrates technical systems thinking beyond traditional frontend work.",
+      "This project focused on live input and feedback. I worked on the interface layer that shows detection results in real time.",
     role: "Computer Vision Developer",
     timeline: "2024",
     status: "Prototype",
     stack: ["Python", "YOLOv8", "PyTorch", "OpenCV", "Streamlit", "WebRTC"],
     highlights: [
-      "Processed live camera input with real-time detection and analytics feedback.",
-      "Built interface layers for performance metrics and object tracking insights.",
-      "Focused on usable system feedback instead of raw model output alone.",
+      "Built the interface for live detection.",
+      "Added object tracking and simple feedback.",
+      "Focused on clear system output in real time.",
     ],
     repoUrl: "https://github.com/Abdoessam0",
     primaryCtaLabel: "View Project",
@@ -376,11 +376,11 @@ export const PROJECTS: Project[] = [
     priority: 9,
     context: "Academic / Desktop Tool",
     summary:
-      "Desktop operations tool for inventory control, reporting, and rule-driven workflows.",
+      "A desktop app for library work. I built issue and return flows, stock tracking, and reports with SQL-based rules.",
     description:
-      "C# Windows Forms application backed by SQL Server procedures, triggers, functions, and reporting views.",
+      "I built key desktop flows for issuing books, returns, stock tracking, and reports.",
     caseStudy:
-      "This project is a strong example of structured workflow logic and data-driven system design.",
+      "This project focused on clear desktop workflows. I used SQL rules and C# forms to handle day-to-day library tasks.",
     role: "Desktop Developer",
     timeline: "2022",
     status: "Completed",
@@ -393,9 +393,9 @@ export const PROJECTS: Project[] = [
       "Reporting",
     ],
     highlights: [
-      "Automated issuing, returning, inventory status, and reporting workflows.",
-      "Enforced business rules with SQL procedures, triggers, and validation logic.",
-      "Built as a functional operations tool rather than a presentation-first project.",
+      "Built issue and return flows.",
+      "Added stock tracking and reports.",
+      "Used SQL rules to support daily library work.",
     ],
     repoUrl: "https://github.com/Abdoessam0",
     primaryCtaLabel: "View Project",
