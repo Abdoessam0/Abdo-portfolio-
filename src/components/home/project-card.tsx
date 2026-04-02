@@ -24,6 +24,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const detailHref = `/projects/${project.slug}`;
   const primaryUrl = project.archived ? project.archiveUrl : project.liveUrl;
   const AccentIcon = project.archived ? Archive : ExternalLink;
+  const coverFit = project.cover?.fit ?? "cover";
 
   return (
     <motion.article
@@ -35,15 +36,31 @@ export function ProjectCard({ project }: ProjectCardProps) {
     >
       <div className="relative aspect-[16/10] overflow-hidden border-b border-white/8">
         {project.cover ? (
-          <Image
-            src={project.cover.src}
-            alt={project.cover.alt}
-            width={project.cover.width}
-            height={project.cover.height}
-            quality={74}
-            sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 42vw, (min-width: 640px) 46vw, 92vw"
-            className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
-          />
+          <>
+            {coverFit === "contain" ? (
+              <Image
+                src={project.cover.src}
+                alt=""
+                fill
+                quality={48}
+                sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 42vw, (min-width: 640px) 46vw, 92vw"
+                className="object-cover opacity-20 blur-xl scale-105"
+              />
+            ) : null}
+            <Image
+              src={project.cover.src}
+              alt={project.cover.alt}
+              width={project.cover.width}
+              height={project.cover.height}
+              quality={74}
+              sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 42vw, (min-width: 640px) 46vw, 92vw"
+              className={`h-full w-full transition duration-700 ${
+                coverFit === "contain"
+                  ? "bg-[rgba(7,11,22,0.94)] p-3 object-contain sm:p-4"
+                  : "object-cover group-hover:scale-[1.04]"
+              }`}
+            />
+          </>
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,rgba(95,132,232,0.18),rgba(111,205,245,0.08),rgba(14,22,38,0.9))] text-brand-glow">
             <Code2 className="h-4.5 w-4.5" />
