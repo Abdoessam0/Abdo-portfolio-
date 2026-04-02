@@ -20,9 +20,18 @@ const highlightedCertificates = [
       Boolean(certificate),
   );
 
-const selectedVolunteering = VOLUNTEERING.filter((item) =>
-  ["damla-volunteering", "youth-summer-fest"].includes(item.id),
-);
+const volunteeringOrder = [
+  "youth-summer-fest",
+  "erasmus-structured-dialogue",
+  "snowboard-worldcup",
+  "damla-volunteering",
+] as const;
+
+const selectedVolunteering = volunteeringOrder
+  .map((id) => VOLUNTEERING.find((item) => item.id === id))
+  .filter(
+    (item): item is NonNullable<(typeof VOLUNTEERING)[number]> => Boolean(item),
+  );
 
 export function CredentialsSection() {
   return (
@@ -72,7 +81,7 @@ export function CredentialsSection() {
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-medium text-white">Volunteering</p>
-                <div className="mt-3 grid gap-3 md:grid-cols-2">
+                <div className="mt-3 grid gap-3 lg:grid-cols-2">
                   {selectedVolunteering.map((item) => (
                     <div
                       key={item.id}
@@ -89,6 +98,9 @@ export function CredentialsSection() {
                           <p className="mt-2 text-xs text-muted">
                             {item.location} / {item.period}
                           </p>
+                          <p className="mt-3 text-sm leading-6 text-muted">
+                            {item.summary}
+                          </p>
                         </div>
                         {item.link ? (
                           <a
@@ -102,6 +114,14 @@ export function CredentialsSection() {
                           </a>
                         ) : null}
                       </div>
+                      <ul className="mt-4 grid gap-2 text-sm leading-6 text-soft">
+                        {item.highlights.map((highlight) => (
+                          <li key={highlight} className="flex gap-2.5">
+                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-glow" />
+                            <span>{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   ))}
                 </div>

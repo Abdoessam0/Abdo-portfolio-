@@ -65,6 +65,11 @@ export default async function ProjectDetailPage({
   }
 
   const primaryUrl = project.archived ? project.archiveUrl : project.liveUrl;
+  const liveLinks = primaryUrl
+    ? [{ label: project.primaryCtaLabel || "Live Site", url: primaryUrl }].concat(
+        project.additionalLinks ?? [],
+      )
+    : project.additionalLinks ?? [];
   const projectMedia = [
     ...(project.gallery ?? []),
     ...(project.cover ? [project.cover] : []),
@@ -168,7 +173,7 @@ export default async function ProjectDetailPage({
               <p className="pill-label">Project details</p>
               <dl className="mt-4 space-y-4 text-sm">
                 <div>
-                  <dt className="text-muted">Timeline</dt>
+                  <dt className="text-muted">Year</dt>
                   <dd className="mt-1 text-white">{project.timeline}</dd>
                 </div>
                 <div>
@@ -202,21 +207,22 @@ export default async function ProjectDetailPage({
             <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
               <p className="pill-label">Links</p>
               <div className="mt-4 flex flex-col gap-3 text-sm font-medium">
-                {primaryUrl ? (
+                {liveLinks.map((link, index) => (
                   <a
-                    href={primaryUrl}
+                    key={link.url}
+                    href={link.url}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center justify-between rounded-2xl border border-white/10 px-4 py-3 text-white transition hover:border-brand/30"
                   >
-                    <span>{project.primaryCtaLabel}</span>
+                    <span>{index === 0 ? "Live Site" : link.label}</span>
                     {project.archived ? (
                       <Archive className="h-4 w-4" />
                     ) : (
                       <ArrowUpRight className="h-4 w-4" />
                     )}
                   </a>
-                ) : null}
+                ))}
                 {project.repoUrl ? (
                   <a
                     href={project.repoUrl}
@@ -224,7 +230,7 @@ export default async function ProjectDetailPage({
                     rel="noreferrer"
                     className="inline-flex items-center justify-between rounded-2xl border border-white/10 px-4 py-3 text-white transition hover:border-brand/30"
                   >
-                    <span>Repository</span>
+                    <span>GitHub</span>
                     <Github className="h-4 w-4" />
                   </a>
                 ) : null}

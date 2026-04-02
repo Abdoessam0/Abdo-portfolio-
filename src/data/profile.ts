@@ -106,7 +106,7 @@ export const PROFILE: Profile = {
     name: "Abdelrahman Mohamed",
     role: "Full-Stack Software Engineer",
     summary:
-      "Full-Stack Software Engineer with a frontend-first approach. I build clean, reliable web applications for real use.",
+      "Full-Stack Software Engineer specializing in Next.js, React, and TypeScript. Delivered production web apps for RE/MAX Wise, AFAQY, and NFS Soft.",
     location: "Based in Turkey",
     nationality: "Egyptian",
     base: "Turkey",
@@ -129,16 +129,16 @@ export const PROFILE: Profile = {
     resume: "/cv.pdf",
   },
   hero: {
-    eyebrow: "Full-Stack Software Engineer · Frontend-First",
-    headline:
-      "Full-Stack Software Engineer building clean, reliable web applications.",
+    eyebrow: "Full-Stack Engineer · Next.js / React / TypeScript",
+    headline: "Building production web apps that ship clean and hold up.",
     subheadline:
-      "I work with Next.js, React, and TypeScript. I focus on clean UI, good performance, and code that holds up in production.",
-    description: "I build for real use, not just demos.",
+      "Next.js, React, TypeScript — focused on clean UI, performance, and maintainable code.",
+    description:
+      "Delivered for RE/MAX Wise, AFAQY, and NFS Soft — real products, real users.",
     proofStrip: [
-      { label: "Recent work", value: "RE/MAX Wise · AFAQY · NFS Soft" },
-      { label: "Core stack", value: "Next.js · React · TypeScript" },
-      { label: "Focus", value: "UI · performance · maintainable code" },
+      { label: "Recent work", value: "RE/MAX Wise / AFAQY / NFS Soft" },
+      { label: "Core stack", value: "Next.js / React / TypeScript" },
+      { label: "Focus", value: "UI / performance / maintainable code" },
     ],
     ctas: [
       {
@@ -161,24 +161,24 @@ export const PROFILE: Profile = {
     height: 775,
   },
   metrics: [
-    { label: "Projects", value: "8+", helper: "Real work and side projects" },
+    { label: "Projects", value: "10", helper: "10 shipped · 6 live" },
     {
       label: "Approach",
       value: "Frontend-first",
-      helper: "Full-stack engineer",
+      helper: "Frontend-first, full-stack",
     },
-    { label: "Languages", value: "3", helper: "Arabic · English · Turkish" },
+    { label: "Languages", value: "3", helper: "Arabic / English / Turkish" },
     {
       label: "Work",
       value: "Production",
-      helper: "Websites and systems in use",
+      helper: "In use now",
     },
   ],
   factCards: [
     {
       label: "Role",
       value: "Full-Stack Engineer",
-      description: "Frontend-first with real product work.",
+      description: "Frontend-first with real production work.",
     },
     {
       label: "Build",
@@ -188,15 +188,15 @@ export const PROFILE: Profile = {
     {
       label: "Focus",
       value: "UI, performance, clean code",
-      description: "Built for real use and easier maintenance.",
+      description: "Built to ship and easy to maintain.",
     },
   ],
   about: {
-    intro: "Full-Stack Software Engineer · Frontend-First",
+    intro: "Full-Stack Software Engineer / Frontend-First",
     story: [
-      "I'm a Full-Stack Software Engineer with a frontend-first approach and a Computer Engineering background.",
-      "I build web applications using Next.js, React, TypeScript, and modern tooling. I care about clean UI, usability, and code that's easy to maintain.",
-      "I've worked on real products for RE/MAX Wise, AFAQY, and NFS Soft - websites, dashboards, and full-stack systems.",
+      "Full-Stack Software Engineer with a Computer Engineering background and a frontend-first approach.",
+      "I build production web applications with Next.js, React, and TypeScript — focused on clean UI, performance, and code that's easy to maintain.",
+      "Delivered real products for RE/MAX Wise, AFAQY, and NFS Soft across websites, dashboards, and full-stack systems.",
     ],
     focusAreas: [
       {
@@ -205,19 +205,14 @@ export const PROFILE: Profile = {
       },
       {
         title: "Backend",
-        description: "APIs, backend work, and app logic.",
+        description: "REST APIs, server-side logic, and app architecture.",
       },
       {
         title: "Production",
-        description: "Built for real use, not just demos.",
+        description: "Built to ship — not just to demo.",
       },
     ],
-    principles: [
-      "Clean UI",
-      "Usability",
-      "Performance",
-      "Maintainable code",
-    ],
+    principles: ["Clean UI", "Usability", "Performance", "Maintainable code"],
   },
   education: [
     {
@@ -236,45 +231,102 @@ export const PROFILE: Profile = {
   skills: [
     {
       title: "Frontend",
-      summary: "",
+      summary: "UI engineering for production web apps and client work.",
       items: [
+        "React.js",
         "Next.js",
-        "React",
         "TypeScript",
+        "JavaScript ES6+",
         "Tailwind CSS",
-        "Framer Motion",
+        "HTML5",
+        "CSS3",
+        "React Query",
+        "Context API",
+        "Redux Toolkit",
+        "Responsive Design",
+        "Accessibility",
+        "Component Architecture",
+        "UI/UX Implementation",
       ],
     },
     {
-      title: "Backend",
-      summary: "",
+      title: "Backend and APIs",
+      summary: "Server-side logic, integration work, and API-driven features.",
       items: [
         "Node.js",
-        "Express",
-        "REST APIs",
-        "Java",
-        "PHP/Laravel basics",
+        "Express.js",
+        "RESTful APIs",
+        "PHP",
+        "Laravel",
+        "Authentication flows",
+        "API integration",
       ],
     },
     {
-      title: "Database",
-      summary: "",
-      items: ["Supabase", "MySQL", "MongoDB", "PostgreSQL", "SQL Server"],
+      title: "Mobile",
+      summary: "Mobile app development with React Native and Expo.",
+      items: ["React Native", "Expo", "Expo Router"],
+    },
+    {
+      title: "Databases",
+      summary: "Relational and document databases across web and desktop systems.",
+      items: [
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "SQL Server",
+        "T-SQL",
+        "Stored Procedures",
+        "Triggers",
+        "Functions",
+      ],
+    },
+    {
+      title: "AI and Computer Vision",
+      summary: "Applied machine learning for real-time detection systems.",
+      items: ["Python", "YOLOv8", "PyTorch", "OpenCV", "Streamlit"],
+    },
+    {
+      title: "CMS and Platforms",
+      summary: "Client delivery and content-driven site work.",
+      items: ["WordPress", "cPanel"],
+    },
+    {
+      title: "Deployment and DevOps",
+      summary: "Deployment and environment work used in production projects.",
+      items: [
+        "Vercel",
+        "Supabase",
+        "GitHub Actions",
+        "CI/CD",
+        "Environment Configuration",
+        "Deployment Workflows",
+      ],
+    },
+    {
+      title: "SEO and Product Engineering",
+      summary: "Technical SEO applied to production websites.",
+      items: [
+        "SEO-safe Routing",
+        "Metadata Handling",
+        "Canonical Tags",
+        "hreflang",
+        "JSON-LD",
+        "Internal Linking",
+        "Performance Optimization",
+      ],
     },
     {
       title: "Tools",
-      summary: "",
-      items: ["Git", "GitHub", "Vercel", "Postman", "Figma", "Docker basics"],
-    },
-    {
-      title: "Focus",
-      summary: "",
+      summary: "Everyday tools for building, testing, and collaboration.",
       items: [
-        "Responsive UI",
-        "Performance",
-        "Accessibility",
-        "SEO",
-        "Maintainable code",
+        "Git",
+        "GitHub",
+        "Figma",
+        "Postman",
+        "VS Code",
+        "next-intl",
+        "Leaflet",
       ],
     },
   ],
@@ -282,8 +334,7 @@ export const PROFILE: Profile = {
     eyebrow: "Contact",
     title: "Open to full-time roles, freelance work, and collaborations.",
     description: "The best way to reach me is by email or LinkedIn.",
-    availability:
-      "If you have a role or project in mind, feel free to message me.",
+    availability: "If you have a role or project in mind, feel free to reach out.",
     channels: [
       {
         label: "Email",
@@ -317,7 +368,7 @@ export const PROFILE: Profile = {
         label: "CV",
         href: "/cv.pdf",
         value: "Download CV",
-        note: "Resume PDF.",
+        note: "Resume PDF",
         kind: "resume",
       },
     ],

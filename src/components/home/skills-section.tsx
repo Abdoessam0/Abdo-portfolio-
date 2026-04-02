@@ -2,9 +2,13 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import {
+  Cpu,
   Code2,
   Database,
   Search,
+  Server,
+  Smartphone,
+  Users,
   Wrench,
   type LucideIcon,
 } from "lucide-react";
@@ -15,10 +19,15 @@ import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 const iconMap: Record<string, LucideIcon> = {
   Frontend: Code2,
-  Backend: Database,
-  Database: Database,
+  "Backend and APIs": Server,
+  Mobile: Smartphone,
+  Databases: Database,
+  "AI and Computer Vision": Cpu,
+  "CMS and Platforms": Wrench,
+  "Deployment and DevOps": Wrench,
+  "SEO and Product Engineering": Search,
   Tools: Wrench,
-  Focus: Search,
+  Collaboration: Users,
 };
 
 export function SkillsSection() {
@@ -28,10 +37,14 @@ export function SkillsSection() {
   return (
     <section id="skills" className="space-y-8 py-4 sm:space-y-10">
       <Reveal>
-        <SectionHeading eyebrow="Skills" title="Skills" />
+        <SectionHeading
+          eyebrow="Skills"
+          title="Skills"
+          description="Technologies and working strengths used across production websites, client systems, mobile apps, backend work, and AI projects."
+        />
       </Reveal>
 
-      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-2 2xl:grid-cols-3">
         {PROFILE.skills.map((group, index) => {
           const Icon = iconMap[group.title] ?? Code2;
 
@@ -55,6 +68,11 @@ export function SkillsSection() {
                       <h3 className="mt-2 font-heading text-[1.2rem] font-semibold tracking-[-0.04em] text-white sm:text-[1.35rem]">
                         {group.title}
                       </h3>
+                      {group.summary ? (
+                        <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
+                          {group.summary}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
 

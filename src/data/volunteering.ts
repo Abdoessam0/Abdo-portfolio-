@@ -4,7 +4,7 @@ export type Volunteering = {
   organization: string;
   location: string;
   period: string;
-  summary: string;
+  summary?: string;
   highlights: string[];
   link?: string;
   linkLabel?: string;
@@ -13,60 +13,40 @@ export type Volunteering = {
 export const VOLUNTEERING: Volunteering[] = [
   {
     id: "youth-summer-fest",
-    title: "Youth Summer Fest",
+    title: "Volunteer Facilitator",
     organization: "Youth Summer Fest (Erasmus+)",
     location: "Romania",
-    period: "08/2025 - 09/2025",
-    summary: "Volunteer work in youth activities and community events.",
-    highlights: [
-      "Helped with activity planning and daily coordination.",
-      "Worked with volunteers from different countries.",
-      "Supported community events and youth activities.",
-    ],
+    period: "Aug 2025 - Sep 2025",
+    highlights: [],
     link: "https://drive.google.com/file/d/1dULg04Jqy3ZqeVKu06cIHWwz4e3cXqDf/view",
     linkLabel: "View document",
-  },
-  {
-    id: "snowboard-worldcup",
-    title: "Volunteer Translator",
-    organization: "Turkiye Kayak Federasyonu & FIS",
-    location: "Erzurum (Palandoken), Turkiye",
-    period: "25/02/2025 - 03/03/2025",
-    summary: "Handled live translation and document support during the event.",
-    highlights: [
-      "Supported coordination across technical teams and 15+ participant countries.",
-      "Contributed to ski track preparation, field support, and overnight maintenance.",
-      "Provided language support across multiple event management roles.",
-    ],
   },
   {
     id: "erasmus-structured-dialogue",
     title: "Structured Dialogue Participant",
     organization:
-      'Erasmus+ "Geleneksel Spor ve Oyunlarin Ihyasi" International Forum',
+    'Erasmus+ "Geleneksel Spor ve Oyunlarin Ihyasi" International Forum',
     location: "Istanbul, Turkiye",
-    period: "01/03/2021 - 30/04/2023",
-    summary:
-      "Joined youth dialogue sessions and intercultural collaboration activities.",
-    highlights: [
-      "Developed skills in policy debate, intercultural communication, and collaborative problem solving.",
-      "Contributed to youth policy discussions at national and European levels.",
-    ],
+    period: "Mar 2021 - Apr 2023",
+    highlights: [],
     link: "https://drive.google.com/file/d/1dJCdqpPfBo0MSSCwXojSMVXQ3QibRE8R/view",
     linkLabel: "View document",
   },
   {
+    id: "snowboard-worldcup",
+    title: "Volunteer Translator",
+    organization: "Snowboardcross World Cup",
+    location: "Erzurum (Palandoken), Turkiye",
+    period: "Feb 2025 - Mar 2025",
+    highlights: [],
+  },
+  {
     id: "damla-volunteering",
-    title: "Damla Volunteering",
+    title: "Volunteer Participant",
     organization: "Damla Volunteering Movement",
     location: "Erzincan, Turkiye",
-    period: "08/09/2023 - 17/09/2023",
-    summary: "Community volunteering and local inclusion activities.",
-    highlights: [
-      "Worked with volunteers from different backgrounds.",
-      "Supported local community activities.",
-      "Built teamwork and communication skills.",
-    ],
+    period: "Sep 2023",
+    highlights: [],
     link: "https://drive.google.com/file/d/1T8WTFdzybIOUB4qDH6RzjK2jq-I8RPtw/view",
     linkLabel: "View document",
   },

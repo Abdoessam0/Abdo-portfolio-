@@ -187,8 +187,8 @@ html {
   .card-hover:hover {
     transform: translateY(-4px);
     box-shadow:
-      0 0 0 1px rgba(151, 180, 255, 0.12),
-      0 24px 72px rgba(20, 42, 81, 0.22);
+      0 0 0 1px rgba(151, 180, 255, 0.14),
+      0 30px 84px rgba(20, 42, 81, 0.28);
   }
 
   .tech-badge {

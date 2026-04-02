@@ -1,29 +1,33 @@
 "use client";
 
-import { PROJECTS } from "@/data/projects";
+import { PROJECTS, sortProjects } from "@/data/projects";
 import { ProjectCard } from "@/components/home/project-card";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
 
-const selectedProjects = [...PROJECTS].sort((a, b) => a.priority - b.priority);
-const liveProjectCount = PROJECTS.filter(
-  (project) => project.status === "Live",
-).length;
+const selectedProjects = sortProjects(PROJECTS);
+const liveProjectCount = PROJECTS.reduce(
+  (count, project) =>
+    count +
+    (project.liveUrl ? 1 : 0) +
+    (project.additionalLinks?.length ?? 0),
+  0,
+);
 const projectHighlights = [
   {
     label: "Selected",
     value: `${selectedProjects.length} projects`,
-    helper: "Websites, systems, and tools",
+    helper: "Product, client, and academic work",
   },
   {
-    label: "Live now",
-    value: `${liveProjectCount} launched`,
-    helper: "Production and client work",
+    label: "Verified live",
+    value: `${liveProjectCount} links`,
+    helper: "Only confirmed public demos",
   },
   {
     label: "Focus",
-    value: "Usability and code",
-    helper: "Performance and maintenance",
+    value: "UI and systems",
+    helper: "Performance, clarity, and maintenance",
   },
 ];
 
@@ -34,7 +38,7 @@ export function ProjectsSection() {
         <SectionHeading
           eyebrow="Projects"
           title="Selected work"
-          description="Real projects and production work. Built with a focus on usability, performance, and maintainable code."
+          description="Production work, client builds, and full-stack systems with verified links, clear project order, and real product visuals."
         />
 
         <div className="grid gap-3 sm:grid-cols-3 lg:w-[40rem]">

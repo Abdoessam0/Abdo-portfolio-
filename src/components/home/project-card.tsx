@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import {
   Archive,
   ArrowRight,
-  CalendarDays,
   Code2,
   ExternalLink,
   Github,
@@ -25,11 +24,27 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const primaryUrl = project.archived ? project.archiveUrl : project.liveUrl;
   const AccentIcon = project.archived ? Archive : ExternalLink;
   const coverFit = project.cover?.fit ?? "cover";
+  const isSvgCover = project.cover?.src.endsWith(".svg") ?? false;
+  const visibleStack = project.stack.slice(0, 4);
+  const remainingStackCount = Math.max(project.stack.length - visibleStack.length, 0);
+
+  const statusClassName = (() => {
+    switch (project.status) {
+      case "Production":
+        return "border border-brand/20 bg-brand/15 text-brand-glow";
+      case "Live":
+        return "border border-emerald-400/20 bg-emerald-400/10 text-emerald-200";
+      case "Prototype":
+        return "border border-amber-300/16 bg-amber-300/12 text-amber-100";
+      default:
+        return "border border-white/12 bg-[rgba(4,8,16,0.72)] text-soft";
+    }
+  })();
 
   return (
     <motion.article
       whileHover={
-        reducedMotion || shouldUseLiteMotion ? undefined : { y: -4 }
+        reducedMotion || shouldUseLiteMotion ? undefined : { y: -6 }
       }
       transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
       className="group section-frame card-hover flex h-full flex-col overflow-hidden p-0"
@@ -53,11 +68,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
               width={project.cover.width}
               height={project.cover.height}
               quality={74}
+              unoptimized={isSvgCover}
               sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 42vw, (min-width: 640px) 46vw, 92vw"
-              className={`h-full w-full transition duration-700 ${
+              className={`h-full w-full transition duration-700 ease-out ${
                 coverFit === "contain"
                   ? "bg-[rgba(7,11,22,0.94)] p-3 object-contain sm:p-4"
-                  : "object-cover group-hover:scale-[1.04]"
+                  : "object-cover group-hover:scale-[1.06]"
               }`}
             />
           </>
@@ -72,61 +88,45 @@ export function ProjectCard({ project }: ProjectCardProps) {
           {project.context}
         </div>
         <div
-          className={`absolute right-3 top-3 rounded-full px-3 py-1.5 text-[0.64rem] font-medium uppercase tracking-[0.16em] sm:right-4 sm:top-4 sm:text-[0.68rem] sm:tracking-[0.18em] ${
-            project.archived
-              ? "border border-white/12 bg-[rgba(4,8,16,0.72)] text-soft"
-              : "border border-brand/20 bg-brand/15 text-brand-glow"
-          }`}
+          className={`absolute right-3 top-3 rounded-full px-3 py-1.5 text-[0.64rem] font-medium uppercase tracking-[0.16em] sm:right-4 sm:top-4 sm:text-[0.68rem] sm:tracking-[0.18em] ${statusClassName}`}
         >
           {project.status}
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
-        <div className="flex items-center gap-1.5 text-xs text-muted">
-          <CalendarDays className="h-3.5 w-3.5 text-brand-glow/80" />
-          <span>{project.timeline}</span>
+      <div className="flex flex-1 flex-col gap-4 p-4 sm:p-5">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-brand-glow">
+            {project.year}
+          </span>
         </div>
 
-        <div className="space-y-2">
-          <h3 className="font-heading text-[1.08rem] font-semibold tracking-[-0.03em] text-white sm:text-[1.22rem]">
+        <div className="space-y-2.5">
+          <h3 className="line-clamp-2 font-heading text-[1.08rem] font-semibold tracking-[-0.03em] text-white sm:text-[1.22rem]">
             {project.title}
           </h3>
-          <p className="text-sm leading-6 text-muted">{project.summary}</p>
+          <p className="line-clamp-3 text-sm leading-6 text-soft/88">
+            {project.summary}
+          </p>
         </div>
 
-        {project.metrics?.length ? (
-          <div className="grid gap-2 sm:grid-cols-2">
-            {project.metrics.slice(0, 2).map((metric) => (
-              <div
-                key={metric.label}
-                className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-2.5"
-              >
-                <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted">
-                  {metric.label}
-                </p>
-                <p className="mt-1 text-sm font-medium text-soft">
-                  {metric.value}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : null}
-
         <div className="flex flex-wrap gap-2">
-          {project.stack.slice(0, 3).map((item) => (
+          {visibleStack.map((item) => (
             <span key={item} className="tech-badge">
               {item}
             </span>
           ))}
+          {remainingStackCount > 0 ? (
+            <span className="tech-badge">+{remainingStackCount}</span>
+          ) : null}
         </div>
 
-        <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-white/8 pt-4 text-sm font-medium">
+        <div className="mt-auto flex flex-wrap items-center gap-2.5 border-t border-white/8 pt-4 text-sm font-medium">
           <Link
             href={detailHref}
-            className="inline-flex min-h-10 items-center gap-2 text-white transition hover:text-brand-glow"
+            className="inline-flex min-h-11 min-w-[9.5rem] items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#f3f6ff_0%,#d7e4ff_42%,#82d1ef_100%)] px-4 text-[0.92rem] font-semibold text-[#07111f] shadow-[0_18px_44px_rgba(111,205,245,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_54px_rgba(111,205,245,0.22)]"
           >
-            {project.secondaryCtaLabel}
+            View Project
             <ArrowRight className="h-4 w-4" />
           </Link>
 
@@ -135,10 +135,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
               href={primaryUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-10 items-center gap-2 text-muted transition hover:text-white"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 text-soft transition hover:border-brand/25 hover:bg-brand/10 hover:text-white"
             >
               <AccentIcon className="h-4 w-4" />
-              {project.primaryCtaLabel}
+              Live Site
             </a>
           ) : null}
 
@@ -147,10 +147,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
               href={project.repoUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-soft transition hover:border-brand/30 hover:text-white sm:ml-auto"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 text-soft transition hover:border-brand/25 hover:bg-brand/10 hover:text-white"
               aria-label={`Open ${project.title} repository`}
             >
               <Github className="h-4 w-4" />
+              GitHub
             </a>
           ) : null}
         </div>

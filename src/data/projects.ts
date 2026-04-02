@@ -11,11 +11,17 @@ export type ProjectMetric = {
   value: string;
 };
 
+export type ProjectLink = {
+  label: string;
+  url: string;
+};
+
 export type Project = {
   slug: string;
   title: string;
   featured: boolean;
   priority: number;
+  year: number;
   context: string;
   employer?: string;
   summary: string;
@@ -33,75 +39,83 @@ export type Project = {
   metrics?: ProjectMetric[];
   liveUrl?: string;
   repoUrl?: string;
+  additionalLinks?: ProjectLink[];
   primaryCtaLabel: string;
   secondaryCtaLabel: string;
 };
 
+export const PINNED_PROJECT_ORDER = [
+  "real-estate-platforms",
+  "ustunler-et-borsasi",
+  "bels-digital-application-system",
+  "easy4learning",
+] as const;
+
+export function sortProjects(projects: Project[]) {
+  const pinnedIndex = new Map<string, number>(
+    PINNED_PROJECT_ORDER.map((slug, index) => [slug, index]),
+  );
+
+  return [...projects].sort((left, right) => {
+    const leftPinned = pinnedIndex.get(left.slug);
+    const rightPinned = pinnedIndex.get(right.slug);
+
+    if (leftPinned !== undefined || rightPinned !== undefined) {
+      if (leftPinned === undefined) return 1;
+      if (rightPinned === undefined) return -1;
+      return leftPinned - rightPinned;
+    }
+
+    if (left.year !== right.year) {
+      return right.year - left.year;
+    }
+
+    return left.priority - right.priority;
+  });
+}
+
 export const PROJECTS: Project[] = [
   {
     slug: "real-estate-platforms",
-    title: "RE/MAX Lisbon",
+    title: "Real Estate Funnels & Multi-Site Platform",
     featured: true,
     priority: 1,
-    context: "RE/MAX Wise · Production",
+    year: 2025,
+    context: "RE/MAX Wise / Production",
     employer: "RE/MAX Wise",
     summary:
-      "Production real estate platform for RE/MAX Wise. I built shared UI components, improved page structure and routing, and helped keep multiple site launches consistent.",
+      "Built and improved multi-site real estate platforms for Algarve, Lisbon, and 5 Steps with reusable UI, SEO-safe routing, shared layouts, and stable deployment workflows.",
     description:
-      "I worked on shared UI components, page structure, and routing used across multiple launches.",
+      "Built shared UI, SEO-safe routing, and reusable layouts across multiple production real estate platforms.",
     caseStudy:
-      "Real production work for RE/MAX Wise. I helped build shared UI and keep multiple launches clean and consistent.",
+      "This work covered three live real estate platforms built for different audiences with the same product base. I focused on reusable UI, SEO-safe routing, shared layouts, and launch stability so new site work could ship faster without breaking the desktop or mobile experience.",
     role: "Software Developer",
-    timeline: "Sep 2025 - Nov 2025",
-    status: "Live",
+    timeline: "2025",
+    status: "Production",
     cover: {
-      src: "/projects/remax-lisbon-cover.png",
-      alt: "RE/MAX Lisbon production real-estate platform",
-      width: 1440,
-      height: 960,
+      src: "/projects/real-estate-platforms-cover.png",
+      alt: "Composite cover showing the Algarve, Lisbon, and 5 Steps real estate platforms",
+      width: 1600,
+      height: 1000,
     },
     gallery: [
       {
-        src: "/images/remax-lisbon/remax-lisbon-journey-wall.jpg",
-        alt: "Abdelrahman in front of the RE/MAX WISE office in Lisbon",
-        width: 1200,
-        height: 1600,
-      },
-      {
-        src: "/images/remax-lisbon/remax-lisbon-office.jpg",
-        alt: "Abdelrahman with the team inside the RE/MAX Lisbon office",
-        width: 1600,
-        height: 900,
-      },
-      {
-        src: "/images/remax-lisbon/remax-lisbon-team.jpg",
-        alt: "Team photo at the RE/MAX Lisbon office",
-        width: 1200,
-        height: 1600,
-      },
-      {
-        src: "/projects/remax-lisbon-cover.png",
-        alt: "Real Estate Lisbon production website",
+        src: "/images/real-estate-platforms/algarve-home.png",
+        alt: "Real Estate Algarve live homepage",
         width: 1440,
         height: 960,
       },
       {
-        src: "/images/remax-lisbon/remax-lisbon-standup.jpg",
-        alt: "Standup session at the RE/MAX Lisbon office",
-        width: 897,
-        height: 1200,
+        src: "/images/real-estate-platforms/lisbon-home.png",
+        alt: "Real Estate Lisbon live homepage",
+        width: 1440,
+        height: 960,
       },
       {
-        src: "/images/remax-lisbon/updatedphoto.png",
-        alt: "RE/MAX platform and technology team page featuring Abdelrahman",
-        width: 673,
-        height: 507,
-      },
-      {
-        src: "/images/remax-lisbon/abdo-team-photo.webp",
-        alt: "Abdelrahman featured on the RE/MAX 5 Steps team page",
-        width: 768,
-        height: 1227,
+        src: "/images/real-estate-platforms/five-steps-home.png",
+        alt: "5 Steps Real Estate live homepage",
+        width: 1440,
+        height: 960,
       },
     ],
     stack: [
@@ -110,273 +124,336 @@ export const PROJECTS: Project[] = [
       "Tailwind CSS",
       "Supabase",
       "Vercel",
+      "SEO",
+      "Reusable UI",
     ],
     highlights: [
-      "Built shared UI components and reusable layouts.",
-      "Improved page structure and routing.",
-      "Helped keep launches consistent across sites.",
+      "Built reusable UI and shared layout patterns.",
+      "Improved routing and page structure for SEO-safe launches.",
+      "Helped keep multi-site releases consistent and stable.",
     ],
     metrics: [
-      { label: "Sites", value: "3 live sites" },
-      { label: "Focus", value: "UI and routing" },
+      { label: "Sites", value: "3 live platforms" },
+      { label: "Focus", value: "Shared UI and routing" },
     ],
-    liveUrl: "https://www.realestate-lisbon.com/about",
-    primaryCtaLabel: "Visit Project",
-    secondaryCtaLabel: "Details",
-  },
-  {
-    slug: "easy4learning",
-    title: "Easy4Learning",
-    featured: true,
-    priority: 2,
-    context: "Freelance · Education Website",
-    employer: "Freelance",
-    summary:
-      "An education website for courses and learning content. I improved page structure, readability, and responsive layout to make the content easier to follow.",
-    description:
-      "I improved content layout, page structure, and responsive templates so course pages were easier to follow.",
-    caseStudy:
-      "I worked on layout and content structure so users could read and follow the content more easily.",
-    role: "WordPress / Web Developer",
-    timeline: "2026",
-    status: "Live",
-    cover: {
-      src: "/projects/easy-learning-archive-cover.png",
-      alt: "Easy4Learning homepage",
-      width: 1707,
-      height: 768,
-    },
-    stack: [
-      "WordPress",
-      "Responsive templates",
-      "Content structure",
+    liveUrl: "https://www.realestate-algarve.co/",
+    additionalLinks: [
+      { label: "Lisbon Site", url: "https://www.realestate-lisbon.com/" },
+      { label: "5 Steps Site", url: "https://www.5stepsrealestate.com/" },
     ],
-    highlights: [
-      "Improved page structure and readability.",
-      "Built responsive templates for course pages.",
-      "Made the content easier to follow.",
-    ],
-    metrics: [
-      { label: "Context", value: "Education website" },
-      { label: "Focus", value: "Content and layout" },
-    ],
-    liveUrl: "https://easyforlearn.vercel.app",
-    primaryCtaLabel: "Visit Project",
-    secondaryCtaLabel: "Details",
-  },
-  {
-    slug: "ustunler-et-borsasi",
-    title: "Ustunler Et Borsasi",
-    featured: true,
-    priority: 3,
-    context: "Freelance · Business Website",
-    employer: "Freelance",
-    summary:
-      "A business website focused on trust and clear navigation. I improved the layout, page flow, and mobile experience.",
-    description:
-      "I worked on layout, navigation, and responsive UI to make the site easier to use.",
-    caseStudy:
-      "I focused on trust, structure, and a better mobile experience.",
-    role: "Software Engineer",
-    timeline: "2026",
-    status: "Live",
-    cover: {
-      src: "/projects/ustunler-et-borsasi-cover.png",
-      alt: "Ustunler Et Borsasi homepage",
-      width: 1440,
-      height: 960,
-    },
-    stack: ["Next.js", "React", "Responsive UI"],
-    highlights: [
-      "Improved layout and page flow.",
-      "Improved the mobile experience.",
-      "Kept the UI clear and simple.",
-    ],
-    metrics: [
-      { label: "Context", value: "Business website" },
-      { label: "Focus", value: "Layout and mobile UI" },
-    ],
-    liveUrl: "https://ustunleretborsasi.com/",
-    primaryCtaLabel: "Visit Project",
-    secondaryCtaLabel: "Details",
-  },
-  {
-    slug: "bels-digital-application-system",
-    title: "BELS Digital Application System",
-    featured: false,
-    priority: 4,
-    context: "Freelance · School System",
-    employer: "Freelance",
-    summary:
-      "A school admissions system. I worked on form flow, clearer actions, and a cleaner interface for students and parents.",
-    description:
-      "I worked on the application flow and made the main actions easier to follow.",
-    caseStudy:
-      "I focused on task order, clearer actions, and a simpler interface.",
-    role: "Software Engineer",
-    timeline: "2026",
-    status: "Live",
-    cover: {
-      src: "/projects/bels-application-system-cover.png",
-      alt: "BELS digital application system",
-      width: 1440,
-      height: 960,
-    },
-    stack: [
-      "React",
-      "Form UX",
-      "Application workflows",
-    ],
-    highlights: [
-      "Improved form flow and key actions.",
-      "Made the interface clearer for students and parents.",
-      "Helped the admissions process feel simpler.",
-    ],
-    metrics: [
-      { label: "Use case", value: "Online admissions" },
-      { label: "Focus", value: "Form flow" },
-    ],
-    liveUrl: "https://basvuru.bels.k12.tr/",
-    primaryCtaLabel: "Visit Project",
-    secondaryCtaLabel: "Details",
-  },
-  {
-    slug: "erzurum-sikayet",
-    title: "Erzurum Sikayet",
-    featured: false,
-    priority: 5,
-    context: "Freelance · Civic Platform",
-    employer: "Freelance",
-    summary:
-      "A public complaint platform with admin features. I built user flows for submitting complaints, listing content, and managing the admin side.",
-    description:
-      "I built complaint flows, content listing, and admin features for public reports.",
-    caseStudy:
-      "I focused on clear flows for users and simple tools for admin work.",
-    role: "Full-stack Developer",
-    timeline: "2026",
-    status: "Live",
-    cover: {
-      src: "/projects/erzurum-sikayet-cover.png",
-      alt: "Erzurum Sikayet homepage",
-      width: 1440,
-      height: 960,
-    },
-    stack: ["Laravel", "Blade", "Alpine.js", "MySQL"],
-    highlights: [
-      "Built complaint submission and listing flows.",
-      "Added admin features for management.",
-      "Kept the public UI clear and easy to use.",
-    ],
-    metrics: [
-      { label: "System", value: "Public and admin" },
-      { label: "Focus", value: "Complaints and management" },
-    ],
-    liveUrl: "https://www.erzurumsikayet.com/",
-    repoUrl: "https://github.com/Abdoessam0/erzurumsikayet",
-    primaryCtaLabel: "Visit Project",
-    secondaryCtaLabel: "Details",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
   },
   {
     slug: "trustedbuildr",
-    title: "TrustedBuildr",
-    featured: false,
-    priority: 6,
-    context: "Independent · Property Marketplace",
+    title: "TrustedBuildr.pt",
+    featured: true,
+    priority: 5,
+    year: 2025,
+    context: "Independent / Marketplace",
     summary:
-      "A property marketplace for verified listings. I built the product with a focus on trust signals, SEO, bilingual pages, and easy browsing.",
+      "Built a bilingual marketplace for verified developers, land listings, and construction projects with structured SEO and scalable architecture.",
     description:
-      "I built the product around verified listings, SEO, bilingual pages, and easy browsing.",
+      "Built a verified property marketplace with bilingual browsing, SEO-ready pages, and location-based discovery.",
     caseStudy:
-      "I focused on trust signals, SEO, and support for more than one language.",
-    role: "Full-stack Developer",
+      "TrustedBuildr.pt was built as a full-stack marketplace for verified land and construction opportunities. I worked on the product structure, bilingual content flow, SEO-friendly pages, and scalable data handling so the browsing experience stayed clear as the platform grew.",
+    role: "Full-Stack Software Engineer",
     timeline: "2025",
-    status: "Live",
+    status: "Production",
     cover: {
       src: "/projects/trustedbuildr-cover.png",
-      alt: "TrustedBuildr homepage",
+      alt: "TrustedBuildr.pt homepage with verified property marketplace messaging",
       width: 1440,
       height: 960,
     },
     stack: [
-      "Next.js",
+      "Next.js 15",
       "TypeScript",
       "Tailwind CSS",
-      "Supabase",
+      "Supabase Postgres",
+      "next-intl",
       "Leaflet",
     ],
     highlights: [
-      "Built pages for verified listings.",
-      "Worked on SEO and bilingual support.",
-      "Kept browsing clean and easy to follow.",
+      "Built bilingual listing and project pages.",
+      "Added SEO structure for marketplace discovery.",
+      "Designed trust-first browsing for verified listings.",
     ],
-    liveUrl: "https://trustedbuildr.com/",
-    repoUrl: "https://github.com/Abdoessam0/trustedbuildr",
-    primaryCtaLabel: "Visit Project",
-    secondaryCtaLabel: "Details",
+    metrics: [
+      { label: "Audience", value: "Buyers, landowners, and developers" },
+      { label: "Focus", value: "SEO, trust, and scale" },
+    ],
+    liveUrl: "https://www.trustedbuildr.com/",
+    repoUrl: "https://github.com/Abdoessam0/trustbuildrr",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
+  },
+  {
+    slug: "erzurum-sikayet",
+    title: "ErzurumSikayet",
+    featured: true,
+    priority: 7,
+    year: 2025,
+    context: "Independent / Civic Platform",
+    summary:
+      "Built a full-stack complaint and review platform with user, company, and admin dashboards, category filtering, complaint workflows, and production deployment.",
+    description:
+      "Built a city complaint platform with public flows, dashboard tools, and admin-side management.",
+    caseStudy:
+      "ErzurumSikayet was built as a full-stack review and complaint platform for local services. I handled the public complaint flow, category browsing, and the dashboard structure for companies and admins so the product could support real reports and moderation work.",
+    role: "Full-Stack Software Engineer",
+    timeline: "2025",
+    status: "Production",
+    cover: {
+      src: "/projects/erzurum-sikayet-cover.png",
+      alt: "ErzurumSikayet homepage showing complaint search and dashboard metrics",
+      width: 1440,
+      height: 960,
+    },
+    stack: [
+      "Laravel",
+      "PHP",
+      "Blade",
+      "MySQL",
+      "Tailwind CSS",
+      "Alpine.js",
+      "cPanel",
+    ],
+    highlights: [
+      "Built user, company, and admin dashboards.",
+      "Implemented complaint submission, category filters, and listing flows.",
+      "Deployed the platform for real production use.",
+    ],
+    metrics: [
+      { label: "Areas", value: "Public, company, and admin dashboards" },
+      { label: "Focus", value: "Complaint flow and moderation" },
+    ],
+    liveUrl: "https://erzurumsikayet.com/",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
+  },
+  {
+    slug: "campus-safety-app",
+    title: "Campus Safety App",
+    featured: true,
+    priority: 6,
+    year: 2025,
+    context: "University / Mobile App",
+    summary:
+      "Built a mobile campus safety app with emergency alerts, incident reporting, user profiles, and admin-side safety workflows.",
+    description:
+      "Built a mobile safety app for alerts, incident reporting, profile tools, and admin-side workflows.",
+    caseStudy:
+      "This mobile app was designed for campus safety workflows at Ataturk University. I worked on the product flow for emergency alerts, incident reporting, profile management, notification preferences, and the admin-side tools needed to manage safety updates.",
+    role: "Mobile App Developer",
+    timeline: "2025",
+    status: "Prototype",
+    cover: {
+      src: "/projects/campus-safety-cover.png",
+      alt: "Campus Safety App cover showing account, feed, map, and report screens",
+      width: 1600,
+      height: 1000,
+    },
+    gallery: [
+      {
+        src: "/images/campus-safety/campus-register.png",
+        alt: "Campus Safety App account creation screen",
+        width: 390,
+        height: 844,
+        fit: "contain",
+      },
+      {
+        src: "/images/campus-safety/campus-feed.png",
+        alt: "Campus Safety App incident feed and emergency alert screen",
+        width: 390,
+        height: 844,
+        fit: "contain",
+      },
+      {
+        src: "/images/campus-safety/campus-map.png",
+        alt: "Campus Safety App map screen with incident markers",
+        width: 390,
+        height: 844,
+        fit: "contain",
+      },
+      {
+        src: "/images/campus-safety/campus-report.png",
+        alt: "Campus Safety App incident report submission screen",
+        width: 390,
+        height: 844,
+        fit: "contain",
+      },
+    ],
+    stack: [
+      "React Native",
+      "Expo",
+      "TypeScript",
+      "Expo Router",
+      "Firebase Auth",
+      "Firestore",
+      "Firebase Storage",
+      "Lucide React Native",
+    ],
+    highlights: [
+      "Built emergency alert and incident reporting flows.",
+      "Added profile tools, notification settings, and map-based views.",
+      "Connected the app structure to Firebase auth and data services.",
+    ],
+    metrics: [
+      { label: "Platform", value: "Mobile app for campus safety" },
+      { label: "Focus", value: "Alerts, reporting, and map views" },
+    ],
+    repoUrl:
+      "https://github.com/Campus-Safety-App-Team/campus-safety-mobile-app",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
   },
   {
     slug: "eventsys",
     title: "EventSys",
-    featured: false,
-    priority: 7,
-    context: "Independent · Event Platform",
+    featured: true,
+    priority: 9,
+    year: 2023,
+    context: "Independent / Event Platform",
     summary:
-      "An event management system prototype. I built features for login, ticketing, event discovery, weather data, and admin tools.",
+      "Built an event management system prototype with authentication, ticketing, event discovery, weather integration, and admin event tools.",
     description:
-      "I built the main app flow for users and admins, including tickets, weather data, and login.",
+      "Built an event platform prototype with auth, ticketing, weather data, and admin tools.",
     caseStudy:
-      "I worked on the main user and admin flows and connected the app data together.",
-    role: "Full-stack Developer",
+      "EventSys was built as a full-stack event workflow that covers account access, event discovery, ticket purchases, and admin updates. I worked across the React frontend and Node.js backend, including the event feed, purchase flow, and weather data integration.",
+    role: "Full-Stack Software Engineer",
     timeline: "2023",
     status: "Prototype",
-    stack: ["React", "Node.js", "Express", "MongoDB", "JWT", "OpenWeather API"],
-    highlights: [
-      "Built login, ticketing, and event discovery.",
-      "Added weather data and admin tools.",
-      "Connected the main app flows into one system.",
+    cover: {
+      src: "/projects/eventsys-cover.png",
+      alt: "EventSys cover showing dashboard, admin panel, and ticket purchase views",
+      width: 1600,
+      height: 1000,
+    },
+    gallery: [
+      {
+        src: "/images/eventsys/eventsys-dashboard.png",
+        alt: "EventSys dashboard with recommended events and event list",
+        width: 1918,
+        height: 849,
+        fit: "contain",
+      },
+      {
+        src: "/images/eventsys/eventsys-admin.png",
+        alt: "EventSys admin panel for event and announcement management",
+        width: 1915,
+        height: 728,
+        fit: "contain",
+      },
+      {
+        src: "/images/eventsys/eventsys-purchase.png",
+        alt: "EventSys event ticket purchase screen",
+        width: 1907,
+        height: 650,
+        fit: "contain",
+      },
     ],
-    repoUrl: "https://github.com/Abdoessam0",
-    primaryCtaLabel: "View Project",
-    secondaryCtaLabel: "Details",
+    stack: [
+      "React",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "JWT",
+      "OpenWeather API",
+    ],
+    highlights: [
+      "Implemented authentication and password flow logic.",
+      "Built ticket purchase and event discovery features.",
+      "Added admin tools and weather data integration.",
+    ],
+    metrics: [
+      { label: "Scope", value: "Users, admins, tickets, and events" },
+      { label: "Focus", value: "Full-stack workflow" },
+    ],
+    repoUrl: "https://github.com/Abdoessam0/event-management-system",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
   },
   {
     slug: "yolov8-detection",
-    title: "YOLOv8 Real-Time Detection",
-    featured: false,
+    title: "YOLOv8 Real-Time Object Detection System",
+    featured: true,
     priority: 8,
-    context: "Independent · Computer Vision",
+    year: 2024,
+    context: "Independent / Computer Vision",
     summary:
-      "A computer vision project with live camera input. I built the interface for live detection, object tracking, and basic performance feedback.",
+      "Built a real-time computer vision project with live camera detection, analytics, and a Streamlit interface for monitoring model performance.",
     description:
-      "I built the interface for live detection and basic analytics from camera input.",
+      "Built a real-time detection system with live inference, analytics, and a Streamlit monitoring layer.",
     caseStudy:
-      "I worked on the interface layer that shows detection results in real time.",
+      "This project combined model evaluation with a browser-based monitoring interface for real-time object detection. I focused on the interface and presentation layer that showed live detections, model setup, analytics, and training results in a way that was easier to review and explain.",
     role: "Computer Vision Developer",
     timeline: "2024",
     status: "Prototype",
+    cover: {
+      src: "/projects/yolo-detection-cover.png",
+      alt: "YOLO project cover showing the monitoring interface, live detection, and training metrics",
+      width: 1600,
+      height: 1000,
+    },
+    gallery: [
+      {
+        src: "/images/object-detection/yolo-overview.jpeg",
+        alt: "YOLO monitoring interface overview screen",
+        width: 1600,
+        height: 753,
+        fit: "contain",
+      },
+      {
+        src: "/images/object-detection/yolo-live-detection.png",
+        alt: "YOLO live detection interface tracking an orange in real time",
+        width: 1063,
+        height: 664,
+        fit: "contain",
+      },
+      {
+        src: "/images/object-detection/yolo-street-detection.png",
+        alt: "YOLO street scene detection output with object labels",
+        width: 747,
+        height: 494,
+        fit: "contain",
+      },
+      {
+        src: "/images/object-detection/yolo-training-metrics.jpg",
+        alt: "YOLO training metrics and benchmark charts",
+        width: 1600,
+        height: 800,
+        fit: "contain",
+      },
+    ],
     stack: ["Python", "YOLOv8", "PyTorch", "OpenCV", "Streamlit"],
     highlights: [
-      "Built the interface for live detection.",
-      "Added object tracking and simple feedback.",
-      "Focused on clear system output in real time.",
+      "Built a monitoring interface for live detection output.",
+      "Added analytics views for model setup and results.",
+      "Presented training and performance data in one workflow.",
     ],
-    repoUrl: "https://github.com/Abdoessam0",
-    primaryCtaLabel: "View Project",
-    secondaryCtaLabel: "Details",
+    metrics: [
+      { label: "Interface", value: "Live detection plus monitoring" },
+      { label: "Focus", value: "Inference and analytics" },
+    ],
+    repoUrl:
+      "https://github.com/Object-Detection-Team/object-detection-localization",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
   },
   {
     slug: "library-management",
     title: "Library Management System",
     featured: false,
-    priority: 9,
-    context: "Academic · Desktop App",
+    priority: 10,
+    year: 2022,
+    context: "Academic / Desktop App",
     summary:
-      "A desktop app for library operations. I built issue and return flows, stock tracking, and reports with SQL-based logic.",
+      "Built a desktop library automation system for books, students, issuing, returns, and reporting with a strong SQL Server backend.",
     description:
-      "I built key desktop flows for issuing books, returns, stock tracking, and reports.",
+      "Built a desktop library system for books, students, issuing, returns, and reports.",
     caseStudy:
-      "I used C# forms and SQL logic to handle day-to-day library tasks.",
+      "This project was built as a desktop workflow for day-to-day library operations. I used Windows Forms and SQL Server to handle book records, student records, issue and return logic, and reporting for staff use.",
     role: "Desktop Developer",
     timeline: "2022",
     status: "Completed",
@@ -431,18 +508,129 @@ export const PROJECTS: Project[] = [
         fit: "contain",
       },
     ],
-    stack: [
-      "C#",
-      "Windows Forms",
-      "SQL Server",
-    ],
+    stack: ["C# Windows Forms", "SQL Server", "T-SQL"],
     highlights: [
-      "Built issue and return flows.",
-      "Added stock tracking and reports.",
-      "Used SQL rules to support daily library work.",
+      "Built book, student, issue, and return workflows.",
+      "Added stock tracking and reporting screens.",
+      "Used SQL rules to support daily desktop operations.",
+    ],
+    metrics: [
+      { label: "Platform", value: "Windows desktop app" },
+      { label: "Focus", value: "Issuing, returns, and reports" },
     ],
     repoUrl: "https://github.com/Abdoessam0/Library-Management-System",
-    primaryCtaLabel: "View Project",
-    secondaryCtaLabel: "Details",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
+  },
+  {
+    slug: "easy4learning",
+    title: "Easy4Learning",
+    featured: false,
+    priority: 4,
+    year: 2026,
+    context: "Client Work / Education Website",
+    employer: "Freelance",
+    summary:
+      "Built and improved an education website with clearer page structure, better readability, stronger responsive behavior, and cleaner learning-page layouts.",
+    description:
+      "Improved content structure, responsive layout, and readability for course pages.",
+    caseStudy:
+      "This project focused on making course content easier to scan and easier to use across devices. I improved page structure, reading flow, and responsive layout so the site could present learning content more clearly.",
+    role: "Web Developer",
+    timeline: "2026",
+    status: "Live",
+    cover: {
+      src: "/projects/easy-learning-archive-cover.png",
+      alt: "Easy4Learning website homepage",
+      width: 1902,
+      height: 856,
+    },
+    stack: ["WordPress", "Responsive Templates", "Content Structure"],
+    highlights: [
+      "Improved page structure and content flow.",
+      "Built responsive layouts for learning pages.",
+      "Made longer content easier to read.",
+    ],
+    metrics: [
+      { label: "Type", value: "Education website" },
+      { label: "Focus", value: "Readability and layout" },
+    ],
+    liveUrl: "https://easyforlearn.vercel.app/",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
+  },
+  {
+    slug: "ustunler-et-borsasi",
+    title: "Ustunler Et Borsasi",
+    featured: false,
+    priority: 2,
+    year: 2026,
+    context: "Client Work / Business Website",
+    employer: "Freelance",
+    summary:
+      "Built and improved a business website with clearer page structure, better mobile flow, stronger content hierarchy, and cleaner navigation across key sections.",
+    description:
+      "Improved navigation, page flow, and responsive UI for a business website.",
+    caseStudy:
+      "I worked on the structure and front-end flow of this business website so the content stayed clear and the mobile experience felt more reliable. The main work was around layout, navigation, and cleaner page transitions.",
+    role: "Software Engineer",
+    timeline: "2026",
+    status: "Live",
+    cover: {
+      src: "/projects/ustunler-et-borsasi-cover.png",
+      alt: "Ustunler Et Borsasi business website homepage",
+      width: 1440,
+      height: 960,
+    },
+    stack: ["Next.js", "React", "Responsive UI"],
+    highlights: [
+      "Improved page flow and site navigation.",
+      "Tightened the mobile browsing experience.",
+      "Kept the layout clear and easy to scan.",
+    ],
+    metrics: [
+      { label: "Type", value: "Business website" },
+      { label: "Focus", value: "Navigation and mobile UI" },
+    ],
+    liveUrl: "https://ustunleretborsasi.com/",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
+  },
+  {
+    slug: "bels-digital-application-system",
+    title: "BELS Digital Application System",
+    featured: false,
+    priority: 3,
+    year: 2026,
+    context: "Client Work / School System",
+    employer: "Freelance",
+    summary:
+      "Built a digital school admissions system with clearer forms, guided application steps, student and parent data flow, and more structured application workflows.",
+    description:
+      "Worked on form flow, clearer actions, and a cleaner interface for school admissions.",
+    caseStudy:
+      "This admissions system focused on making form-heavy tasks easier for students and parents. I worked on the application flow, the order of actions, and the clarity of the interface so users could move through the process with less confusion.",
+    role: "Software Engineer",
+    timeline: "2026",
+    status: "Live",
+    cover: {
+      src: "/projects/bels-application-system-cover.png",
+      alt: "BELS digital application system homepage",
+      width: 1440,
+      height: 960,
+    },
+    stack: ["React", "Form UX", "Application Workflows"],
+    highlights: [
+      "Improved the main admissions form flow.",
+      "Made actions clearer for parents and students.",
+      "Simplified the task order across the application steps.",
+    ],
+    metrics: [
+      { label: "Use Case", value: "Online school admissions" },
+      { label: "Focus", value: "Form flow and clarity" },
+    ],
+    liveUrl: "https://basvuru.bels.k12.tr/",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
   },
 ];
