@@ -30,8 +30,7 @@ export function CredentialsSection() {
       <Reveal>
         <SectionHeading
           eyebrow="Credentials"
-          title="Education and certificates"
-          description="Short and clear details from my education, certificates, and volunteering."
+          title="Education, certificates, and volunteering"
         />
       </Reveal>
 
@@ -90,9 +89,6 @@ export function CredentialsSection() {
                           <p className="mt-2 text-xs text-muted">
                             {item.location} / {item.period}
                           </p>
-                          <p className="mt-2 text-sm leading-6 text-muted">
-                            {item.summary}
-                          </p>
                         </div>
                         {item.link ? (
                           <a
@@ -134,9 +130,6 @@ export function CredentialsSection() {
                         </p>
                         <p className="mt-1.5 text-[0.68rem] uppercase tracking-[0.2em] text-muted">
                           {certificate.issuer} / {certificate.date}
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-muted">
-                          {certificate.description}
                         </p>
                       </div>
                       {certificate.file || certificate.link ? (

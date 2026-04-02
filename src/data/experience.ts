@@ -61,13 +61,13 @@ export const EXPERIENCE: Experience[] = [
       "Technical SEO",
     ],
     impact: [
-      "Built reusable UI and shared layouts across multiple sites.",
-      "Improved page structure, routing, and internal links.",
-      "Helped keep launches clean and consistent.",
+      "Built reusable UI components and shared layouts across multiple sites.",
+      "Improved page structure, routing, and internal linking.",
+      "Helped keep site launches clean and consistent.",
     ],
     metrics: [
       { label: "Sites", value: "3", helper: "Lisbon, Algarve, and 5 Steps" },
-      { label: "Focus", value: "Frontend systems + SEO" },
+      { label: "Focus", value: "UI and routing" },
     ],
     links: [
       { label: "RE/MAX Wise", href: "https://www.remax.pt/" },
@@ -137,7 +137,7 @@ export const EXPERIENCE: Experience[] = [
     start: "2024-07",
     end: "2024-09",
     summary:
-      "Supported fleet systems used across 650+ GPS devices.",
+      "Supported fleet management systems across 650+ GPS devices.",
     stack: [
       "Fleet systems",
       "Diagnostics",
@@ -147,8 +147,8 @@ export const EXPERIENCE: Experience[] = [
       "Operational reporting",
     ],
     impact: [
-      "Helped with diagnostics, customer support, and follow-up.",
-      "Guided users on AFAQY Pro and handled day-to-day issues.",
+      "Handled diagnostics, customer support, and follow-ups.",
+      "Guided users on AFAQY Pro and resolved day-to-day issues.",
       "Helped keep data accurate across internal systems.",
     ],
     metrics: [
@@ -206,7 +206,7 @@ export const EXPERIENCE: Experience[] = [
     impact: [
       "Improved responsive layout and content structure.",
       "Helped with hosting, updates, and client delivery.",
-      "Worked on websites for business and education clients.",
+      "Built websites for business and education clients.",
     ],
     metrics: [
       { label: "Strengths", value: "Frontend quality + content systems" },

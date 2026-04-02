@@ -43,14 +43,14 @@ export const PROJECTS: Project[] = [
     title: "RE/MAX Lisbon",
     featured: true,
     priority: 1,
-    context: "RE/MAX Wise / Production",
+    context: "RE/MAX Wise · Production",
     employer: "RE/MAX Wise",
     summary:
-      "Production real estate platform work for RE/MAX Wise. I built shared UI, improved page structure and routing, and helped keep multiple site launches consistent.",
+      "Production real estate platform for RE/MAX Wise. I built shared UI components, improved page structure and routing, and helped keep multiple site launches consistent.",
     description:
-      "I worked on shared UI, page structure, routing, and updates used across multiple site launches.",
+      "I worked on shared UI components, page structure, and routing used across multiple launches.",
     caseStudy:
-      "This was real production work for RE/MAX Wise. I helped build shared UI and keep multiple launches clean and consistent.",
+      "Real production work for RE/MAX Wise. I helped build shared UI and keep multiple launches clean and consistent.",
     role: "Software Developer",
     timeline: "Sep 2025 - Nov 2025",
     status: "Live",
@@ -105,21 +105,20 @@ export const PROJECTS: Project[] = [
       },
     ],
     stack: [
-      "Next.js 15",
+      "Next.js",
       "TypeScript",
       "Tailwind CSS",
       "Supabase",
       "Vercel",
-      "Technical SEO",
     ],
     highlights: [
-      "Built shared UI and reusable layouts.",
+      "Built shared UI components and reusable layouts.",
       "Improved page structure and routing.",
       "Helped keep launches consistent across sites.",
     ],
     metrics: [
       { label: "Sites", value: "3 live sites" },
-      { label: "Focus", value: "UI and SEO" },
+      { label: "Focus", value: "UI and routing" },
     ],
     liveUrl: "https://www.realestate-lisbon.com/about",
     primaryCtaLabel: "Visit Project",
@@ -130,14 +129,14 @@ export const PROJECTS: Project[] = [
     title: "Easy4Learning",
     featured: true,
     priority: 2,
-    context: "Freelance / Education Platform",
+    context: "Freelance · Education Website",
     employer: "Freelance",
     summary:
-      "An education website for courses and learning content. I improved page structure, readability, and responsive layout so the content is easier to follow.",
+      "An education website for courses and learning content. I improved page structure, readability, and responsive layout to make the content easier to follow.",
     description:
-      "I improved content layout, page structure, and responsive templates so lessons and course pages were easier to read.",
+      "I improved content layout, page structure, and responsive templates so course pages were easier to follow.",
     caseStudy:
-      "This project was about clarity. I worked on layout and content structure so users could understand the site faster.",
+      "I worked on layout and content structure so users could read and follow the content more easily.",
     role: "WordPress / Web Developer",
     timeline: "2026",
     status: "Live",
@@ -149,14 +148,13 @@ export const PROJECTS: Project[] = [
     },
     stack: [
       "WordPress",
-      "Content architecture",
       "Responsive templates",
-      "Education UX",
+      "Content structure",
     ],
     highlights: [
       "Improved page structure and readability.",
       "Built responsive templates for course pages.",
-      "Made the content easier to scan and follow.",
+      "Made the content easier to follow.",
     ],
     metrics: [
       { label: "Context", value: "Education website" },
@@ -171,14 +169,14 @@ export const PROJECTS: Project[] = [
     title: "Ustunler Et Borsasi",
     featured: true,
     priority: 3,
-    context: "Freelance / Business Platform",
+    context: "Freelance · Business Website",
     employer: "Freelance",
     summary:
-      "A business website built around trust and clear navigation. I improved the layout, page flow, and mobile experience to make the site easier to use.",
+      "A business website focused on trust and clear navigation. I improved the layout, page flow, and mobile experience.",
     description:
-      "I worked on layout, navigation, and responsive UI to make the site feel clearer and more reliable.",
+      "I worked on layout, navigation, and responsive UI to make the site easier to use.",
     caseStudy:
-      "This project needed a simple business feel. I focused on structure, trust, and an easier mobile experience.",
+      "I focused on trust, structure, and a better mobile experience.",
     role: "Software Engineer",
     timeline: "2026",
     status: "Live",
@@ -188,10 +186,10 @@ export const PROJECTS: Project[] = [
       width: 1440,
       height: 960,
     },
-    stack: ["Next.js", "React", "Responsive UI", "Business workflow UX"],
+    stack: ["Next.js", "React", "Responsive UI"],
     highlights: [
       "Improved layout and page flow.",
-      "Made the mobile experience easier to use.",
+      "Improved the mobile experience.",
       "Kept the UI clear and simple.",
     ],
     metrics: [
@@ -207,14 +205,14 @@ export const PROJECTS: Project[] = [
     title: "BELS Digital Application System",
     featured: false,
     priority: 4,
-    context: "Freelance / Education Platform",
+    context: "Freelance · School System",
     employer: "Freelance",
     summary:
-      "A school application system for online admissions. I worked on form flow, clearer actions, and a cleaner interface for students and parents.",
+      "A school admissions system. I worked on form flow, clearer actions, and a cleaner interface for students and parents.",
     description:
-      "I worked on the application flow and made the main actions easier for students and parents to follow.",
+      "I worked on the application flow and made the main actions easier to follow.",
     caseStudy:
-      "This project needed a clear application flow. I focused on task order, cleaner actions, and a simpler interface.",
+      "I focused on task order, clearer actions, and a simpler interface.",
     role: "Software Engineer",
     timeline: "2026",
     status: "Live",
@@ -226,9 +224,8 @@ export const PROJECTS: Project[] = [
     },
     stack: [
       "React",
-      "Application workflows",
       "Form UX",
-      "Responsive interface",
+      "Application workflows",
     ],
     highlights: [
       "Improved form flow and key actions.",
@@ -248,14 +245,14 @@ export const PROJECTS: Project[] = [
     title: "Erzurum Sikayet",
     featured: false,
     priority: 5,
-    context: "Freelance / Civic Platform",
+    context: "Freelance · Civic Platform",
     employer: "Freelance",
     summary:
-      "A public complaint platform with admin features. I built user flows for complaints, content listing, and admin management.",
+      "A public complaint platform with admin features. I built user flows for submitting complaints, listing content, and managing the admin side.",
     description:
-      "I built complaint flows, listings, and admin features for managing public reports.",
+      "I built complaint flows, content listing, and admin features for public reports.",
     caseStudy:
-      "This project combined public forms with admin work. I focused on clear flows for users and simple tools for management.",
+      "I focused on clear flows for users and simple tools for admin work.",
     role: "Full-stack Developer",
     timeline: "2026",
     status: "Live",
@@ -265,7 +262,7 @@ export const PROJECTS: Project[] = [
       width: 1440,
       height: 960,
     },
-    stack: ["Laravel", "Blade", "Alpine.js", "MySQL", "Role-based dashboards"],
+    stack: ["Laravel", "Blade", "Alpine.js", "MySQL"],
     highlights: [
       "Built complaint submission and listing flows.",
       "Added admin features for management.",
@@ -285,13 +282,13 @@ export const PROJECTS: Project[] = [
     title: "TrustedBuildr",
     featured: false,
     priority: 6,
-    context: "Independent / Property Marketplace",
+    context: "Independent · Property Marketplace",
     summary:
-      "A property marketplace for verified listings. I built the product with a focus on trust, SEO, bilingual pages, and clean browsing.",
+      "A property marketplace for verified listings. I built the product with a focus on trust signals, SEO, bilingual pages, and easy browsing.",
     description:
-      "I built pages for verified listings and worked on trust, SEO, and bilingual support.",
+      "I built the product around verified listings, SEO, bilingual pages, and easy browsing.",
     caseStudy:
-      "This project was about trust and structure. I focused on clear browsing, SEO, and support for more than one language.",
+      "I focused on trust signals, SEO, and support for more than one language.",
     role: "Full-stack Developer",
     timeline: "2025",
     status: "Live",
@@ -302,12 +299,11 @@ export const PROJECTS: Project[] = [
       height: 960,
     },
     stack: [
-      "Next.js 15",
+      "Next.js",
       "TypeScript",
       "Tailwind CSS",
       "Supabase",
       "Leaflet",
-      "Structured SEO",
     ],
     highlights: [
       "Built pages for verified listings.",
@@ -324,13 +320,13 @@ export const PROJECTS: Project[] = [
     title: "EventSys",
     featured: false,
     priority: 7,
-    context: "Independent / Event Platform",
+    context: "Independent · Event Platform",
     summary:
-      "An event management system prototype. I built core features for login, ticketing, event discovery, weather data, and admin tools.",
+      "An event management system prototype. I built features for login, ticketing, event discovery, weather data, and admin tools.",
     description:
       "I built the main app flow for users and admins, including tickets, weather data, and login.",
     caseStudy:
-      "This was a full-stack prototype with both user and admin features. I worked on the main flows and connected the app data together.",
+      "I worked on the main user and admin flows and connected the app data together.",
     role: "Full-stack Developer",
     timeline: "2023",
     status: "Prototype",
@@ -349,17 +345,17 @@ export const PROJECTS: Project[] = [
     title: "YOLOv8 Real-Time Detection",
     featured: false,
     priority: 8,
-    context: "Independent / Computer Vision",
+    context: "Independent · Computer Vision",
     summary:
-      "A computer vision project with live camera input. I built the interface for live detection, object tracking, and simple performance feedback.",
+      "A computer vision project with live camera input. I built the interface for live detection, object tracking, and basic performance feedback.",
     description:
-      "I built the interface for live detection and simple analytics from camera input.",
+      "I built the interface for live detection and basic analytics from camera input.",
     caseStudy:
-      "This project focused on live input and feedback. I worked on the interface layer that shows detection results in real time.",
+      "I worked on the interface layer that shows detection results in real time.",
     role: "Computer Vision Developer",
     timeline: "2024",
     status: "Prototype",
-    stack: ["Python", "YOLOv8", "PyTorch", "OpenCV", "Streamlit", "WebRTC"],
+    stack: ["Python", "YOLOv8", "PyTorch", "OpenCV", "Streamlit"],
     highlights: [
       "Built the interface for live detection.",
       "Added object tracking and simple feedback.",
@@ -374,13 +370,13 @@ export const PROJECTS: Project[] = [
     title: "Library Management System",
     featured: false,
     priority: 9,
-    context: "Academic / Desktop Tool",
+    context: "Academic · Desktop App",
     summary:
-      "A desktop app for library work. I built issue and return flows, stock tracking, and reports with SQL-based rules.",
+      "A desktop app for library operations. I built issue and return flows, stock tracking, and reports with SQL-based logic.",
     description:
       "I built key desktop flows for issuing books, returns, stock tracking, and reports.",
     caseStudy:
-      "This project focused on clear desktop workflows. I used SQL rules and C# forms to handle day-to-day library tasks.",
+      "I used C# forms and SQL logic to handle day-to-day library tasks.",
     role: "Desktop Developer",
     timeline: "2022",
     status: "Completed",
@@ -388,9 +384,6 @@ export const PROJECTS: Project[] = [
       "C#",
       "Windows Forms",
       "SQL Server",
-      "Stored Procedures",
-      "Triggers",
-      "Reporting",
     ],
     highlights: [
       "Built issue and return flows.",

@@ -143,7 +143,7 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
 
             <div className="space-y-3">
               <h2 className="font-heading text-2xl font-semibold text-white">
-                Stack and focus
+                Tools and work
               </h2>
               <div className="flex flex-wrap gap-2">
                 {experience.stack.map((item) => (
@@ -193,8 +193,7 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
               <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
                 <p className="pill-label">Documents</p>
                 <p className="mt-4 text-sm leading-6 text-muted">
-                  Supporting material from this role, including the AFAQY
-                  experience PDF and certificate.
+                  Files from this role.
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-2">

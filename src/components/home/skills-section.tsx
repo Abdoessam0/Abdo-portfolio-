@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  Cloud,
   Code2,
   Database,
   Search,
@@ -17,7 +16,7 @@ import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 const iconMap: Record<string, LucideIcon> = {
   Frontend: Code2,
   Backend: Database,
-  Database: Cloud,
+  Database: Database,
   Tools: Wrench,
   Focus: Search,
 };
@@ -29,11 +28,7 @@ export function SkillsSection() {
   return (
     <section id="skills" className="space-y-8 py-4 sm:space-y-10">
       <Reveal>
-        <SectionHeading
-          eyebrow="Skills"
-          title="Skills"
-          description="The tools and areas I use most in real work."
-        />
+        <SectionHeading eyebrow="Skills" title="Skills" />
       </Reveal>
 
       <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
@@ -57,15 +52,9 @@ export function SkillsSection() {
                       <Icon className="h-4.5 w-4.5" />
                     </div>
                     <div>
-                      <p className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">
-                        Capability
-                      </p>
                       <h3 className="mt-2 font-heading text-[1.2rem] font-semibold tracking-[-0.04em] text-white sm:text-[1.35rem]">
                         {group.title}
                       </h3>
-                      <p className="mt-2 text-sm leading-6 text-muted">
-                        {group.summary}
-                      </p>
                     </div>
                   </div>
 

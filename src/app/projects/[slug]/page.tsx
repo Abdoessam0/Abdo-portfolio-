@@ -133,7 +133,7 @@ export default async function ProjectDetailPage({
             ) : null}
 
             <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-4 sm:p-5">
-              <p className="pill-label">Overview</p>
+              <p className="pill-label">About this project</p>
               <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
                 {project.caseStudy}
               </p>
@@ -141,7 +141,7 @@ export default async function ProjectDetailPage({
 
             <div className="space-y-3">
               <h2 className="font-heading text-2xl font-semibold text-white">
-                What I focused on
+                What I worked on
               </h2>
               <ul className="grid gap-3">
                 {project.highlights.map((item) => (
@@ -181,7 +181,7 @@ export default async function ProjectDetailPage({
                 </div>
                 {project.employer ? (
                   <div>
-                    <dt className="text-muted">Delivery context</dt>
+                    <dt className="text-muted">Company</dt>
                     <dd className="mt-1 text-white">{project.employer}</dd>
                   </div>
                 ) : null}
@@ -232,7 +232,7 @@ export default async function ProjectDetailPage({
                   href="/#contact"
                   className="inline-flex items-center justify-between rounded-2xl border border-white/10 px-4 py-3 text-white transition hover:border-brand/30"
                 >
-                  <span>Discuss similar work</span>
+                  <span>Get in touch</span>
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </div>

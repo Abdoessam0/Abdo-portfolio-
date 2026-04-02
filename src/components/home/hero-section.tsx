@@ -18,7 +18,7 @@ import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 const heroBadges = [
   { icon: Code2, label: "Next.js" },
   { icon: Layers3, label: "TypeScript" },
-  { icon: Gauge, label: "SEO + performance" },
+  { icon: Gauge, label: "Full-stack" },
 ];
 
 export function HeroSection() {

@@ -8,10 +8,10 @@ import { SectionHeading } from "@/components/home/section-heading";
 const iconMap = [CheckCircle2, ServerCog, Languages];
 
 const whatIDo = [
-  "Build web apps and websites.",
-  "Create clean, responsive UI.",
-  "Work with APIs and backend services.",
-  "Improve performance and code quality.",
+  "Websites",
+  "Dashboards",
+  "Full-stack systems",
+  "Production apps",
 ];
 
 export function AboutSection() {
@@ -20,8 +20,7 @@ export function AboutSection() {
       <Reveal>
         <SectionHeading
           eyebrow="About"
-          title="Full-Stack engineer, frontend-first."
-          description="I build web applications with clean UI, strong performance, and code that is easy to maintain."
+          title="Full-Stack Software Engineer, frontend-first."
         />
       </Reveal>
 
@@ -55,7 +54,7 @@ export function AboutSection() {
 
             <div className="rounded-[1.2rem] border border-white/8 bg-white/[0.03] p-4">
               <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
-                What I do
+                Work
               </p>
               <ul className="mt-3 grid gap-2.5 text-sm text-soft sm:grid-cols-2">
                 {whatIDo.map((item) => (

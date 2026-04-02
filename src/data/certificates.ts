@@ -18,8 +18,7 @@ export const CERTIFICATES: Certificate[] = [
     title: "RE/MAX Erasmus Traineeship",
     issuer: "RE/MAX Wise / Erasmus+",
     date: "2025",
-    description:
-      "Internship work on real estate websites in Lisbon.",
+    description: "Real estate website work in Lisbon.",
     link: "https://drive.google.com/file/d/1osHUIPXYgXq8VExX5IS30YS8s0N7pkl4/view",
   },
   {
@@ -27,8 +26,7 @@ export const CERTIFICATES: Certificate[] = [
     title: "AFAQY Technical Support Certificate",
     issuer: "AFAQY",
     date: "2024",
-    description:
-      "Technical support work for fleet and GPS systems.",
+    description: "Technical support for fleet and GPS systems.",
     link: "https://drive.google.com/file/d/12n9q_PXELFOZc_10Ih2ru4vFmHvBB3Fl/view",
   },
   {
@@ -36,8 +34,7 @@ export const CERTIFICATES: Certificate[] = [
     title: "WordPress Internship",
     issuer: "NFS Soft",
     date: "2022",
-    description:
-      "WordPress internship in website building and responsive layout.",
+    description: "Website building and responsive layout.",
     file: "wordpress-internship.png",
     link: "https://drive.google.com/file/d/1cwgI7_pCaVFcKhjyxm98mqz1JYaoc_ga/view",
   },
@@ -46,8 +43,7 @@ export const CERTIFICATES: Certificate[] = [
     title: "ALX Full-Stack Software Engineer",
     issuer: "ALX",
     date: "2024",
-    description:
-      "Full-stack software engineering diploma.",
+    description: "Full-stack software engineering diploma.",
     link: "https://drive.google.com/file/d/14OYXQ_t77mkbKoG0yessXT2EesEtAi97/view",
   },
   {

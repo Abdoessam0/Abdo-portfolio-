@@ -109,9 +109,9 @@ export default function OpengraphImage() {
                 color: "#c7d2ea",
               }}
             >
-              <span>Frontend systems</span>
-              <span>Production platforms</span>
-              <span>SEO / performance / UI quality</span>
+              <span>Full-stack web apps</span>
+              <span>Production systems</span>
+              <span>UI · performance · clean code</span>
             </div>
           </div>
         </div>

@@ -207,12 +207,10 @@ export function ExperienceCard({
                 <div className="rounded-[1.35rem] border border-white/10 bg-[linear-gradient(160deg,rgba(18,28,48,0.84),rgba(7,12,24,0.96))] p-4">
                   <p className="pill-label">Moments</p>
                   <p className="mt-4 text-sm font-medium text-white">
-                    Technical support work in Riyadh with team collaboration and
-                    on-site certificate handoff.
+                    Photos from my internship in Riyadh.
                   </p>
                   <p className="mt-3 text-sm leading-6 text-muted">
-                    Added real internship photos to replace the placeholder
-                    graphic so the section reflects the actual AFAQY experience.
+                    Team moments and certificate handoff during the role.
                   </p>
                 </div>
               </div>

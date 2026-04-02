@@ -18,12 +18,12 @@ const projectHighlights = [
   {
     label: "Live now",
     value: `${liveProjectCount} launched`,
-    helper: "Real client and production work",
+    helper: "Production and client work",
   },
   {
     label: "Focus",
-    value: "Full-stack work",
-    helper: "UI, performance, and clean code",
+    value: "Usability and code",
+    helper: "Performance and maintenance",
   },
 ];
 
@@ -34,7 +34,7 @@ export function ProjectsSection() {
         <SectionHeading
           eyebrow="Projects"
           title="Selected work"
-          description="Selected work from real projects and production systems."
+          description="Real projects and production work. Built with a focus on usability, performance, and maintainable code."
         />
 
         <div className="grid gap-3 sm:grid-cols-3 lg:w-[40rem]">

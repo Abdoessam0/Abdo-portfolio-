@@ -12,11 +12,7 @@ export function ExperienceSection() {
   return (
     <section id="experience" className="space-y-8 py-4 sm:space-y-10">
       <Reveal>
-        <SectionHeading
-          eyebrow="Experience"
-          title="Work experience"
-          description="Real work across websites, systems, and support."
-        />
+        <SectionHeading eyebrow="Experience" title="Experience" />
       </Reveal>
 
       <div className="space-y-5">
