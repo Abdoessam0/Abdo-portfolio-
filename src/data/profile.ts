@@ -101,6 +101,8 @@ export type Profile = {
   };
 };
 
+const RESUME_PATH = "/Abdelrahman_Mohamed_CV_DPS.pdf";
+
 export const PROFILE: Profile = {
   person: {
     name: "Abdelrahman Mohamed",
@@ -126,7 +128,7 @@ export const PROFILE: Profile = {
   },
   links: {
     portfolio: "https://abdoessamcv.vercel.app",
-    resume: "/cv.pdf",
+    resume: RESUME_PATH,
   },
   hero: {
     eyebrow: "Full-Stack Engineer · Next.js / React / TypeScript",
@@ -148,7 +150,7 @@ export const PROFILE: Profile = {
       },
       {
         label: "Download CV",
-        href: "/cv.pdf",
+        href: RESUME_PATH,
         ariaLabel: "Download Abdelrahman Mohamed CV PDF",
       },
     ],
@@ -366,7 +368,7 @@ export const PROFILE: Profile = {
       },
       {
         label: "CV",
-        href: "/cv.pdf",
+        href: RESUME_PATH,
         value: "Download CV",
         note: "Resume PDF",
         kind: "resume",
