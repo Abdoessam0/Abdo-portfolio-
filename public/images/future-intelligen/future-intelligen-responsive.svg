@@ -1,0 +1,63 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" rx="48" fill="#F3F7FB"/>
+  <rect x="88" y="92" width="1136" height="736" rx="42" fill="#FFFFFF"/>
+  <rect x="88" y="92" width="1136" height="736" rx="42" fill="url(#paint0_linear)" fill-opacity="0.24"/>
+  <rect x="146" y="144" width="1020" height="64" rx="22" fill="#EFF4F9"/>
+  <rect x="184" y="164" width="116" height="24" rx="12" fill="#D8E3EE"/>
+  <rect x="520" y="164" width="82" height="24" rx="12" fill="#D8E3EE"/>
+  <rect x="626" y="164" width="104" height="24" rx="12" fill="#D8E3EE"/>
+  <rect x="754" y="164" width="88" height="24" rx="12" fill="#D8E3EE"/>
+  <rect x="866" y="164" width="96" height="24" rx="12" fill="#D8E3EE"/>
+  <rect x="986" y="164" width="118" height="24" rx="12" fill="#D8E3EE"/>
+  <rect x="156" y="258" width="456" height="462" rx="34" fill="url(#paint1_linear)"/>
+  <rect x="212" y="318" width="344" height="160" rx="24" fill="#DBE6F1"/>
+  <rect x="244" y="372" width="40" height="68" rx="10" fill="#2EB1DB"/>
+  <rect x="296" y="356" width="40" height="84" rx="10" fill="#2EB1DB"/>
+  <rect x="348" y="388" width="40" height="52" rx="10" fill="#2EB1DB"/>
+  <rect x="400" y="366" width="40" height="74" rx="10" fill="#2EB1DB"/>
+  <rect x="452" y="382" width="40" height="58" rx="10" fill="#2EB1DB"/>
+  <text x="244" y="346" fill="#1D915C" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">24% +</text>
+  <rect x="212" y="542" width="144" height="102" rx="24" fill="#EEF3F8"/>
+  <rect x="372" y="542" width="184" height="102" rx="24" fill="#DCE7F1"/>
+  <text x="238" y="587" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Fast launch</text>
+  <text x="400" y="584" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">New leads</text>
+  <text x="402" y="624" fill="#142541" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800">128+</text>
+  <text x="672" y="316" fill="#1A2C48" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="800">Business website</text>
+  <text x="672" y="408" fill="#26A8DE" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="800">Refined hierarchy</text>
+  <text x="672" y="482" fill="#516883" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="500">Desktop and mobile layouts tuned for faster scanning and cleaner service presentation.</text>
+  <rect x="672" y="560" width="176" height="56" rx="28" fill="#142541"/>
+  <text x="720" y="595" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">View live site</text>
+  <rect x="868" y="560" width="188" height="56" rx="28" fill="#FFFFFF" stroke="#D6E1EB" stroke-width="2"/>
+  <text x="920" y="595" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">See services</text>
+  <rect x="682" y="662" width="170" height="116" rx="28" fill="#FFFFFF"/>
+  <rect x="870" y="662" width="170" height="116" rx="28" fill="#FFFFFF"/>
+  <rect x="1058" y="662" width="130" height="116" rx="28" fill="#FFFFFF"/>
+  <text x="708" y="710" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Clear services</text>
+  <text x="708" y="742" fill="#61758B" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="500">Less noise, better scanning</text>
+  <text x="896" y="710" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Responsive UI</text>
+  <text x="896" y="742" fill="#61758B" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="500">Stronger mobile behavior</text>
+  <text x="1084" y="710" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Polish</text>
+  <text x="1084" y="742" fill="#61758B" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="500">Sharper visual rhythm</text>
+  <rect x="1188" y="220" width="320" height="620" rx="44" fill="#13233F"/>
+  <rect x="1210" y="242" width="276" height="576" rx="34" fill="#F7FAFD"/>
+  <rect x="1242" y="286" width="212" height="30" rx="15" fill="#DCE6F1"/>
+  <rect x="1242" y="344" width="212" height="180" rx="28" fill="url(#paint2_linear)"/>
+  <rect x="1242" y="552" width="212" height="96" rx="24" fill="#FFFFFF" stroke="#E0E8F0" stroke-width="2"/>
+  <rect x="1242" y="670" width="212" height="96" rx="24" fill="#FFFFFF" stroke="#E0E8F0" stroke-width="2"/>
+  <text x="1270" y="608" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Service cards</text>
+  <text x="1270" y="726" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Mobile CTA flow</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="656" y1="92" x2="656" y2="828" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EAF5FB"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear" x1="156" y1="258" x2="612" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#16294D"/>
+      <stop offset="1" stop-color="#1A8DA0"/>
+    </linearGradient>
+    <linearGradient id="paint2_linear" x1="1348" y1="344" x2="1348" y2="524" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E5F5FC"/>
+      <stop offset="1" stop-color="#CBEAF7"/>
+    </linearGradient>
+  </defs>
+</svg>

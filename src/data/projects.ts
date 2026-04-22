@@ -1,3 +1,9 @@
+export type ProjectCollection =
+  | "Client Work"
+  | "Independent"
+  | "Prototype"
+  | "Academic";
+
 export type ProjectImage = {
   src: string;
   alt: string;
@@ -22,6 +28,8 @@ export type Project = {
   featured: boolean;
   priority: number;
   year: number;
+  collection: ProjectCollection;
+  projectType: string;
   context: string;
   employer?: string;
   summary: string;
@@ -44,34 +52,18 @@ export type Project = {
   secondaryCtaLabel: string;
 };
 
-export const PINNED_PROJECT_ORDER = [
-  "real-estate-platforms",
-  "ustunler-et-borsasi",
-  "bels-digital-application-system",
-  "easy4learning",
-] as const;
-
 export function sortProjects(projects: Project[]) {
-  const pinnedIndex = new Map<string, number>(
-    PINNED_PROJECT_ORDER.map((slug, index) => [slug, index]),
-  );
-
   return [...projects].sort((left, right) => {
-    const leftPinned = pinnedIndex.get(left.slug);
-    const rightPinned = pinnedIndex.get(right.slug);
-
-    if (leftPinned !== undefined || rightPinned !== undefined) {
-      if (leftPinned === undefined) return 1;
-      if (rightPinned === undefined) return -1;
-      return leftPinned - rightPinned;
-    }
-
     if (left.year !== right.year) {
       return right.year - left.year;
     }
 
     return left.priority - right.priority;
   });
+}
+
+export function getProjectPrimaryUrl(project: Project) {
+  return project.archived ? project.archiveUrl : project.liveUrl;
 }
 
 export const PROJECTS: Project[] = [
@@ -81,14 +73,16 @@ export const PROJECTS: Project[] = [
     featured: true,
     priority: 1,
     year: 2025,
-    context: "RE/MAX Wise / Production",
+    collection: "Client Work",
+    projectType: "Multi-Site Real Estate Platform",
+    context: "RE/MAX Wise",
     employer: "RE/MAX Wise",
     summary:
-      "Built and improved multi-site real estate platforms for Algarve, Lisbon, and 5 Steps with reusable UI, SEO-safe routing, shared layouts, and stable deployment workflows.",
+      "Built reusable UI and SEO-safe routing across three live real estate sites, improving launch consistency, page quality, and maintainability.",
     description:
-      "Built shared UI, SEO-safe routing, and reusable layouts across multiple production real estate platforms.",
+      "Reusable UI, SEO-safe routing, and shared layouts across three production real estate platforms.",
     caseStudy:
-      "This work covered three live real estate platforms built for different audiences with the same product base. I focused on reusable UI, SEO-safe routing, shared layouts, and launch stability so new site work could ship faster without breaking the desktop or mobile experience.",
+      "This work covered three live real estate platforms built for different audiences on the same product base. I focused on reusable UI, SEO-safe routing, shared layouts, and launch stability so new site work could ship faster without breaking the desktop or mobile experience.",
     role: "Software Developer",
     timeline: "2025",
     status: "Production",
@@ -130,7 +124,7 @@ export const PROJECTS: Project[] = [
     highlights: [
       "Built reusable UI and shared layout patterns.",
       "Improved routing and page structure for SEO-safe launches.",
-      "Helped keep multi-site releases consistent and stable.",
+      "Kept multi-site releases consistent across desktop and mobile.",
     ],
     metrics: [
       { label: "Sites", value: "3 live platforms" },
@@ -150,11 +144,13 @@ export const PROJECTS: Project[] = [
     featured: true,
     priority: 5,
     year: 2025,
-    context: "Independent / Marketplace",
+    collection: "Independent",
+    projectType: "Marketplace Platform",
+    context: "Independent Product",
     summary:
-      "Built a bilingual marketplace for verified developers, land listings, and construction projects with structured SEO and scalable architecture.",
+      "Built a bilingual marketplace for verified developers, land listings, and construction projects with scalable structure and search-ready SEO.",
     description:
-      "Built a verified property marketplace with bilingual browsing, SEO-ready pages, and location-based discovery.",
+      "Verified property marketplace with bilingual browsing, SEO-ready pages, and location-based discovery.",
     caseStudy:
       "TrustedBuildr.pt was built as a full-stack marketplace for verified land and construction opportunities. I worked on the product structure, bilingual content flow, SEO-friendly pages, and scalable data handling so the browsing experience stayed clear as the platform grew.",
     role: "Full-Stack Software Engineer",
@@ -194,11 +190,13 @@ export const PROJECTS: Project[] = [
     featured: true,
     priority: 7,
     year: 2025,
-    context: "Independent / Civic Platform",
+    collection: "Independent",
+    projectType: "Civic Platform",
+    context: "Independent Product",
     summary:
-      "Built a full-stack complaint and review platform with user, company, and admin dashboards, category filtering, complaint workflows, and production deployment.",
+      "Built a complaint and review platform with public flows, dashboards, moderation tools, and production deployment for real user submissions.",
     description:
-      "Built a city complaint platform with public flows, dashboard tools, and admin-side management.",
+      "City complaint platform with public flows, dashboard tools, and admin-side management.",
     caseStudy:
       "ErzurumSikayet was built as a full-stack review and complaint platform for local services. I handled the public complaint flow, category browsing, and the dashboard structure for companies and admins so the product could support real reports and moderation work.",
     role: "Full-Stack Software Engineer",
@@ -238,11 +236,13 @@ export const PROJECTS: Project[] = [
     featured: true,
     priority: 6,
     year: 2025,
-    context: "University / Mobile App",
+    collection: "Prototype",
+    projectType: "Mobile Safety App",
+    context: "Ataturk University",
     summary:
-      "Built a mobile campus safety app with emergency alerts, incident reporting, user profiles, and admin-side safety workflows.",
+      "Built a campus safety mobile app prototype with emergency alerts, map-based incident reporting, account flows, and admin-side safety workflows.",
     description:
-      "Built a mobile safety app for alerts, incident reporting, profile tools, and admin-side workflows.",
+      "Mobile safety app for alerts, incident reporting, profile tools, and admin-side workflows.",
     caseStudy:
       "This mobile app was designed for campus safety workflows at Ataturk University. I worked on the product flow for emergency alerts, incident reporting, profile management, notification preferences, and the admin-side tools needed to manage safety updates.",
     role: "Mobile App Developer",
@@ -314,11 +314,13 @@ export const PROJECTS: Project[] = [
     featured: true,
     priority: 9,
     year: 2023,
-    context: "Independent / Event Platform",
+    collection: "Prototype",
+    projectType: "Event Platform",
+    context: "Independent Prototype",
     summary:
-      "Built an event management system prototype with authentication, ticketing, event discovery, weather integration, and admin event tools.",
+      "Built an event management system prototype with authentication, ticketing, weather integration, event discovery, and admin event tools.",
     description:
-      "Built an event platform prototype with auth, ticketing, weather data, and admin tools.",
+      "Event platform prototype with auth, ticketing, weather data, and admin tools.",
     caseStudy:
       "EventSys was built as a full-stack event workflow that covers account access, event discovery, ticket purchases, and admin updates. I worked across the React frontend and Node.js backend, including the event feed, purchase flow, and weather data integration.",
     role: "Full-Stack Software Engineer",
@@ -380,11 +382,13 @@ export const PROJECTS: Project[] = [
     featured: true,
     priority: 8,
     year: 2024,
-    context: "Independent / Computer Vision",
+    collection: "Prototype",
+    projectType: "Computer Vision System",
+    context: "Independent Prototype",
     summary:
-      "Built a real-time computer vision project with live camera detection, analytics, and a Streamlit interface for monitoring model performance.",
+      "Built a real-time computer vision interface with live detection, model analytics, and a Streamlit monitoring layer for reviewing output.",
     description:
-      "Built a real-time detection system with live inference, analytics, and a Streamlit monitoring layer.",
+      "Real-time detection system with live inference, analytics, and a Streamlit monitoring layer.",
     caseStudy:
       "This project combined model evaluation with a browser-based monitoring interface for real-time object detection. I focused on the interface and presentation layer that showed live detections, model setup, analytics, and training results in a way that was easier to review and explain.",
     role: "Computer Vision Developer",
@@ -447,11 +451,13 @@ export const PROJECTS: Project[] = [
     featured: false,
     priority: 10,
     year: 2022,
-    context: "Academic / Desktop App",
+    collection: "Academic",
+    projectType: "Desktop Management System",
+    context: "Academic Project",
     summary:
-      "Built a desktop library automation system for books, students, issuing, returns, and reporting with a strong SQL Server backend.",
+      "Built a desktop library automation system for books, students, issuing, returns, and reporting on top of a strong SQL Server backend.",
     description:
-      "Built a desktop library system for books, students, issuing, returns, and reports.",
+      "Desktop library system for books, students, issuing, returns, and reports.",
     caseStudy:
       "This project was built as a desktop workflow for day-to-day library operations. I used Windows Forms and SQL Server to handle book records, student records, issue and return logic, and reporting for staff use.",
     role: "Desktop Developer",
@@ -528,10 +534,12 @@ export const PROJECTS: Project[] = [
     featured: false,
     priority: 4,
     year: 2026,
-    context: "Client Work / Education Website",
+    collection: "Client Work",
+    projectType: "Education Website",
+    context: "Freelance Client",
     employer: "Freelance",
     summary:
-      "Built and improved an education website with clearer page structure, better readability, stronger responsive behavior, and cleaner learning-page layouts.",
+      "Improved an education website with cleaner content structure, stronger readability, and more reliable responsive behavior across learning pages.",
     description:
       "Improved content structure, responsive layout, and readability for course pages.",
     caseStudy:
@@ -560,19 +568,83 @@ export const PROJECTS: Project[] = [
     secondaryCtaLabel: "View Project",
   },
   {
+    slug: "future-intelligen",
+    title: "Future Intelligen",
+    featured: true,
+    priority: 5,
+    year: 2026,
+    collection: "Client Work",
+    projectType: "Business Website",
+    context: "Freelance Client",
+    employer: "Freelance",
+    summary:
+      "Built and improved a business and technology company website with clearer service presentation, stronger visual hierarchy, improved mobile responsiveness, and a more polished user-facing experience.",
+    description:
+      "Clarified service presentation, strengthened hierarchy, and improved responsive behavior for a business website.",
+    caseStudy:
+      "Future Intelligen focused on making a business and technology brand feel clearer, more polished, and easier to trust. I improved the service presentation, tightened the visual hierarchy, refined mobile responsiveness, and cleaned up the overall frontend experience so visitors could understand the offer faster.",
+    role: "Frontend Engineer",
+    timeline: "2026",
+    status: "Live",
+    cover: {
+      src: "/projects/future-intelligen-cover.svg",
+      alt: "Future Intelligen homepage concept showing the hero section, call to action, and analytics-style illustration",
+      width: 1600,
+      height: 1000,
+      fit: "contain",
+    },
+    gallery: [
+      {
+        src: "/projects/future-intelligen-cover.svg",
+        alt: "Future Intelligen homepage concept showing the hero section, call to action, and analytics-style illustration",
+        width: 1600,
+        height: 1000,
+        fit: "contain",
+      },
+      {
+        src: "/images/future-intelligen/future-intelligen-responsive.svg",
+        alt: "Responsive concept for Future Intelligen showing desktop and mobile layouts with service cards",
+        width: 1600,
+        height: 1000,
+        fit: "contain",
+      },
+    ],
+    stack: [
+      "Next.js",
+      "React",
+      "Responsive UI",
+      "Business Website",
+      "Frontend Improvement",
+    ],
+    highlights: [
+      "Made the service offering easier to scan and compare.",
+      "Improved hierarchy, spacing, and call-to-action clarity.",
+      "Tightened mobile responsiveness and overall polish.",
+    ],
+    metrics: [
+      { label: "Type", value: "Business and technology website" },
+      { label: "Focus", value: "Hierarchy, responsiveness, and polish" },
+    ],
+    liveUrl: "https://futureintelligen.com/",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
+  },
+  {
     slug: "ustunler-et-borsasi",
     title: "Ustunler Et Borsasi",
     featured: false,
     priority: 2,
     year: 2026,
-    context: "Client Work / Business Website",
+    collection: "Client Work",
+    projectType: "Business Website",
+    context: "Freelance Client",
     employer: "Freelance",
     summary:
-      "Built and improved a business website with clearer page structure, better mobile flow, stronger content hierarchy, and cleaner navigation across key sections.",
+      "Built and improved a business website with clearer page structure, better mobile flow, stronger content hierarchy, and cleaner navigation.",
     description:
       "Improved navigation, page flow, and responsive UI for a business website.",
     caseStudy:
-      "I worked on the structure and front-end flow of this business website so the content stayed clear and the mobile experience felt more reliable. The main work was around layout, navigation, and cleaner page transitions.",
+      "I worked on the structure and frontend flow of this business website so the content stayed clear and the mobile experience felt more reliable. The main work was around layout, navigation, and cleaner page transitions.",
     role: "Software Engineer",
     timeline: "2026",
     status: "Live",
@@ -602,12 +674,14 @@ export const PROJECTS: Project[] = [
     featured: false,
     priority: 3,
     year: 2026,
-    context: "Client Work / School System",
+    collection: "Client Work",
+    projectType: "Admissions Platform",
+    context: "Freelance Client",
     employer: "Freelance",
     summary:
-      "Built a digital school admissions system with clearer forms, guided application steps, student and parent data flow, and more structured application workflows.",
+      "Built a digital school admissions system with clearer forms, guided application steps, cleaner actions, and more structured student and parent workflows.",
     description:
-      "Worked on form flow, clearer actions, and a cleaner interface for school admissions.",
+      "Improved form flow, action clarity, and interface structure for school admissions.",
     caseStudy:
       "This admissions system focused on making form-heavy tasks easier for students and parents. I worked on the application flow, the order of actions, and the clarity of the interface so users could move through the process with less confusion.",
     role: "Software Engineer",

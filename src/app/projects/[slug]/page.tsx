@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Archive, ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import { CompactMediaGallery } from "@/components/ui/compact-media-gallery";
 import { PROFILE } from "@/data/profile";
-import { PROJECTS } from "@/data/projects";
+import { getProjectPrimaryUrl, PROJECTS } from "@/data/projects";
 
 type ProjectDetailPageProps = {
   params: Promise<{
@@ -64,7 +64,7 @@ export default async function ProjectDetailPage({
     notFound();
   }
 
-  const primaryUrl = project.archived ? project.archiveUrl : project.liveUrl;
+  const primaryUrl = getProjectPrimaryUrl(project);
   const liveLinks = primaryUrl
     ? [{ label: project.primaryCtaLabel || "Live Site", url: primaryUrl }].concat(
         project.additionalLinks ?? [],
@@ -92,9 +92,12 @@ export default async function ProjectDetailPage({
         <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="pill-label">{project.context}</span>
+              <span className="pill-label">{project.collection}</span>
+              <span className="rounded-full border border-white/10 px-3 py-1 text-[0.72rem] font-medium text-soft">
+                {project.projectType}
+              </span>
               <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ${
+                className={`rounded-full px-3 py-1 text-[0.72rem] font-medium ${
                   project.archived
                     ? "bg-white/10 text-white"
                     : "bg-brand/15 text-brand-glow"
@@ -102,20 +105,23 @@ export default async function ProjectDetailPage({
               >
                 {project.status}
               </span>
-              <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-soft">
+              <span className="rounded-full border border-white/10 px-3 py-1 text-[0.72rem] text-soft">
                 {project.timeline}
               </span>
             </div>
 
             <div className="space-y-3">
               <p className="text-sm uppercase tracking-[0.24em] text-muted">
-                {project.role}
+                {project.context}
               </p>
               <h1 className="font-heading text-3xl font-semibold tracking-[-0.05em] text-white sm:text-4xl">
                 {project.title}
               </h1>
               <p className="max-w-3xl text-sm leading-7 text-soft sm:text-base">
                 {project.summary}
+              </p>
+              <p className="max-w-2xl text-sm leading-6 text-muted">
+                {project.role}
               </p>
             </div>
 
@@ -138,7 +144,7 @@ export default async function ProjectDetailPage({
             ) : null}
 
             <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-4 sm:p-5">
-              <p className="pill-label">About this project</p>
+              <p className="pill-label">Project overview</p>
               <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
                 {project.caseStudy}
               </p>
@@ -146,7 +152,7 @@ export default async function ProjectDetailPage({
 
             <div className="space-y-3">
               <h2 className="font-heading text-2xl font-semibold text-white">
-                What I worked on
+                Key contributions
               </h2>
               <ul className="grid gap-3">
                 {project.highlights.map((item) => (
@@ -181,15 +187,17 @@ export default async function ProjectDetailPage({
                   <dd className="mt-1 text-white">{project.role}</dd>
                 </div>
                 <div>
+                  <dt className="text-muted">Collection</dt>
+                  <dd className="mt-1 text-white">{project.collection}</dd>
+                </div>
+                <div>
+                  <dt className="text-muted">Type</dt>
+                  <dd className="mt-1 text-white">{project.projectType}</dd>
+                </div>
+                <div>
                   <dt className="text-muted">Context</dt>
                   <dd className="mt-1 text-white">{project.context}</dd>
                 </div>
-                {project.employer ? (
-                  <div>
-                    <dt className="text-muted">Company</dt>
-                    <dd className="mt-1 text-white">{project.employer}</dd>
-                  </div>
-                ) : null}
               </dl>
             </div>
 
@@ -213,9 +221,13 @@ export default async function ProjectDetailPage({
                     href={link.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-between rounded-2xl border border-white/10 px-4 py-3 text-white transition hover:border-brand/30"
+                    className={`inline-flex items-center justify-between rounded-2xl px-4 py-3 transition ${
+                      index === 0
+                        ? "bg-[linear-gradient(135deg,#f4f7ff_0%,#d8e5ff_42%,#88d2ef_100%)] text-[#07111f] shadow-[0_18px_40px_rgba(111,205,245,0.16)]"
+                        : "border border-white/10 text-white hover:border-brand/30"
+                    }`}
                   >
-                    <span>{index === 0 ? "Live Site" : link.label}</span>
+                    <span>{link.label}</span>
                     {project.archived ? (
                       <Archive className="h-4 w-4" />
                     ) : (

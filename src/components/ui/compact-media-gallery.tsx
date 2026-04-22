@@ -40,6 +40,7 @@ export function CompactMediaGallery({
   const isSvg = activeItem.src.endsWith(".svg");
   const activeFit = activeItem.fit ?? (isSvg ? "contain" : "cover");
   const isPortrait = activeItem.height > activeItem.width;
+  const usesContainedSurface = activeFit === "contain" || isSvg;
   const activeAspectClass =
     activeFit === "contain" && isPortrait ? "aspect-[3/4]" : "aspect-[4/3]";
 
@@ -63,9 +64,13 @@ export function CompactMediaGallery({
         />
         <div className="relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-[linear-gradient(160deg,rgba(15,23,40,0.96),rgba(6,11,21,0.96))] p-2 sm:rounded-[1.65rem] sm:p-3">
           <div
-            className={`relative overflow-hidden rounded-[1.15rem] border border-white/8 bg-[linear-gradient(180deg,rgba(13,20,36,0.95),rgba(7,11,22,0.98))] sm:rounded-[1.3rem] ${activeAspectClass}`}
+            className={`relative overflow-hidden rounded-[1.15rem] border border-white/8 sm:rounded-[1.3rem] ${activeAspectClass} ${
+              usesContainedSurface
+                ? "bg-[linear-gradient(180deg,rgba(247,251,255,0.98),rgba(228,239,251,0.94))]"
+                : "bg-[linear-gradient(180deg,rgba(13,20,36,0.95),rgba(7,11,22,0.98))]"
+            }`}
           >
-            {!isSvg && !shouldUseLiteEffects ? (
+            {!isSvg && !shouldUseLiteEffects && activeFit === "cover" ? (
               <Image
                 src={activeItem.src}
                 alt=""
@@ -77,7 +82,13 @@ export function CompactMediaGallery({
               />
             ) : null}
 
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_50%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(4,8,16,0.52))]" />
+            <div
+              className={`absolute inset-0 ${
+                usesContainedSurface
+                  ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(13,24,42,0.08)_100%)]"
+                  : "bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_50%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(4,8,16,0.52))]"
+              }`}
+            />
 
             {reducedMotion || shouldUseLiteMotion ? (
               <div className="relative h-full w-full">
@@ -91,9 +102,9 @@ export function CompactMediaGallery({
                   unoptimized={Boolean(isSvg)}
                   className={`h-full w-full ${
                     activeFit === "contain"
-                      ? "object-contain p-4 sm:p-6"
+                      ? "object-contain p-4 sm:p-5"
                       : "object-cover"
-                  } ${isSvg ? "bg-[#f5f7fa] p-5" : ""}`}
+                  } ${isSvg ? "bg-[linear-gradient(180deg,rgba(247,251,255,0.98),rgba(228,239,251,0.94))] p-4 sm:p-5" : ""}`}
                 />
               </div>
             ) : (
@@ -116,9 +127,9 @@ export function CompactMediaGallery({
                     unoptimized={Boolean(isSvg)}
                     className={`h-full w-full ${
                       activeFit === "contain"
-                        ? "object-contain p-4 sm:p-6"
+                        ? "object-contain p-4 sm:p-5"
                         : "object-cover"
-                    } ${isSvg ? "bg-[#f5f7fa] p-5" : ""}`}
+                    } ${isSvg ? "bg-[linear-gradient(180deg,rgba(247,251,255,0.98),rgba(228,239,251,0.94))] p-4 sm:p-5" : ""}`}
                   />
                 </motion.div>
               </AnimatePresence>
@@ -196,7 +207,7 @@ export function CompactMediaGallery({
                   unoptimized={thumbIsSvg}
                   className={`h-full w-full ${
                     thumbFit === "contain"
-                      ? "bg-[rgba(12,18,32,0.9)] p-1.5 object-contain"
+                      ? "bg-[linear-gradient(180deg,rgba(247,251,255,0.98),rgba(228,239,251,0.94))] p-1.5 object-contain"
                       : "object-cover"
                   }`}
                 />

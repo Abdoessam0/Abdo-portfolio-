@@ -179,7 +179,7 @@ export default function Header() {
               href={PROFILE.links.resume}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-canvas transition hover:bg-brand-glow"
+              className="inline-flex min-h-10 items-center gap-2 rounded-full bg-[linear-gradient(135deg,#f4f7ff_0%,#d8e5ff_42%,#88d2ef_100%)] px-4 py-2 text-sm font-semibold text-canvas shadow-[0_12px_24px_rgba(111,205,245,0.14)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(111,205,245,0.18)]"
             >
               <Download className="h-4 w-4" />
               CV
@@ -247,7 +247,7 @@ export default function Header() {
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => setMenuOpen(false)}
-                  className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-canvas"
+                  className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-full bg-[linear-gradient(135deg,#f4f7ff_0%,#d8e5ff_42%,#88d2ef_100%)] px-4 py-2 text-sm font-semibold text-canvas"
                 >
                   <Download className="h-4 w-4" />
                   Download CV

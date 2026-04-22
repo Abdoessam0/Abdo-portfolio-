@@ -1,0 +1,56 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" rx="48" fill="#F4F8FC"/>
+  <rect width="1600" height="1000" rx="48" fill="url(#paint0_radial)"/>
+  <rect x="56" y="48" width="1488" height="88" rx="28" fill="white" fill-opacity="0.92"/>
+  <rect x="86" y="72" width="148" height="40" rx="20" fill="#E9EEF6"/>
+  <text x="116" y="98" fill="#142541" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Home</text>
+  <text x="1294" y="98" fill="#142541" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Future Intelligen</text>
+  <rect x="120" y="228" width="604" height="536" rx="42" fill="url(#paint1_linear)"/>
+  <rect x="172" y="286" width="500" height="180" rx="28" fill="#DCE7F3" fill-opacity="0.96"/>
+  <rect x="204" y="342" width="56" height="80" rx="10" fill="url(#paint2_linear)"/>
+  <rect x="274" y="326" width="56" height="96" rx="10" fill="url(#paint2_linear)"/>
+  <rect x="344" y="356" width="56" height="66" rx="10" fill="url(#paint2_linear)"/>
+  <rect x="414" y="334" width="56" height="88" rx="10" fill="url(#paint2_linear)"/>
+  <rect x="484" y="350" width="56" height="72" rx="10" fill="url(#paint2_linear)"/>
+  <rect x="554" y="338" width="56" height="84" rx="10" fill="url(#paint2_linear)"/>
+  <text x="205" y="326" fill="#1B8F5C" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">24% +</text>
+  <text x="566" y="326" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Performance</text>
+  <rect x="170" y="606" width="154" height="104" rx="26" fill="#EEF2F8" fill-opacity="0.92"/>
+  <circle cx="273" cy="658" r="26" fill="#F5B233"/>
+  <path d="M266 665L275 650H269L278 637" stroke="#152641" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="194" y="648" fill="#1A2C48" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Fast</text>
+  <text x="194" y="676" fill="#536882" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="500">Execution</text>
+  <rect x="492" y="526" width="182" height="156" rx="26" fill="#DDE7F0" fill-opacity="0.96"/>
+  <circle cx="623" cy="580" r="24" fill="#C6E6DD"/>
+  <path d="M613 582H633M613 593H627M617 569H629" stroke="#16815A" stroke-width="4" stroke-linecap="round"/>
+  <text x="526" y="572" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">New Clients</text>
+  <text x="544" y="633" fill="#142541" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="800">128+</text>
+  <text x="544" y="666" fill="#6D8197" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">Last 30 days</text>
+  <rect x="866" y="208" width="356" height="56" rx="28" fill="white" stroke="#D7E3EE" stroke-width="2"/>
+  <circle cx="1185" cy="236" r="8" fill="#7FC4A0"/>
+  <text x="900" y="244" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Saudi technology company</text>
+  <text x="860" y="410" fill="#152641" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="800">Digital</text>
+  <text x="860" y="510" fill="#21A5D9" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="800">Solutions</text>
+  <text x="860" y="610" fill="#152641" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="800">Consulting</text>
+  <text x="862" y="696" fill="#48607B" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="500">Clearer service structure, stronger hierarchy, and polished responsive UI.</text>
+  <rect x="976" y="760" width="196" height="70" rx="35" fill="white" stroke="#D6E0EB" stroke-width="2"/>
+  <text x="1025" y="804" fill="#173255" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Our Services</text>
+  <rect x="1196" y="760" width="230" height="70" rx="35" fill="#142541"/>
+  <path d="M1372 795H1338" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1360 781L1374 795L1360 809" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1248" y="804" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Book a Call</text>
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1480 100) rotate(145.323) scale(1197.86 924.816)">
+      <stop stop-color="#DDF2FA"/>
+      <stop offset="1" stop-color="#F7FAFD" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="paint1_linear" x1="120" y1="228" x2="724" y2="764" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#15284C"/>
+      <stop offset="1" stop-color="#158295"/>
+    </linearGradient>
+    <linearGradient id="paint2_linear" x1="232" y1="322" x2="232" y2="422" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6CD2EA"/>
+      <stop offset="1" stop-color="#21A5D9"/>
+    </linearGradient>
+  </defs>
+</svg>

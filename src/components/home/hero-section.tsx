@@ -67,7 +67,7 @@ export function HeroSection() {
           <Reveal className="flex flex-col gap-3 sm:flex-row sm:flex-wrap" delay={0.08}>
             <Link
               href={primaryCta.href}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-canvas transition hover:bg-brand-glow"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#f4f7ff_0%,#d8e5ff_42%,#88d2ef_100%)] px-5 py-3 text-sm font-semibold text-canvas shadow-[0_18px_36px_rgba(111,205,245,0.14)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_44px_rgba(111,205,245,0.18)]"
             >
               {primaryCta.label}
               <ArrowRight className="h-4 w-4" />
@@ -76,7 +76,7 @@ export function HeroSection() {
               href={secondaryCta.href}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white transition hover:border-brand/30 hover:bg-white/[0.08]"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white transition hover:border-brand/30 hover:bg-white/[0.08]"
             >
               <Download className="h-4 w-4 text-brand-glow" />
               {secondaryCta.label}

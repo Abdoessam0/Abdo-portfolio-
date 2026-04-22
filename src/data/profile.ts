@@ -163,7 +163,7 @@ export const PROFILE: Profile = {
     height: 775,
   },
   metrics: [
-    { label: "Projects", value: "10", helper: "10 shipped · 6 live" },
+    { label: "Projects", value: "11", helper: "11 shipped · 7 live" },
     {
       label: "Approach",
       value: "Frontend-first",

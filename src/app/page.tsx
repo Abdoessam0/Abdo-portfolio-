@@ -45,7 +45,7 @@ export default function HomePage() {
         }}
       />
 
-      <div className="space-y-12 sm:space-y-20 lg:space-y-24">
+      <div className="space-y-14 sm:space-y-24 lg:space-y-28">
         <HeroSection />
         <div className="deferred-section">
           <div className="section-divider" />
