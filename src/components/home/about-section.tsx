@@ -20,7 +20,7 @@ export function AboutSection() {
       <Reveal>
         <SectionHeading
           eyebrow="About"
-          title="Full-Stack Software Engineer, frontend-first."
+          title="Software Engineer, frontend-first."
         />
       </Reveal>
 

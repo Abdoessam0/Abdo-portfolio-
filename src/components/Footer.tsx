@@ -28,8 +28,7 @@ export default function Footer() {
           <div className="space-y-3">
             <BrandMark />
             <p className="max-w-xs text-sm leading-relaxed text-muted">
-              Full-Stack Software Engineer building clean, reliable web
-              applications.
+              Software Engineer building scalable, reliable web applications.
             </p>
           </div>
 

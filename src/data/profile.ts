@@ -106,12 +106,12 @@ const RESUME_PATH = "/Abdelrahman_Mohamed_CV_DPS.pdf";
 export const PROFILE: Profile = {
   person: {
     name: "Abdelrahman Mohamed",
-    role: "Full-Stack Software Engineer",
+    role: "Software Engineer",
     summary:
-      "Full-Stack Software Engineer specializing in Next.js, React, and TypeScript. Delivered production web apps for RE/MAX Wise, AFAQY, and NFS Soft.",
-    location: "Based in Turkey",
+      "Software Engineer with a B.Sc. in Computer Engineering and a Full-Stack diploma from ALX. Frontend-first, full-stack capable, with hands-on experience building production web applications and digital products using Next.js, React, TypeScript, Node.js, and PHP/Laravel.",
+    location: "Ankara, Turkey (relocatable)",
     nationality: "Egyptian",
-    base: "Turkey",
+    base: "Ankara, Turkey",
     languages: ["Arabic", "English", "Turkish"],
     timezone: "GMT+3",
     phone: "+905527508202",
@@ -131,16 +131,17 @@ export const PROFILE: Profile = {
     resume: RESUME_PATH,
   },
   hero: {
-    eyebrow: "Full-Stack Engineer · Next.js / React / TypeScript",
-    headline: "Building production web apps that ship clean and hold up.",
+    eyebrow: "Software Engineer / Next.js / React / TypeScript",
+    headline:
+      "Software Engineer building production web applications and digital products.",
     subheadline:
-      "Next.js, React, TypeScript — focused on clean UI, performance, and maintainable code.",
+      "Frontend-first, full-stack capable, with hands-on experience in Next.js, React, TypeScript, Node.js, and PHP/Laravel.",
     description:
-      "Delivered for RE/MAX Wise, AFAQY, and NFS Soft — real products, real users.",
+      "Focused on scalable UI, API-driven systems, performance, and reliable delivery.",
     proofStrip: [
-      { label: "Recent work", value: "RE/MAX Wise / AFAQY / NFS Soft" },
-      { label: "Core stack", value: "Next.js / React / TypeScript" },
-      { label: "Focus", value: "UI / performance / maintainable code" },
+      { label: "Education", value: "B.Sc. Computer Engineering" },
+      { label: "Diploma", value: "ALX Full-Stack Diploma" },
+      { label: "Focus", value: "Scalable UI / APIs / delivery" },
     ],
     ctas: [
       {
@@ -163,11 +164,11 @@ export const PROFILE: Profile = {
     height: 775,
   },
   metrics: [
-    { label: "Projects", value: "11", helper: "11 shipped · 7 live" },
+    { label: "Projects", value: "11", helper: "11 shipped / 7 live" },
     {
       label: "Approach",
       value: "Frontend-first",
-      helper: "Frontend-first, full-stack",
+      helper: "Frontend-first, full-stack capable",
     },
     { label: "Languages", value: "3", helper: "Arabic / English / Turkish" },
     {
@@ -179,55 +180,63 @@ export const PROFILE: Profile = {
   factCards: [
     {
       label: "Role",
-      value: "Full-Stack Engineer",
-      description: "Frontend-first with real production work.",
+      value: "Software Engineer",
+      description: "B.Sc. Computer Engineering with an ALX Full-Stack diploma.",
     },
     {
       label: "Build",
-      value: "Web apps and systems",
-      description: "Websites, dashboards, and full-stack tools.",
+      value: "Web applications and digital products",
+      description: "Frontend-first, full-stack capable across real product work.",
     },
     {
       label: "Focus",
-      value: "UI, performance, clean code",
-      description: "Built to ship and easy to maintain.",
+      value: "Scalable UI and API systems",
+      description: "Performance, reliability, and clean delivery.",
     },
   ],
   about: {
-    intro: "Full-Stack Software Engineer / Frontend-First",
+    intro: "Software Engineer / Frontend-First",
     story: [
-      "Full-Stack Software Engineer with a Computer Engineering background and a frontend-first approach.",
-      "I build production web applications with Next.js, React, and TypeScript — focused on clean UI, performance, and code that's easy to maintain.",
-      "Delivered real products for RE/MAX Wise, AFAQY, and NFS Soft across websites, dashboards, and full-stack systems.",
+      "Software Engineer with a B.Sc. in Computer Engineering and a Full-Stack diploma from ALX.",
+      "Frontend-first, full-stack capable, with hands-on experience building production web applications and digital products using Next.js, React, TypeScript, Node.js, and PHP/Laravel.",
+      "Focused on scalable UI, API-driven systems, performance, and reliable delivery, with experience contributing in fast-paced agile product teams.",
     ],
     focusAreas: [
       {
         title: "Frontend",
-        description: "Clean UI, responsive layout, and clear user flow.",
+        description:
+          "Scalable UI, responsive interfaces, and clean component systems.",
       },
       {
         title: "Backend",
-        description: "REST APIs, server-side logic, and app architecture.",
+        description:
+          "API-driven systems, server-side logic, and real product workflows.",
       },
       {
-        title: "Production",
-        description: "Built to ship — not just to demo.",
+        title: "Delivery",
+        description:
+          "Performance, debugging, testing, and reliable delivery.",
       },
     ],
-    principles: ["Clean UI", "Usability", "Performance", "Maintainable code"],
+    principles: [
+      "Scalable UI",
+      "API-driven systems",
+      "Performance",
+      "Reliable delivery",
+    ],
   },
   education: [
     {
-      degree: "Bachelor of Computer Engineering",
+      degree: "B.Sc. Computer Engineering",
       institution: "Ataturk University",
       location: "Erzurum, Turkey",
-      period: "2021-2026",
+      period: "Graduated Jun 2026",
     },
     {
       degree: "Full-Stack Software Engineer Diploma",
       institution: "ALX",
       location: "Remote",
-      period: "2023-2024",
+      period: "Oct 2023 - Nov 2024",
     },
   ],
   skills: [
