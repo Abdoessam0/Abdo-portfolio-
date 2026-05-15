@@ -130,16 +130,8 @@ export function ContactSection() {
                 >
                   <a
                     href={channel.href}
-                    target={
-                      channel.kind === "email" || channel.kind === "resume"
-                        ? undefined
-                        : "_blank"
-                    }
-                    rel={
-                      channel.kind === "email" || channel.kind === "resume"
-                        ? undefined
-                        : "noreferrer"
-                    }
+                    target={channel.kind === "email" ? undefined : "_blank"}
+                    rel={channel.kind === "email" ? undefined : "noreferrer"}
                     className="flex h-full min-h-16 items-center gap-3 rounded-[1.05rem] border border-white/8 bg-white/[0.03] px-4 py-3 transition hover:border-brand/30 hover:bg-white/[0.05] sm:rounded-[1.15rem]"
                   >
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">

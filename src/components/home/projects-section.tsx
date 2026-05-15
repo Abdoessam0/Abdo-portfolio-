@@ -147,7 +147,7 @@ export function ProjectsSection() {
           </div>
         </div>
 
-        <div className="section-frame flex flex-col gap-4 p-4 sm:p-4.5 lg:flex-row lg:items-center lg:justify-between">
+        <div className="section-frame flex flex-col gap-4 p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-1.5">
             <p className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">
               Browse by type

@@ -33,7 +33,7 @@ export async function PUT(
   const store = readStore();
 
   if (section === "profile") {
-    store.profile = { ...(store.profile as Record<string, unknown> || {}), ...body, id };
+    store.profile = { ...((store.profile as Record<string, unknown>) ?? {}), ...body, id };
     writeStore(store);
     return NextResponse.json(store.profile);
   }

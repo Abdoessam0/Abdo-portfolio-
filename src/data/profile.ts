@@ -101,7 +101,7 @@ export type Profile = {
   };
 };
 
-const RESUME_PATH = "/Abdelrahman_Mohamed_CV_DPS.pdf";
+const RESUME_PATH = "/CV updated.pdf";
 
 export const PROFILE: Profile = {
   person: {
