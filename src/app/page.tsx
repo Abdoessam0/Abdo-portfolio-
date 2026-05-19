@@ -2,7 +2,9 @@ import { AboutSection } from "@/components/home/about-section";
 import { ContactSection } from "@/components/home/contact-section";
 import { CredentialsSection } from "@/components/home/credentials-section";
 import { ExperienceSection } from "@/components/home/experience-section";
-import { HeroSection } from "@/components/home/hero-section";
+// import { HeroSection } from "@/components/home/hero-section"; // replaced on this branch
+import { StoryHero } from "@/components/story/StoryHero";
+import { StoryProjectCTA } from "@/components/story/StoryProjectCTA";
 import { ProjectsSection } from "@/components/home/projects-section";
 import { SkillsSection } from "@/components/home/skills-section";
 import { PROFILE } from "@/data/profile";
@@ -46,7 +48,7 @@ export default function HomePage() {
       />
 
       <div className="space-y-14 sm:space-y-24 lg:space-y-28">
-        <HeroSection />
+        <StoryHero />
         <div className="deferred-section">
           <div className="section-divider" />
           <ProjectsSection />
@@ -66,6 +68,10 @@ export default function HomePage() {
         <div className="deferred-section">
           <div className="section-divider" />
           <CredentialsSection />
+        </div>
+        <div className="deferred-section">
+          <div className="section-divider" />
+          <StoryProjectCTA />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />

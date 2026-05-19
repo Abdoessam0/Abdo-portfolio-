@@ -24,15 +24,18 @@ export function SectionHeading({
           isCentered ? "justify-center" : ""
         }`}
       >
-        <p className="pill-label">{eyebrow}</p>
-        <span className="hidden h-px flex-1 bg-gradient-to-r from-white/0 via-brand-glow/45 to-white/0 sm:block" />
+        {/* Eyebrow pill — warm style matching StoryHero */}
+        <p className="inline-flex items-center rounded-full border border-[rgba(24,24,24,0.12)] bg-white px-3 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-[#6f6a61]">
+          {eyebrow}
+        </p>
+        <span className="hidden h-px flex-1 bg-gradient-to-r from-transparent via-[rgba(24,24,24,0.1)] to-transparent sm:block" />
       </div>
       <div className="space-y-2.5 sm:space-y-3">
-        <h2 className="font-heading text-[1.65rem] font-bold leading-[1.08] tracking-[-0.04em] text-white sm:text-section">
+        <h2 className="font-heading text-[1.65rem] font-black leading-[1.08] tracking-[-0.04em] text-[#181818] sm:text-section">
           {title}
         </h2>
         {description ? (
-          <p className="max-w-xl text-[0.92rem] leading-7 text-muted sm:text-base">
+          <p className="max-w-xl text-[0.92rem] leading-7 text-[#6f6a61] sm:text-base">
             {description}
           </p>
         ) : null}

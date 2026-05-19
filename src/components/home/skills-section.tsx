@@ -56,27 +56,27 @@ export function SkillsSection() {
                     ? undefined
                     : { y: -4 }
                 }
-                transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] as const }}
                 className="section-frame h-full p-4 sm:p-6"
               >
                 <div className="flex h-full flex-col">
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">
-                      <Icon className="h-4.5 w-4.5" />
+                    <div className="story-icon-wrap mt-0.5 h-10 w-10 rounded-2xl">
+                      <Icon className="h-4.5 w-4.5" aria-hidden />
                     </div>
                     <div>
-                      <h3 className="mt-2 font-heading text-[1.2rem] font-semibold tracking-[-0.04em] text-white sm:text-[1.35rem]">
+                      <h3 className="mt-2 font-heading text-[1.2rem] font-semibold tracking-[-0.04em] text-[#181818] sm:text-[1.35rem]">
                         {group.title}
                       </h3>
                       {group.summary ? (
-                        <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
+                        <p className="mt-2 max-w-xl text-sm leading-6 text-[#6f6a61]">
                           {group.summary}
                         </p>
                       ) : null}
                     </div>
                   </div>
 
-                  <div className="mt-5 h-px w-full bg-gradient-to-r from-white/0 via-white/10 to-white/0" />
+                  <div className="story-divider mt-5" />
 
                   <div className="mt-5 flex flex-wrap gap-2">
                     {group.items.map((item) => (

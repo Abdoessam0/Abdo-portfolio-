@@ -47,24 +47,24 @@ export function CredentialsSection() {
         <div className="space-y-4">
           <Reveal className="section-frame p-4 sm:p-6">
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">
-                <GraduationCap className="h-4.5 w-4.5" />
+              <div className="story-icon-wrap mt-0.5 h-10 w-10 rounded-2xl">
+                <GraduationCap className="h-4.5 w-4.5" aria-hidden />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-medium text-white">Education</p>
+                <p className="text-sm font-semibold text-[#181818]">Education</p>
                 <div className="mt-3 space-y-3">
                   {PROFILE.education.map((education) => (
                     <div
                       key={education.degree}
-                      className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3"
+                      className="story-inner-card rounded-[1.15rem] px-4 py-3"
                     >
-                      <p className="text-sm font-medium text-soft">
+                      <p className="text-sm font-semibold text-[#181818]">
                         {education.degree}
                       </p>
-                      <p className="mt-1 text-sm text-muted">
+                      <p className="mt-1 text-sm text-[#6f6a61]">
                         {education.institution} / {education.location}
                       </p>
-                      <p className="mt-1 text-xs text-muted">
+                      <p className="mt-1 text-xs text-[#6f6a61]">
                         {education.period}
                       </p>
                     </div>
@@ -76,29 +76,29 @@ export function CredentialsSection() {
 
           <Reveal className="section-frame p-4 sm:p-6">
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-emerald">
-                <HandHeart className="h-4.5 w-4.5" />
+              <div className="story-icon-wrap mt-0.5 h-10 w-10 rounded-2xl">
+                <HandHeart className="h-4.5 w-4.5" aria-hidden />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-medium text-white">Volunteering</p>
+                <p className="text-sm font-semibold text-[#181818]">Volunteering</p>
                 <div className="mt-3 grid gap-3 lg:grid-cols-2">
                   {selectedVolunteering.map((item) => (
                     <div
                       key={item.id}
-                      className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-4"
+                      className="story-inner-card rounded-[1.15rem] px-4 py-4"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-sm font-medium text-soft">
+                          <p className="text-sm font-semibold text-[#181818]">
                             {item.title}
                           </p>
-                          <p className="mt-1 text-xs uppercase tracking-[0.18em] text-muted">
+                          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f6a61]">
                             {item.organization}
                           </p>
-                          <p className="mt-2 text-xs text-muted">
+                          <p className="mt-2 text-xs text-[#6f6a61]">
                             {item.location} / {item.period}
                           </p>
-                          <p className="mt-3 text-sm leading-6 text-muted">
+                          <p className="mt-3 text-sm leading-6 text-[#6f6a61]">
                             {item.summary}
                           </p>
                         </div>
@@ -107,17 +107,17 @@ export function CredentialsSection() {
                             href={item.link}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 text-soft transition hover:border-brand/30 hover:text-white"
+                            className="story-link-btn h-9 w-9 rounded-full"
                             aria-label={item.linkLabel ?? item.title}
                           >
-                            <ExternalLink className="h-4 w-4" />
+                            <ExternalLink className="h-4 w-4" aria-hidden />
                           </a>
                         ) : null}
                       </div>
-                      <ul className="mt-4 grid gap-2 text-sm leading-6 text-soft">
+                      <ul className="mt-4 grid gap-2 text-sm leading-6 text-[#6f6a61]">
                         {item.highlights.map((highlight) => (
                           <li key={highlight} className="flex gap-2.5">
-                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-glow" />
+                            <span className="story-bullet mt-2 h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
                             <span>{highlight}</span>
                           </li>
                         ))}
@@ -132,23 +132,23 @@ export function CredentialsSection() {
 
         <Reveal className="section-frame p-4 sm:p-6">
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">
-              <Award className="h-4.5 w-4.5" />
+            <div className="story-icon-wrap mt-0.5 h-10 w-10 rounded-2xl">
+              <Award className="h-4.5 w-4.5" aria-hidden />
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-white">Certificates</p>
+              <p className="text-sm font-semibold text-[#181818]">Certificates</p>
               <div className="mt-3 grid gap-3">
                 {highlightedCertificates.map((certificate) => (
                   <div
                     key={certificate.id}
-                    className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] p-4"
+                    className="story-inner-card rounded-[1.15rem] p-4"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-sm font-medium text-soft">
+                        <p className="text-sm font-semibold text-[#181818]">
                           {certificate.title}
                         </p>
-                        <p className="mt-1.5 text-[0.68rem] uppercase tracking-[0.2em] text-muted">
+                        <p className="mt-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#6f6a61]">
                           {certificate.issuer} / {certificate.date}
                         </p>
                       </div>
@@ -161,10 +161,10 @@ export function CredentialsSection() {
                           }
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 text-soft transition hover:border-brand/30 hover:text-white"
+                          className="story-link-btn h-9 w-9 rounded-full"
                           aria-label={`Open ${certificate.title}`}
                         >
-                          <ExternalLink className="h-4 w-4" />
+                          <ExternalLink className="h-4 w-4" aria-hidden />
                         </a>
                       ) : null}
                     </div>

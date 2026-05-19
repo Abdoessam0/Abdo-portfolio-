@@ -18,12 +18,13 @@ export default function Icon() {
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 18,
-          background:
-            "linear-gradient(145deg, rgba(91,124,255,0.95), rgba(139,109,255,0.92), rgba(53,214,164,0.85))",
-          color: "white",
+          background: "#181818",
+          boxShadow: "inset 0 0 0 2px rgba(6,181,107,0.18)",
+          color: "#06b56b",
           fontSize: 24,
-          fontWeight: 700,
-          letterSpacing: "-0.12em",
+          fontFamily: "monospace",
+          fontWeight: 800,
+          letterSpacing: "-0.08em",
         }}
       >
         {"</>"}

@@ -18,6 +18,8 @@ type CompactMediaGalleryProps = {
   items: CompactMediaItem[];
   imageSizes: string;
   className?: string;
+  /** When nested in light “story” cards, use so caption/badge text stays readable on dark chrome. */
+  nestedDarkChrome?: boolean;
   priority?: boolean;
 };
 
@@ -25,6 +27,7 @@ export function CompactMediaGallery({
   items,
   imageSizes,
   className,
+  nestedDarkChrome = false,
   priority = false,
 }: CompactMediaGalleryProps) {
   const reducedMotion = useReducedMotion();
@@ -55,7 +58,11 @@ export function CompactMediaGallery({
   };
 
   return (
-    <div className={["space-y-3", className].filter(Boolean).join(" ")}>
+    <div
+      className={["space-y-3", nestedDarkChrome ? "story-nested-dark" : "", className]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className="relative">
         <div
           className={`absolute inset-0 rounded-[1.8rem] bg-[radial-gradient(circle_at_top_left,rgba(111,205,245,0.16),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(255,181,71,0.12),transparent_30%),linear-gradient(145deg,rgba(95,132,232,0.18),rgba(8,14,26,0))] ${

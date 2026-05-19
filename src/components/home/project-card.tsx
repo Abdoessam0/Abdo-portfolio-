@@ -15,22 +15,23 @@ import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 type ProjectCardProps = {
   project: Project;
+  /** First visible cards: eager load cover to reduce layout shift in first viewport */
+  coverPriority?: boolean;
 };
 
-function getStatusClassName(status: string) {
+function getStatusBadgeClass(status: string) {
   switch (status) {
     case "Production":
-      return "border border-brand/20 bg-brand/15 text-brand-glow";
     case "Live":
-      return "border border-emerald-400/18 bg-emerald-400/10 text-emerald-200";
+      return "border border-[#06b56b]/25 bg-[#06b56b]/10 text-[#048c55]";
     case "Prototype":
-      return "border border-amber-300/16 bg-amber-300/12 text-amber-100";
+      return "border border-amber-500/25 bg-amber-50 text-amber-700";
     default:
-      return "border border-white/12 bg-[rgba(4,8,16,0.72)] text-soft";
+      return "border border-[rgba(24,24,24,0.12)] bg-[#f5f3ef] text-[#6f6a61]";
   }
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, coverPriority = false }: ProjectCardProps) {
   const reducedMotion = useReducedMotion();
   const { shouldUseLiteMotion } = useMobileOptimization();
   const detailHref = `/projects/${project.slug}`;
@@ -46,18 +47,19 @@ export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <motion.article
       whileHover={
-        reducedMotion || shouldUseLiteMotion ? undefined : { y: -3 }
+        reducedMotion || shouldUseLiteMotion ? undefined : { y: -4 }
       }
-      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-      className="group section-frame card-hover flex h-full flex-col overflow-hidden p-0"
+      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] as const }}
+      className="group flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-[rgba(24,24,24,0.1)] bg-white shadow-[0_2px_12px_rgba(24,24,24,0.06)] transition-shadow hover:shadow-[0_8px_28px_rgba(24,24,24,0.12)]"
     >
-      <div className="relative aspect-[16/9] overflow-hidden border-b border-white/8">
+      {/* Cover image */}
+      <div className="relative aspect-[16/9] overflow-hidden border-b border-[rgba(24,24,24,0.08)]">
         {project.cover ? (
           <div
             className={`relative h-full w-full ${
               isContainedCover
-                ? "bg-[linear-gradient(180deg,rgba(249,252,255,0.98),rgba(230,240,251,0.94))] p-2.5 sm:p-3"
-                : "bg-[linear-gradient(180deg,rgba(11,19,34,0.16),rgba(11,19,34,0.32))]"
+                ? "bg-[#f5f3ef] p-2.5 sm:p-3"
+                : "bg-[#e8e4dc]"
             }`}
           >
             <Image
@@ -66,49 +68,52 @@ export function ProjectCard({ project }: ProjectCardProps) {
               width={project.cover.width}
               height={project.cover.height}
               quality={74}
+              priority={coverPriority}
+              sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 33vw, (min-width: 640px) 46vw, 92vw"
               unoptimized={isSvgCover}
-              sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 42vw, (min-width: 640px) 46vw, 92vw"
-              className={`h-full w-full transition duration-500 ease-out ${
+              className={`h-full w-full transition duration-300 ease-out ${
                 isContainedCover
                   ? "rounded-[1.15rem] object-contain"
-                  : "object-cover group-hover:scale-[1.02]"
+                  : "object-cover group-hover:scale-[1.03]"
               }`}
             />
           </div>
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,rgba(95,132,232,0.18),rgba(111,205,245,0.08),rgba(14,22,38,0.9))] text-brand-glow">
-            <Code2 className="h-4 w-4" />
+          <div className="flex h-full w-full items-center justify-center bg-[#f5f3ef] text-[#6f6a61]">
+            <Code2 className="h-5 w-5" />
           </div>
         )}
 
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0)_30%,rgba(9,17,30,0.12)_100%)]" />
-        <div className="absolute left-3 top-3 inline-flex max-w-[60%] rounded-full border border-white/30 bg-[rgba(10,18,32,0.52)] px-2 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-white/88 backdrop-blur-sm sm:left-3.5 sm:top-3.5 sm:text-[0.62rem]">
+        {/* Collection badge */}
+        <div className="absolute left-3 top-3 inline-flex max-w-[60%] rounded-full border border-[rgba(24,24,24,0.18)] bg-white/95 px-2 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-[#181818] backdrop-blur-none sm:bg-white/90 sm:backdrop-blur-sm sm:left-3.5 sm:top-3.5 sm:text-[0.62rem]">
           {project.collection}
         </div>
+        {/* Status badge */}
         <div
-          className={`absolute right-3 top-3 rounded-full px-2 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.18em] sm:right-3.5 sm:top-3.5 sm:text-[0.62rem] ${getStatusClassName(project.status)}`}
+          className={`absolute right-3 top-3 rounded-full px-2 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.18em] sm:right-3.5 sm:top-3.5 sm:text-[0.62rem] ${getStatusBadgeClass(project.status)}`}
         >
           {project.status}
         </div>
       </div>
 
+      {/* Card body */}
       <div className="flex flex-1 flex-col gap-3.5 p-3.5 sm:p-4">
         <div className="space-y-2.5">
-          <p className="text-[0.64rem] uppercase tracking-[0.22em] text-muted">
+          <p className="text-[0.64rem] uppercase tracking-[0.22em] text-[#6f6a61]">
             {project.context}
           </p>
 
           <div className="space-y-1.5">
-            <h3 className="line-clamp-2 font-heading text-[1rem] font-semibold tracking-[-0.035em] text-white sm:text-[1.08rem]">
+            <h3 className="line-clamp-2 font-heading text-[1rem] font-semibold tracking-[-0.035em] text-[#181818] sm:text-[1.08rem]">
               {project.title}
             </h3>
 
-            <div className="flex flex-wrap items-center gap-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-muted">
+            <div className="flex flex-wrap items-center gap-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-[#6f6a61]">
               {metaItems.map((item, index) => (
                 <div key={item} className="flex items-center gap-1.5">
                   {index > 0 ? (
                     <span
-                      className="h-1 w-1 rounded-full bg-brand-glow/45"
+                      className="h-1 w-1 rounded-full bg-[#06b56b]/50"
                       aria-hidden="true"
                     />
                   ) : null}
@@ -117,50 +122,60 @@ export function ProjectCard({ project }: ProjectCardProps) {
               ))}
             </div>
 
-            <p className="line-clamp-2 text-[0.92rem] leading-6 text-soft/88">
+            <p className="line-clamp-2 text-[0.92rem] leading-6 text-[#6f6a61]">
               {project.description}
             </p>
           </div>
         </div>
 
+        {/* Stack badges */}
         <div className="flex flex-wrap gap-1.5">
           {visibleStack.map((item) => (
-            <span key={item} className="tech-badge">
+            <span
+              key={item}
+              className="inline-flex items-center gap-1 rounded-full border border-[rgba(24,24,24,0.1)] bg-[#f5f3ef] px-2.5 py-1 text-[0.72rem] font-medium text-[#6f6a61] transition-colors hover:border-[rgba(24,24,24,0.2)] hover:text-[#181818]"
+            >
               {item}
             </span>
           ))}
           {remainingStackCount > 0 ? (
-            <span className="tech-badge">+{remainingStackCount}</span>
+            <span className="inline-flex items-center gap-1 rounded-full border border-[rgba(24,24,24,0.1)] bg-[#f5f3ef] px-2.5 py-1 text-[0.72rem] font-medium text-[#6f6a61]">
+              +{remainingStackCount}
+            </span>
           ) : null}
         </div>
 
-        <div className="mt-auto flex flex-wrap items-center gap-1.5 border-t border-white/8 pt-3.5 text-sm font-medium">
+        {/* Actions */}
+        <div className="mt-auto flex flex-wrap items-center gap-1.5 border-t border-[rgba(24,24,24,0.08)] pt-3.5 text-sm font-medium">
+          {/* Primary CTA — dark charcoal */}
           <Link
             href={detailHref}
-            className="inline-flex min-h-9.5 min-w-[8rem] items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#f7fbff_0%,#deedff_44%,#8fd7f3_100%)] px-3.5 text-[0.82rem] font-semibold text-[#07111f] shadow-[0_12px_26px_rgba(111,205,245,0.16)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(111,205,245,0.2)]"
+            className="btn-primary-dark min-h-9 min-w-[8rem] px-3.5 text-[0.82rem] shadow-[0_2px_8px_rgba(24,24,24,0.2)] hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(24,24,24,0.28)]"
           >
             View Project
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
 
+          {/* Live link */}
           {primaryUrl ? (
             <a
               href={primaryUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-9.5 items-center justify-center gap-2 rounded-full border border-white/12 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(123,176,255,0.04))] px-3.5 text-[0.82rem] text-soft transition hover:border-brand/25 hover:bg-brand/10 hover:text-white"
+              className="btn-secondary min-h-9 px-3.5 text-[0.82rem] font-medium text-[#6f6a61] hover:border-[rgba(24,24,24,0.2)] hover:text-[#181818]"
             >
               <AccentIcon className="h-3.5 w-3.5" />
               {project.primaryCtaLabel}
             </a>
           ) : null}
 
+          {/* GitHub link */}
           {project.repoUrl ? (
             <a
               href={project.repoUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-9.5 items-center justify-center gap-2 rounded-full border border-white/12 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(123,176,255,0.04))] px-3.5 text-[0.82rem] text-soft transition hover:border-brand/25 hover:bg-brand/10 hover:text-white"
+              className="btn-secondary min-h-9 px-3.5 text-[0.82rem] font-medium text-[#6f6a61]"
               aria-label={`Open ${project.title} repository`}
             >
               <Github className="h-3.5 w-3.5" />

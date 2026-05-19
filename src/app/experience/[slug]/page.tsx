@@ -186,6 +186,7 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
             <CompactMediaGallery
               items={gallery}
               imageSizes="(min-width: 1280px) 34vw, (min-width: 1024px) 40vw, 92vw"
+              nestedDarkChrome
               priority
             />
 

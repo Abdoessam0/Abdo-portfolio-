@@ -59,7 +59,7 @@ export function AboutSection() {
               <ul className="mt-3 grid gap-2.5 text-sm text-soft sm:grid-cols-2">
                 {whatIDo.map((item) => (
                   <li key={item} className="flex items-start gap-2.5">
-                    <span className="mt-[0.42rem] h-1.5 w-1.5 rounded-full bg-brand-glow/80" />
+                    <span className="story-bullet mt-[0.42rem] h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -72,7 +72,7 @@ export function AboutSection() {
                   key={item.title}
                   className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3.5"
                 >
-                  <p className="text-sm font-medium text-white">{item.title}</p>
+                  <p className="text-sm font-semibold text-[#181818]">{item.title}</p>
                   <p className="mt-2 text-sm leading-6 text-muted">
                     {item.description}
                   </p>
@@ -96,14 +96,14 @@ export function AboutSection() {
                     className="rounded-[1.2rem] border border-white/8 bg-white/[0.03] p-4"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-brand-glow">
+                      <div className="story-icon-wrap mt-0.5 h-10 w-10 rounded-2xl">
                         <Icon className="h-4.5 w-4.5" />
                       </div>
                       <div>
                         <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
                           {card.label}
                         </p>
-                        <h3 className="mt-1.5 text-base font-semibold text-white">
+                        <h3 className="mt-1.5 text-base font-semibold text-[#181818]">
                           {card.value}
                         </h3>
                         <p className="mt-2 text-sm leading-6 text-muted">
@@ -130,7 +130,7 @@ export function AboutSection() {
                       <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
                         {item.period}
                       </p>
-                      <p className="mt-2 text-sm font-medium text-white">
+                      <p className="mt-2 text-sm font-semibold text-[#181818]">
                         {item.degree}
                       </p>
                       <p className="mt-1 text-sm text-soft">

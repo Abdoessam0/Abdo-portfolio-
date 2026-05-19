@@ -18,12 +18,13 @@ export default function AppleIcon() {
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 42,
-          background:
-            "linear-gradient(145deg, rgba(91,124,255,1), rgba(139,109,255,0.94), rgba(53,214,164,0.82))",
-          color: "white",
+          background: "#181818",
+          boxShadow: "inset 0 0 0 6px rgba(6,181,107,0.18)",
+          color: "#06b56b",
           fontSize: 68,
-          fontWeight: 700,
-          letterSpacing: "-0.12em",
+          fontFamily: "monospace",
+          fontWeight: 800,
+          letterSpacing: "-0.08em",
         }}
       >
         {"</>"}
