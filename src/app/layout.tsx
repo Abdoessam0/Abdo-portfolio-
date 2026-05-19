@@ -22,7 +22,9 @@ const sora = Sora({
 
 const siteUrl = new URL(PROFILE.links.portfolio);
 const title = `${PROFILE.person.name} | ${PROFILE.person.role}`;
-const description = PROFILE.person.summary;
+const description =
+  "Portfolio of a frontend-first Software Engineer building Next.js, React, TypeScript, and full-stack web products.";
+const previewImage = `${siteUrl.origin}/opengraph-image?v=2`;
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
@@ -53,9 +55,10 @@ export const metadata: Metadata = {
     url: siteUrl.toString(),
     siteName: `${PROFILE.person.name} Portfolio`,
     type: "website",
+    locale: "en_US",
     images: [
       {
-        url: `${siteUrl.origin}/opengraph-image`,
+        url: previewImage,
         width: 1200,
         height: 630,
         alt: title,
@@ -67,7 +70,7 @@ export const metadata: Metadata = {
     title,
     description,
     creator: "@abdoessam0",
-    images: [`${siteUrl.origin}/twitter-image`],
+    images: [previewImage],
   },
   icons: {
     icon: "/icon",

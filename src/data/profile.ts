@@ -127,7 +127,7 @@ export const PROFILE: Profile = {
       "https://wa.me/905527508202?text=Hi%20Abdelrahman,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
   },
   links: {
-    portfolio: "https://abdoessamcv.vercel.app",
+    portfolio: "https://abdo.kolaytec.com",
     resume: RESUME_PATH,
   },
   hero: {

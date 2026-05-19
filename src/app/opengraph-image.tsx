@@ -8,110 +8,169 @@ export const size = {
 
 export const contentType = "image/png";
 
+const previewUrl = "abdo.kolaytec.com";
+
 export default function OpengraphImage() {
   return new ImageResponse(
     (
       <div
         style={{
           display: "flex",
-          position: "relative",
           height: "100%",
           width: "100%",
-          overflow: "hidden",
-          background: "#060816",
-          color: "white",
-          fontFamily: "Inter, sans-serif",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#fbf7ef",
+          color: "#f3eee6",
+          fontFamily: "Inter, Arial, sans-serif",
+          padding: 42,
         }}
       >
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(circle at top left, rgba(91,124,255,0.32), transparent 30%), radial-gradient(circle at 80% 10%, rgba(139,109,255,0.24), transparent 24%), radial-gradient(circle at 50% 90%, rgba(53,214,164,0.14), transparent 22%)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 26,
-            borderRadius: 36,
-            border: "1px solid rgba(255,255,255,0.12)",
-            background: "rgba(255,255,255,0.04)",
-          }}
-        />
-        <div
-          style={{
-            position: "relative",
             display: "flex",
+            position: "relative",
             height: "100%",
             width: "100%",
-            padding: "62px",
-            justifyContent: "space-between",
+            overflow: "hidden",
+            borderRadius: 42,
+            background: "#1f1f1d",
+            border: "2px solid rgba(6,181,107,0.32)",
+            boxShadow: "0 24px 70px rgba(24,24,24,0.18)",
           }}
         >
           <div
-            style={{ display: "flex", flexDirection: "column", maxWidth: 760 }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "radial-gradient(circle at 18% 24%, rgba(6,181,107,0.3), transparent 26%), radial-gradient(circle at 90% 10%, rgba(216,209,198,0.12), transparent 22%)",
+            }}
+          />
+
+          <div
+            style={{
+              display: "flex",
+              position: "relative",
+              width: 430,
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRight: "1px solid rgba(216,209,198,0.12)",
+            }}
           >
             <div
               style={{
                 display: "flex",
-                width: 96,
-                height: 96,
-                borderRadius: 28,
+                width: 250,
+                height: 250,
                 alignItems: "center",
                 justifyContent: "center",
-                background:
-                  "linear-gradient(145deg, rgba(91,124,255,0.95), rgba(139,109,255,0.92), rgba(53,214,164,0.85))",
-                fontSize: 34,
-                fontWeight: 700,
-                letterSpacing: "-0.14em",
+                borderRadius: 58,
+                background: "#181818",
+                border: "3px solid rgba(6,181,107,0.5)",
+                boxShadow:
+                  "inset 0 0 0 1px rgba(216,209,198,0.12), 0 20px 60px rgba(6,181,107,0.18)",
               }}
             >
-              {"</>"}
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: 88,
+                  fontWeight: 800,
+                  letterSpacing: "-0.08em",
+                  color: "#06b56b",
+                }}
+              >
+                {"</>"}
+              </span>
             </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              position: "relative",
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              padding: "68px 76px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignSelf: "flex-start",
+                borderRadius: 999,
+                border: "1px solid rgba(6,181,107,0.35)",
+                background: "rgba(6,181,107,0.1)",
+                color: "#06b56b",
+                fontSize: 24,
+                fontWeight: 700,
+                padding: "12px 20px",
+              }}
+            >
+              Software Engineer Portfolio
+            </div>
+
             <div
               style={{
                 marginTop: 34,
-                fontSize: 62,
-                fontWeight: 700,
-                lineHeight: 1.02,
-                letterSpacing: "-0.06em",
+                fontSize: 70,
+                fontWeight: 800,
+                lineHeight: 0.98,
+                letterSpacing: "-0.04em",
+                color: "#fffaf0",
               }}
             >
               {PROFILE.person.name}
             </div>
-            <div style={{ marginTop: 18, fontSize: 28, color: "#c7d2ea" }}>
-              {PROFILE.person.role}
-            </div>
+
             <div
               style={{
-                marginTop: 20,
-                fontSize: 24,
-                color: "#94a3c3",
-                lineHeight: 1.45,
+                marginTop: 22,
+                fontSize: 34,
+                fontWeight: 700,
+                color: "#d8d1c6",
               }}
             >
-              {PROFILE.person.summary}
+              Next.js / React / TypeScript
             </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "flex-end" }}>
+
             <div
               style={{
+                marginTop: 28,
+                fontSize: 26,
+                lineHeight: 1.35,
+                color: "#bfb8ae",
+                maxWidth: 620,
+              }}
+            >
+              Frontend-first, full-stack capable. Building production web apps
+              and clean digital products.
+            </div>
+
+            <div
+              style={{
+                marginTop: 36,
                 display: "flex",
-                flexDirection: "column",
-                gap: 14,
-                padding: "24px 26px",
-                borderRadius: 28,
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                fontSize: 22,
-                color: "#c7d2ea",
+                alignItems: "center",
+                gap: 12,
+                color: "#06b56b",
+                fontSize: 24,
+                fontWeight: 700,
               }}
             >
-              <span>Full-stack web apps</span>
-              <span>Production systems</span>
-              <span>UI · performance · clean code</span>
+              <span
+                style={{
+                  display: "flex",
+                  width: 10,
+                  height: 10,
+                  borderRadius: 999,
+                  background: "#06b56b",
+                }}
+              />
+              {previewUrl}
             </div>
           </div>
         </div>
