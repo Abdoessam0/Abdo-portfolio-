@@ -4,7 +4,8 @@ import { PROFILE } from "@/data/profile";
 
 export const metadata: Metadata = {
   title: "CV",
-  description: "Download Abdo Essam's CV.",
+  description:
+    "Download the CV of Abdo Essam, Software Engineer and founder of Kolaytec.",
 };
 
 export default function CvPage() {

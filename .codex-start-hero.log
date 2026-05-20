@@ -1,0 +1,19 @@
+
+> abdelrahman-portfolio@0.1.0 dev
+> next dev --turbopack --port 3000
+
+   ▲ Next.js 15.5.7 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.137.1:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+Creating turbopack project {
+  dir: 'C:\\Users\\aabbd\\OneDrive\\Desktop\\CV protfile\\abdelrahman-portfolio',
+  testMode: true
+}
+ ✓ Compiled middleware in 161ms
+ ✓ Ready in 1648ms
+ ○ Compiling / ...
+ ✓ Compiled / in 10s
+ GET / 200 in 11285ms

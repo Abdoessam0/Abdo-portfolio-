@@ -21,32 +21,33 @@ const sora = Sora({
 });
 
 const siteUrl = new URL(PROFILE.links.portfolio);
-const title = `${PROFILE.person.name} | ${PROFILE.person.role}`;
+const title = "Abdo Essam | Software Engineer Portfolio";
 const description =
-  "Portfolio of Abdo Essam, a frontend-first Software Engineer and founder of Kolaytec building websites, dashboards, and full-stack web products.";
-const previewImage = `${siteUrl.origin}/opengraph-image?v=2`;
+  "Software Engineer portfolio of Abdo Essam, frontend-first full-stack developer based in Ankara, building web applications, dashboards, admin panels, and business platforms with Next.js, React, TypeScript, PHP/Laravel, and MySQL.";
+const previewImage = `${siteUrl.origin}/opengraph-image?v=3`;
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
   title: {
     default: title,
-    template: `%s | ${PROFILE.person.name}`,
+    template: "%s | Abdo Essam",
   },
   description,
-  applicationName: `${PROFILE.person.name} Portfolio`,
+  applicationName: "Abdo Essam Portfolio",
   keywords: [
     "Abdo Essam",
-    "Kolaytec",
-    "Software Engineer",
-    "Next.js",
-    "React",
-    "TypeScript",
-    "Node.js",
-    "Portfolio",
+    "Abdo Kolaytec",
+    "Abdo Essam portfolio",
+    "Software Engineer Ankara",
+    "Frontend Developer",
+    "Full Stack Developer",
+    "Next.js Developer",
+    "React Developer",
+    "Kolaytec Founder",
   ],
-  authors: [{ name: PROFILE.person.name, url: PROFILE.socials.linkedin }],
-  creator: PROFILE.person.name,
-  publisher: PROFILE.person.name,
+  authors: [{ name: "Abdo Essam", url: PROFILE.socials.linkedin }],
+  creator: "Abdo Essam",
+  publisher: "Abdo Essam",
   alternates: {
     canonical: siteUrl.toString(),
   },
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
     title,
     description,
     url: siteUrl.toString(),
-    siteName: `${PROFILE.person.name} Portfolio`,
+    siteName: "Abdo Essam Portfolio",
     type: "website",
     locale: "en_US",
     images: [

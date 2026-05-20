@@ -134,7 +134,7 @@ export default function OpengraphImage() {
                 color: "#d8d1c6",
               }}
             >
-              Next.js / React / TypeScript
+              Next.js / React / TypeScript / PHP/Laravel
             </div>
 
             <div
@@ -146,8 +146,8 @@ export default function OpengraphImage() {
                 maxWidth: 620,
               }}
             >
-              Frontend-first, full-stack capable. Building production web apps
-              and clean digital products.
+              Founder of Kolaytec. Building web applications, dashboards, admin
+              panels, and business platforms.
             </div>
 
             <div

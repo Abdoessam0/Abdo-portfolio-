@@ -13,23 +13,50 @@ import { PROFILE } from "@/data/profile";
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${PROFILE.links.portfolio}#person`,
   name: PROFILE.person.name,
+  alternateName: "Abdelrahman Mohamed",
   jobTitle: PROFILE.person.role,
   description: PROFILE.person.summary,
   url: PROFILE.links.portfolio,
+  image: `${PROFILE.links.portfolio}/profile-image.jpg`,
   email: PROFILE.socials.email,
   telephone: PROFILE.person.phone,
   nationality: PROFILE.person.nationality,
   knowsLanguage: PROFILE.person.languages,
-  sameAs: [PROFILE.socials.linkedin, PROFILE.socials.github, PROFILE.socials.instagram],
+  sameAs: [
+    PROFILE.socials.linkedin,
+    PROFILE.socials.github,
+    PROFILE.socials.instagram,
+    "https://kolaytec.com",
+  ],
 };
 
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": `${PROFILE.links.portfolio}#website`,
   name: `${PROFILE.person.name} Portfolio`,
   url: PROFILE.links.portfolio,
   description: PROFILE.person.summary,
+  publisher: {
+    "@id": `${PROFILE.links.portfolio}#person`,
+  },
+};
+
+const profilePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": `${PROFILE.links.portfolio}#profile-page`,
+  name: "Abdo Essam Software Engineer Portfolio",
+  url: PROFILE.links.portfolio,
+  description: PROFILE.person.summary,
+  mainEntity: {
+    "@id": `${PROFILE.links.portfolio}#person`,
+  },
+  isPartOf: {
+    "@id": `${PROFILE.links.portfolio}#website`,
+  },
 };
 
 export default function HomePage() {
@@ -38,13 +65,7 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(personSchema),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(websiteSchema),
+          __html: JSON.stringify([personSchema, websiteSchema, profilePageSchema]),
         }}
       />
 

@@ -122,7 +122,7 @@ export const PROFILE: Profile = {
     name: "Abdo Essam",
     role: "Software Engineer",
     summary:
-      "Software Engineer and founder of Kolaytec, building websites, business platforms, dashboards, and full-stack web systems for real businesses.",
+      "Software Engineer and founder of Kolaytec based in Ankara, building web applications, dashboards, admin panels, and business platforms with Next.js, React, TypeScript, PHP/Laravel, and MySQL.",
     location: "Ankara, Turkey (relocatable)",
     nationality: "Egyptian",
     base: "Ankara, Turkey",
@@ -148,7 +148,7 @@ export const PROFILE: Profile = {
   hero: {
     eyebrow: "Software Engineer / Founder of Kolaytec",
     headline:
-      "I build websites, dashboards, and web platforms that real businesses can use.",
+      "Abdo Essam builds web applications, dashboards, and business platforms.",
     subheadline:
       "Frontend-first and full-stack capable, with production web work, client-facing support experience, and a practical product mindset.",
     description:
@@ -174,7 +174,7 @@ export const PROFILE: Profile = {
   },
   heroImage: {
     src: "/profile-image.jpg",
-    alt: "Portrait of Abdo Essam",
+    alt: "Abdo Essam, Software Engineer and founder of Kolaytec",
     width: 482,
     height: 775,
   },
