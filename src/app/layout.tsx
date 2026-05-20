@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 // import Header from "@/components/Header"; // replaced by StoryNavbar on this branch
 import { FloatingWhatsApp } from "@/components/story/FloatingWhatsApp";
 import { StoryNavbar } from "@/components/story/StoryNavbar";
+import { LangProvider } from "@/hooks/use-lang";
 import { PROFILE } from "@/data/profile";
 import "./globals.css";
 
@@ -94,6 +95,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body className="story-page">
+        <LangProvider>
         <a
           href="#content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:btn-primary-dark focus:px-4 focus:py-2 focus:text-sm"
@@ -112,6 +114,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <FloatingWhatsApp />
           <Footer />
         </div>
+        </LangProvider>
       </body>
     </html>
   );

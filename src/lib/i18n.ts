@@ -90,12 +90,12 @@ export const dict = {
   },
   ar: {
     dir: "rtl" as const,
-    label: "Abdo Essam - Software Engineer / Founder of Kolaytec",
+    label: "عبدو عصام - مهندس برمجيات / مؤسس Kolaytec",
     headline: "أبني تطبيقات ويب سريعة وموثوقة\nبتجربة استخدام نظيفة.",
-    sub: "أركز على الواجهات الحديثة، الأنظمات المعتمدة على APIs، الأداء، وإطلاق منتجات تعمل فعليًا في بيئة إنتاج.",
+    sub: "أركز على الواجهات الحديثة، الأنظمة المعتمدة على APIs، الأداء، وإطلاق منتجات تعمل فعليًا في بيئة إنتاج.",
     cta1: "شاهد أعمالي",
     cta2: "تحميل السيرة الذاتية",
-    cta3: "Let's Talk",
+    cta3: "تواصل معي",
     toggle: "EN",
     marquee: "مهندس برمجيات • واجهات حديثة • تطبيقات ويب حقيقية • React • Next.js • TypeScript • ",
     nav: {
@@ -106,7 +106,7 @@ export const dict = {
       contact: "تواصل",
     },
     floatingWhatsapp: {
-      ariaLabel: "Message Abdo Essam on WhatsApp",
+      ariaLabel: "راسل عبدو عصام على واتساب",
       hoverLabel: "راسلني",
     } satisfies FloatingWhatsappCopy,
     projectCta: {

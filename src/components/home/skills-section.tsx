@@ -111,15 +111,17 @@ const aiWorkflowChips = [
   ["🚀", "Faster Prototyping"],
 ] as const;
 
+const MOBILE_CHIP_LIMIT = 3;
+
 function SkillLogo({ label, compact = false }: { label: string; compact?: boolean }) {
   if (label === "AI Agents") {
     return (
       <span
         className={`inline-flex shrink-0 items-center justify-center rounded-full border border-[#06b56b]/18 bg-[#f0fdf7] text-[#048c55] shadow-[0_1px_8px_rgba(6,181,107,0.08)] transition group-hover:scale-105 group-hover:border-[#06b56b]/32 ${
-          compact ? "h-7 w-7" : "h-8 w-8"
+          compact ? "h-6 w-6 sm:h-7 sm:w-7" : "h-7 w-7 sm:h-8 sm:w-8"
         }`}
       >
-        <Bot className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} aria-hidden />
+        <Bot className={compact ? "h-3 w-3 sm:h-3.5 sm:w-3.5" : "h-3.5 w-3.5 sm:h-4 sm:w-4"} aria-hidden />
       </span>
     );
   }
@@ -136,13 +138,13 @@ function SkillLogo({ label, compact = false }: { label: string; compact?: boolea
   return (
     <span
       className={`inline-flex shrink-0 items-center justify-center rounded-full border border-[rgba(24,24,24,0.09)] bg-[#fffdf8] text-[#181818] shadow-[0_1px_6px_rgba(24,24,24,0.04)] transition group-hover:border-[#06b56b]/25 group-hover:text-[#048c55] ${
-        compact ? "h-7 w-7" : "h-8 w-8"
+        compact ? "h-6 w-6 sm:h-7 sm:w-7" : "h-7 w-7 sm:h-8 sm:w-8"
       }`}
     >
       {Icon ? (
-        <Icon className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} aria-hidden />
+        <Icon className={compact ? "h-3 w-3 sm:h-3.5 sm:w-3.5" : "h-3.5 w-3.5 sm:h-4 sm:w-4"} aria-hidden />
       ) : (
-        <span className="text-[0.58rem] font-bold tracking-[-0.03em]">
+        <span className="text-[0.52rem] font-bold tracking-[-0.03em] sm:text-[0.58rem]">
           {fallback}
         </span>
       )}
@@ -152,7 +154,7 @@ function SkillLogo({ label, compact = false }: { label: string; compact?: boolea
 
 function SkillChip({ label }: { label: string }) {
   return (
-    <span className="group inline-flex min-h-7 items-center gap-1.5 rounded-full border border-[rgba(24,24,24,0.09)] bg-[#f7f4ee] px-2 py-0.5 text-[0.7rem] font-medium text-[#4f4a42] transition hover:border-[#06b56b]/28 hover:bg-[#f0fdf7] hover:text-[#181818]">
+    <span className="group inline-flex min-h-6 items-center gap-1 rounded-full border border-[rgba(24,24,24,0.09)] bg-[#f7f4ee] px-1.5 py-0.5 text-[0.65rem] font-medium text-[#4f4a42] transition hover:border-[#06b56b]/28 hover:bg-[#f0fdf7] hover:text-[#181818] sm:min-h-7 sm:gap-1.5 sm:px-2 sm:text-[0.7rem]">
       <SkillLogo label={label} compact />
       <span>{label}</span>
     </span>
@@ -165,7 +167,7 @@ export function SkillsSection() {
   const shouldAnimate = !reducedMotion && !shouldUseLiteMotion;
 
   return (
-    <section id="skills" className="space-y-4 py-3 sm:space-y-5 sm:py-4">
+    <section id="skills" className="max-w-full space-y-3 overflow-x-hidden py-2 sm:space-y-5 sm:py-4">
       <Reveal>
         <SectionHeading
           eyebrow="Skills"
@@ -175,9 +177,9 @@ export function SkillsSection() {
       </Reveal>
 
       <Reveal>
-        <div className="overflow-x-auto rounded-[1.15rem] border border-[rgba(24,24,24,0.08)] bg-white/72 p-2 shadow-[0_8px_22px_rgba(24,24,24,0.045)]">
-          <div className="flex min-w-max items-center gap-2">
-            <span className="sticky left-0 rounded-full bg-white/90 px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[#6f6a61] backdrop-blur">
+        <div className="rounded-[1rem] border border-[rgba(24,24,24,0.08)] bg-white/72 p-1.5 shadow-[0_8px_22px_rgba(24,24,24,0.045)] sm:rounded-[1.15rem] sm:p-2">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <span className="rounded-full bg-white/90 px-2 py-0.5 text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-[#6f6a61] sm:px-2.5 sm:py-1 sm:text-[0.62rem]">
               Core workflow
             </span>
             {coreStack.map((item) => (
@@ -185,7 +187,7 @@ export function SkillsSection() {
                 key={item}
                 whileHover={shouldAnimate ? { y: -2 } : undefined}
                 transition={{ duration: 0.18 }}
-                className="group inline-flex min-h-9 items-center gap-2 rounded-full border border-[rgba(24,24,24,0.09)] bg-[#fffdf8] px-2.5 py-1 text-xs font-semibold text-[#181818] transition hover:border-[#06b56b]/30 hover:bg-[#f0fdf7]"
+                className="group inline-flex min-h-7 items-center gap-1.5 rounded-full border border-[rgba(24,24,24,0.09)] bg-[#fffdf8] px-2 py-0.5 text-[0.7rem] font-semibold text-[#181818] transition hover:border-[#06b56b]/30 hover:bg-[#f0fdf7] sm:min-h-9 sm:gap-2 sm:px-2.5 sm:py-1 sm:text-xs"
               >
                 <SkillLogo label={item} />
                 <span>{item === "Laravel" ? "PHP/Laravel" : item}</span>
@@ -197,35 +199,35 @@ export function SkillsSection() {
 
       <Reveal>
         <motion.div
-          initial={shouldAnimate ? { opacity: 0, y: 10 } : false}
+          initial={shouldAnimate ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
           viewport={{ once: true, margin: "-10%" }}
           whileHover={shouldAnimate ? { y: -3 } : undefined}
           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] as const }}
-          className="section-frame p-3.5 sm:p-4"
+          className="section-frame p-2.5 sm:p-3.5 sm:p-4"
         >
-          <div className="grid gap-3 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
-            <div className="flex items-start gap-3">
-              <div className="story-icon-wrap h-9 w-9 rounded-2xl">
-                <Bot className="h-4 w-4" aria-hidden />
+          <div className="grid gap-2 sm:gap-3 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+            <div className="flex items-start gap-2 sm:gap-3">
+              <div className="story-icon-wrap h-8 w-8 rounded-xl sm:h-9 sm:w-9 sm:rounded-2xl">
+                <Bot className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
               </div>
               <div>
-                <h3 className="font-heading text-[1.08rem] font-semibold leading-tight tracking-[-0.035em] text-[#181818]">
+                <h3 className="font-heading text-[0.95rem] font-semibold leading-tight tracking-[-0.035em] text-[#181818] sm:text-[1.08rem]">
                   AI Agents & Workflow
                 </h3>
-                <p className="mt-1.5 max-w-2xl text-xs leading-5 text-[#6f6a61]">
+                <p className="mt-1 max-w-2xl text-[0.7rem] leading-[1.45] text-[#6f6a61] sm:mt-1.5 sm:text-xs sm:leading-5">
                   Comfortable using AI coding agents to plan, build, debug, refactor, review, and ship software faster while keeping control over code quality.
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-1 sm:gap-1.5">
               {aiWorkflowChips.map(([icon, label]) => (
                 <span
                   key={label}
-                  className="inline-flex min-h-7 items-center gap-1.5 rounded-full border border-[#06b56b]/16 bg-[#f0fdf7]/70 px-2.5 py-1 text-[0.72rem] font-medium text-[#20483a] shadow-[0_1px_8px_rgba(6,181,107,0.045)]"
+                  className="inline-flex min-h-6 items-center gap-1 rounded-full border border-[#06b56b]/16 bg-[#f0fdf7]/70 px-2 py-0.5 text-[0.65rem] font-medium text-[#20483a] shadow-[0_1px_8px_rgba(6,181,107,0.045)] sm:min-h-7 sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[0.72rem]"
                 >
-                  <span className="text-[0.78rem]" aria-hidden>
+                  <span className="text-[0.72rem] sm:text-[0.78rem]" aria-hidden>
                     {icon}
                   </span>
                   {label}
@@ -236,17 +238,21 @@ export function SkillsSection() {
         </motion.div>
       </Reveal>
 
-      <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-2 sm:gap-2.5 md:grid-cols-2 xl:grid-cols-3">
         {PROFILE.skills.map((group, index) => {
           const Icon = categoryIcons[group.title] ?? Code2;
           const preferred = visibleSkillOrder[group.title] ?? group.items.slice(0, 5);
           const visibleItems = preferred.filter((item) => group.items.includes(item));
           const hiddenCount = Math.max(group.items.length - visibleItems.length, 0);
 
+          /* On mobile, limit chips to avoid oversized cards */
+          const mobileVisible = visibleItems.slice(0, MOBILE_CHIP_LIMIT);
+          const mobileHidden = visibleItems.length - MOBILE_CHIP_LIMIT + hiddenCount;
+
           return (
             <Reveal key={group.title} delay={index * 0.035} className="h-full">
               <motion.div
-                initial={shouldAnimate ? { opacity: 0, y: 10 } : false}
+                initial={shouldAnimate ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
                 whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
                 viewport={{ once: true, margin: "-10%" }}
                 whileHover={shouldAnimate ? { y: -3 } : undefined}
@@ -255,27 +261,27 @@ export function SkillsSection() {
                   ease: [0.22, 1, 0.36, 1] as const,
                   delay: shouldAnimate ? index * 0.025 : 0,
                 }}
-                className="group section-frame h-full p-3 sm:p-3.5"
+                className="group section-frame h-full p-2.5 sm:p-3 sm:p-3.5"
               >
-                <div className="flex h-full flex-col gap-2.5">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-start gap-3">
-                      <div className="story-icon-wrap mt-0.5 h-8 w-8 rounded-xl transition group-hover:scale-105 group-hover:shadow-[0_0_0_3px_rgba(6,181,107,0.08)]">
-                        <Icon className="h-4 w-4" aria-hidden />
+                <div className="flex h-full flex-col gap-2">
+                  <div className="flex items-start justify-between gap-2 sm:gap-3">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <div className="story-icon-wrap mt-0.5 h-7 w-7 rounded-lg transition group-hover:scale-105 group-hover:shadow-[0_0_0_3px_rgba(6,181,107,0.08)] sm:h-8 sm:w-8 sm:rounded-xl">
+                        <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
                       </div>
                       <div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="font-heading text-[1rem] font-semibold leading-tight tracking-[-0.03em] text-[#181818]">
+                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                          <h3 className="font-heading text-[0.9rem] font-semibold leading-tight tracking-[-0.03em] text-[#181818] sm:text-[1rem]">
                             {group.title}
                           </h3>
                           {coreCategories.has(group.title) ? (
-                            <span className="rounded-full border border-[#06b56b]/18 bg-[#f0fdf7] px-1.5 py-0.5 text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-[#048c55]">
+                            <span className="rounded-full border border-[#06b56b]/18 bg-[#f0fdf7] px-1.5 py-0.5 text-[0.52rem] font-semibold uppercase tracking-[0.12em] text-[#048c55] sm:text-[0.58rem]">
                               Core
                             </span>
                           ) : null}
                         </div>
                         {group.summary ? (
-                          <p className="mt-1 max-w-md text-xs leading-5 text-[#6f6a61]">
+                          <p className="mt-0.5 max-w-md text-[0.7rem] leading-[1.4] text-[#6f6a61] sm:mt-1 sm:text-xs sm:leading-5">
                             {group.summary}
                           </p>
                         ) : null}
@@ -283,12 +289,25 @@ export function SkillsSection() {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-1.5">
+                  {/* Mobile: limited chips */}
+                  <div className="flex flex-wrap gap-1 sm:hidden">
+                    {mobileVisible.map((item) => (
+                      <SkillChip key={item} label={item} />
+                    ))}
+                    {mobileHidden > 0 ? (
+                      <span className="inline-flex min-h-6 items-center rounded-full border border-[rgba(24,24,24,0.08)] bg-white px-2 py-0.5 text-[0.65rem] font-semibold text-[#6f6a61]">
+                        +{mobileHidden} more
+                      </span>
+                    ) : null}
+                  </div>
+
+                  {/* Desktop: all visible chips */}
+                  <div className="hidden flex-wrap gap-1.5 sm:flex">
                     {visibleItems.map((item) => (
                       <SkillChip key={item} label={item} />
                     ))}
                     {hiddenCount > 0 ? (
-                      <span className="inline-flex min-h-8 items-center rounded-full border border-[rgba(24,24,24,0.08)] bg-white px-2.5 py-1 text-[0.72rem] font-semibold text-[#6f6a61]">
+                      <span className="inline-flex min-h-7 items-center rounded-full border border-[rgba(24,24,24,0.08)] bg-white px-2.5 py-1 text-[0.72rem] font-semibold text-[#6f6a61]">
                         +{hiddenCount} more
                       </span>
                     ) : null}
