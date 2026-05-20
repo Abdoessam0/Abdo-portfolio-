@@ -16,7 +16,7 @@ const whatIDo = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="space-y-7 py-3 sm:space-y-10 sm:py-4">
+    <section id="about" className="space-y-6 py-3 sm:space-y-8 sm:py-4">
       <Reveal>
         <SectionHeading
           eyebrow="About"
@@ -24,9 +24,9 @@ export function AboutSection() {
         />
       </Reveal>
 
-      <Reveal className="grid gap-4 xl:grid-cols-[1.14fr_0.86fr]">
-        <div className="section-frame p-4 sm:p-7">
-          <div className="space-y-5">
+      <Reveal className="grid items-start gap-4 xl:grid-cols-[1.14fr_0.86fr]">
+        <div className="section-frame p-4 sm:p-5">
+          <div className="space-y-4">
             <p className="pill-label">{PROFILE.about.intro}</p>
 
             <div className="flex flex-wrap gap-2">
@@ -45,14 +45,14 @@ export function AboutSection() {
               {PROFILE.about.story.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="max-w-2xl text-sm leading-6 text-muted sm:text-base"
+                  className="max-w-2xl text-sm leading-6 text-muted"
                 >
                   {paragraph}
                 </p>
               ))}
             </div>
 
-            <div className="rounded-[1.2rem] border border-white/8 bg-white/[0.03] p-4">
+            <div className="rounded-[1.1rem] border border-white/8 bg-white/[0.03] p-3.5">
               <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
                 Work
               </p>
@@ -66,11 +66,11 @@ export function AboutSection() {
               </ul>
             </div>
 
-            <div className="grid gap-3 pt-1 sm:grid-cols-3">
+            <div className="grid gap-2.5 pt-1 sm:grid-cols-3">
               {PROFILE.about.focusAreas.map((item) => (
                 <div
                   key={item.title}
-                  className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3.5"
+                  className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3.5 py-3"
                 >
                   <p className="text-sm font-semibold text-[#181818]">{item.title}</p>
                   <p className="mt-2 text-sm leading-6 text-muted">
@@ -83,7 +83,7 @@ export function AboutSection() {
         </div>
 
         <div className="space-y-4">
-          <div className="section-frame p-4 sm:p-6">
+          <div className="section-frame p-4 sm:p-5">
             <p className="pill-label">At a glance</p>
 
             <div className="mt-4 space-y-3">
@@ -117,7 +117,7 @@ export function AboutSection() {
             </div>
           </div>
 
-          <div className="section-frame p-4 sm:p-6">
+          <div className="section-frame p-4 sm:p-5">
             <div className="space-y-5">
               <div>
                 <p className="pill-label">Education</p>

@@ -10,12 +10,12 @@ const featuredExperience = EXPERIENCE.filter((item) => item.featured);
 
 export function ExperienceSection() {
   return (
-    <section id="experience" className="space-y-8 py-4 sm:space-y-10">
+    <section id="experience" className="space-y-6 py-3 sm:space-y-8 sm:py-4">
       <Reveal>
         <SectionHeading eyebrow="Experience" title="Experience" />
       </Reveal>
 
-      <div className="space-y-5">
+      <div className="space-y-4">
         {featuredExperience.map((experience, index) => (
           <Reveal key={experience.id} delay={index * 0.05}>
             <ExperienceCard

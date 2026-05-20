@@ -5,6 +5,7 @@ import { Download, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { PROFILE } from "@/data/profile";
 import { useLang } from "@/hooks/use-lang";
 
 // ─── Nav items are driven by the dictionary ───────────────────────────────
@@ -104,7 +105,7 @@ export function StoryNavbar() {
 
             {/* CV download */}
             <a
-              href="/CV updated.pdf"
+              href={PROFILE.links.resume}
               target="_blank"
               rel="noreferrer"
               className="btn-primary-green hidden px-4 py-1.5 text-[0.78rem] shadow-[0_2px_10px_rgba(6,181,107,0.35)] hover:shadow-[0_4px_14px_rgba(6,181,107,0.5)] sm:inline-flex"
@@ -164,7 +165,7 @@ export function StoryNavbar() {
                   {t.toggle}
                 </button>
                 <a
-                  href="/CV updated.pdf"
+                  href={PROFILE.links.resume}
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => setMenuOpen(false)}

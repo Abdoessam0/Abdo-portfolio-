@@ -36,13 +36,14 @@ export type FloatingWhatsappCopy = {
 export const dict = {
   en: {
     dir: "ltr" as const,
-    label: "Abdelrahman Mohamed — Software Engineer",
-    headline: "I build fast, reliable web applications\nthat feel clean and work in production.",
-    sub: "Frontend-first and full-stack capable. I work with Next.js, React, TypeScript, Tailwind, PHP/Laravel, MySQL, and REST APIs to turn ideas into real digital products.",
+    label: "Abdo Essam - Software Engineer / Founder of Kolaytec",
+    headline: "I build websites, dashboards, and web platforms\nfor real business work.",
+    sub: "Frontend-first and full-stack capable. I work with Next.js, React, TypeScript, Tailwind, PHP/Laravel, MySQL, and REST APIs to ship practical digital products.",
     cta1: "View My Work",
     cta2: "Download CV",
+    cta3: "Let's Talk",
     toggle: "عربي",
-    marquee: "SOFTWARE ENGINEER • NEXT.JS • REACT • TYPESCRIPT • PRODUCTION WEB APPS • UI/UX • API SYSTEMS • ",
+    marquee: "ABDO ESSAM - KOLAYTEC - SOFTWARE ENGINEER - NEXT.JS - REACT - TYPESCRIPT - PRODUCTION WEB APPS - UI/UX - API SYSTEMS - ",
     nav: {
       about: "About",
       projects: "Projects",
@@ -51,7 +52,7 @@ export const dict = {
       contact: "Contact",
     },
     floatingWhatsapp: {
-      ariaLabel: "Message Abdelrahman on WhatsApp",
+      ariaLabel: "Message Abdo Essam on WhatsApp",
       hoverLabel: "Message me",
     } satisfies FloatingWhatsappCopy,
     projectCta: {
@@ -89,11 +90,12 @@ export const dict = {
   },
   ar: {
     dir: "rtl" as const,
-    label: "عبد الرحمن محمد — مهندس برمجيات",
+    label: "Abdo Essam - Software Engineer / Founder of Kolaytec",
     headline: "أبني تطبيقات ويب سريعة وموثوقة\nبتجربة استخدام نظيفة.",
     sub: "أركز على الواجهات الحديثة، الأنظمات المعتمدة على APIs، الأداء، وإطلاق منتجات تعمل فعليًا في بيئة إنتاج.",
     cta1: "شاهد أعمالي",
     cta2: "تحميل السيرة الذاتية",
+    cta3: "Let's Talk",
     toggle: "EN",
     marquee: "مهندس برمجيات • واجهات حديثة • تطبيقات ويب حقيقية • React • Next.js • TypeScript • ",
     nav: {
@@ -104,7 +106,7 @@ export const dict = {
       contact: "تواصل",
     },
     floatingWhatsapp: {
-      ariaLabel: "راسل عبد الرحمن على واتساب",
+      ariaLabel: "Message Abdo Essam on WhatsApp",
       hoverLabel: "راسلني",
     } satisfies FloatingWhatsappCopy,
     projectCta: {

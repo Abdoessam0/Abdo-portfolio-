@@ -1,20 +1,20 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, Download, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { PROFILE } from "@/data/profile";
 import { useLang } from "@/hooks/use-lang";
 import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
-// ─── Background marquee ────────────────────────────────────────────────────
 function Marquee({ text, dir }: { text: string; dir: "ltr" | "rtl" }) {
-  // Duplicate text so scroll loop is seamless
   const repeated = `${text}${text}${text}`;
+
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 overflow-hidden select-none"
+      className="pointer-events-none absolute inset-x-0 top-[48%] -translate-y-1/2 select-none overflow-hidden"
     >
       <p
         className={[
@@ -30,30 +30,32 @@ function Marquee({ text, dir }: { text: string; dir: "ltr" | "rtl" }) {
   );
 }
 
-// ─── Faint floating tech icons (text-based, no SVG imports needed) ─────────
 const TECH_FLOATERS = [
-  { label: "Next.js",     x: "8%",  y: "18%", delay: 0 },
-  { label: "React",       x: "80%", y: "14%", delay: 0.6 },
-  { label: "TypeScript",  x: "72%", y: "72%", delay: 1.1 },
-  { label: "Tailwind",    x: "12%", y: "76%", delay: 0.3 },
-  { label: "Node.js",     x: "50%", y: "88%", delay: 0.8 },
-  { label: "Laravel",     x: "88%", y: "48%", delay: 1.4 },
-  { label: "MySQL",       x: "4%",  y: "50%", delay: 0.5 },
+  { label: "Next.js", x: "8%", y: "20%", delay: 0 },
+  { label: "React", x: "80%", y: "14%", delay: 0.6 },
+  { label: "TypeScript", x: "72%", y: "78%", delay: 1.1 },
+  { label: "Tailwind", x: "12%", y: "82%", delay: 0.3 },
+  { label: "Node.js", x: "48%", y: "88%", delay: 0.8 },
+  { label: "Laravel", x: "86%", y: "52%", delay: 1.4 },
+  { label: "MySQL", x: "5%", y: "54%", delay: 0.5 },
 ] as const;
 
 function TechFloaters() {
-  const rm = useReducedMotion();
+  const reducedMotion = useReducedMotion();
   const { shouldUseLiteMotion } = useMobileOptimization();
-  const staticOnly = rm || shouldUseLiteMotion;
+  const staticOnly = reducedMotion || shouldUseLiteMotion;
 
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden select-none">
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 select-none overflow-hidden"
+    >
       {TECH_FLOATERS.map(({ label, x, y, delay }) =>
         staticOnly ? (
           <span
             key={label}
             style={{ left: x, top: y, position: "absolute" }}
-            className="text-[0.7rem] font-semibold uppercase tracking-widest text-[#181818]/[0.07]"
+            className="text-[0.7rem] font-semibold uppercase tracking-widest text-[#181818]/[0.055]"
           >
             {label}
           </span>
@@ -61,14 +63,14 @@ function TechFloaters() {
           <motion.span
             key={label}
             style={{ left: x, top: y, position: "absolute" }}
-            animate={{ y: [0, -10, 0] }}
+            animate={{ y: [0, -10, 0], opacity: [0.45, 0.75, 0.45] }}
             transition={{
               duration: 5 + delay * 1.2,
               repeat: Infinity,
               ease: "easeInOut",
               delay,
             }}
-            className="text-[0.7rem] font-semibold uppercase tracking-widest text-[#181818]/[0.07]"
+            className="text-[0.7rem] font-semibold uppercase tracking-widest text-[#181818]/[0.055]"
           >
             {label}
           </motion.span>
@@ -78,150 +80,104 @@ function TechFloaters() {
   );
 }
 
-// ─── Profile photo ─────────────────────────────────────────────────────────
 function ProfilePhoto() {
+  const reducedMotion = useReducedMotion();
+  const { shouldUseLiteMotion } = useMobileOptimization();
+  const shouldAnimate = !reducedMotion && !shouldUseLiteMotion;
+
   return (
-    <div className="group relative mx-auto mb-8 h-32 w-32 sm:h-36 sm:w-36">
-      {/* Green glow ring — visible on hover */}
-      <span
-        className="absolute -inset-1 rounded-full bg-[#06b56b]/0 blur-sm transition-all duration-500 group-hover:bg-[#06b56b]/20 sm:blur-md"
-        aria-hidden
-      />
-      <div className="relative h-full w-full overflow-hidden rounded-full border-2 border-[#181818]/10 transition-all duration-500 group-hover:border-[#06b56b]/50 group-hover:scale-[1.04]">
+    <div className="group relative mx-auto mb-7 h-36 w-36 sm:mb-8 sm:h-40 sm:w-40">
+      <div className="absolute -inset-5 rounded-full bg-[#06b56b]/8 blur-2xl transition duration-500 group-hover:bg-[#06b56b]/22" />
+      <motion.div
+        animate={
+          shouldAnimate ? { y: [0, -7, 0], scale: [1, 1.015, 1] } : undefined
+        }
+        transition={
+          shouldAnimate
+            ? {
+                duration: 7,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              }
+            : undefined
+        }
+        className="relative h-full w-full overflow-hidden rounded-full border border-[#181818]/10 bg-[#e9e1d8] shadow-[0_18px_42px_rgba(24,24,24,0.12)] transition duration-500 group-hover:border-[#06b56b] group-hover:shadow-[0_0_0_1px_rgba(6,181,107,0.28),0_18px_46px_rgba(6,181,107,0.26)]"
+      >
         <Image
           src="/profile-image.jpg"
-          alt="Abdelrahman Mohamed"
+          alt={PROFILE.heroImage.alt}
           fill
           priority
           quality={78}
-          sizes="(min-width: 640px) 144px, 128px"
-          className="object-cover object-center grayscale-[30%] transition-all duration-500 group-hover:grayscale-0 group-hover:scale-[1.06]"
+          sizes="(min-width: 640px) 160px, 136px"
+          className="object-cover object-center grayscale-[18%]"
         />
-      </div>
+      </motion.div>
     </div>
   );
 }
 
-// ─── Entrance animation variants ───────────────────────────────────────────
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
-};
-const item = {
-  hidden: { opacity: 0, y: 22 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
-
-// ─── Main hero ─────────────────────────────────────────────────────────────
 export function StoryHero() {
   const { t } = useLang();
-  const rm = useReducedMotion();
-  const { shouldUseLiteMotion } = useMobileOptimization();
 
   return (
     <section
       id="hero"
       dir={t.dir}
-      className="relative isolate flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-4 pb-24 pt-32 text-center sm:px-6 lg:px-8"
+      className="relative isolate flex min-h-[calc(100svh-5rem)] flex-col items-center justify-center overflow-hidden px-4 pb-18 pt-28 text-center sm:px-6 sm:pb-24 sm:pt-32 lg:px-8"
     >
-      {/* Marquee background */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-56 bg-[linear-gradient(180deg,rgba(6,181,107,0.055),transparent)]"
+      />
       <Marquee text={t.marquee} dir={t.dir} />
-
-      {/* Faint floating tech labels */}
       <TechFloaters />
 
-      {/* Hero content */}
-      <motion.div
-        variants={rm ? undefined : container}
-        initial="hidden"
-        animate="show"
-        className="relative z-10 mx-auto max-w-[680px]"
-      >
-        {/* Profile photo */}
-        <motion.div variants={rm ? undefined : item}>
-          <ProfilePhoto />
-        </motion.div>
+      <div className="relative z-10 mx-auto w-full max-w-[760px]">
+        <ProfilePhoto />
 
-        {/* Eyebrow label */}
-        <motion.p
-          variants={rm ? undefined : item}
-          className="mb-4 text-[0.78rem] font-semibold uppercase tracking-[0.22em] text-[#6f6a61]"
-        >
+        <p className="mx-auto mb-4 max-w-[21rem] text-[0.74rem] font-semibold uppercase tracking-[0.18em] text-[#06a865] sm:max-w-none sm:text-[0.78rem]">
           {t.label}
-        </motion.p>
+        </p>
 
-        {/* Headline */}
-        <motion.h1
-          variants={rm ? undefined : item}
-          className="font-heading text-[clamp(2rem,5.5vw,3.4rem)] font-black leading-[1.08] tracking-[-0.035em] text-[#181818]"
+        <h1
+          className="mx-auto max-w-[22rem] text-balance font-heading text-[clamp(2.05rem,5.6vw,3.8rem)] font-black leading-[1.05] tracking-[-0.035em] text-[#181818] sm:max-w-[760px]"
           style={{ whiteSpace: "pre-line" }}
         >
           {t.headline}
-        </motion.h1>
+        </h1>
 
-        {/* Sub */}
-        <motion.p
-          variants={rm ? undefined : item}
-          className="mx-auto mt-5 max-w-[540px] text-[clamp(0.9rem,2vw,1.08rem)] leading-[1.75] text-[#6f6a61]"
-        >
+        <p className="mx-auto mt-5 max-w-[22rem] text-[clamp(0.96rem,2vw,1.1rem)] leading-[1.7] text-[#6f6a61] sm:max-w-[560px]">
           {t.sub}
-        </motion.p>
+        </p>
 
-        {/* CTAs */}
-        <motion.div
-          variants={rm ? undefined : item}
-          className="mt-8 flex flex-wrap items-center justify-center gap-3"
-        >
-          {/* Primary — view work */}
+        <div className="mx-auto mt-8 flex w-full max-w-[23rem] flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center">
           <Link
             href="#projects"
-            className="btn-primary-dark group px-6 py-3 text-[0.88rem] shadow-[0_4px_14px_rgba(24,24,24,0.22)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(24,24,24,0.3)] focus-visible:outline-offset-4"
+            className="inline-flex min-h-[3.25rem] items-center justify-center gap-2 rounded-full bg-[#06b56b] px-7 py-3.5 text-[0.94rem] font-semibold text-white shadow-[0_12px_28px_rgba(6,181,107,0.22)] transition hover:bg-[#049f5e] hover:shadow-[0_14px_32px_rgba(6,181,107,0.28)] focus-visible:outline-offset-4 sm:min-w-[11.75rem]"
           >
             {t.cta1}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+            <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
 
-          {/* Secondary — download CV */}
           <a
-            href="/CV updated.pdf"
+            href={PROFILE.links.resume}
             target="_blank"
             rel="noreferrer"
-            className="btn-secondary px-6 py-3 text-[0.88rem] shadow-[0_2px_8px_rgba(24,24,24,0.08)] hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(24,24,24,0.1)] focus-visible:outline-offset-4"
+            className="inline-flex min-h-[3.25rem] items-center justify-center gap-2 rounded-full border-2 border-[#181818] bg-transparent px-7 py-3.5 text-[0.94rem] font-semibold text-[#181818] transition hover:bg-[#181818] hover:text-white focus-visible:outline-offset-4 sm:min-w-[11.75rem]"
           >
-            <Download className="h-4 w-4 text-[#06b56b]" aria-hidden />
+            <Download className="h-4 w-4" aria-hidden />
             {t.cta2}
           </a>
-        </motion.div>
-      </motion.div>
 
-      {/* Scroll hint */}
-      <div
-        aria-hidden
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        {rm || shouldUseLiteMotion ? (
-          <span className="flex h-9 w-5 items-start justify-center rounded-full border border-[#181818]/15 pt-1.5 opacity-70">
-            <span className="h-1.5 w-1 rounded-full bg-[#181818]/30" />
-          </span>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.45 }}
+          <Link
+            href="#contact"
+            className="inline-flex min-h-[3.25rem] items-center justify-center gap-2 rounded-full border border-[#06b56b]/35 bg-[#fffdf8]/75 px-6 py-3 text-[0.9rem] font-semibold text-[#048c55] shadow-[0_8px_22px_rgba(24,24,24,0.05)] transition hover:border-[#06b56b] hover:bg-white focus-visible:outline-offset-4 sm:min-w-[11.75rem]"
           >
-            <span className="flex h-9 w-5 items-start justify-center rounded-full border border-[#181818]/15 pt-1.5">
-              <motion.span
-                animate={{ y: [0, 7, 0], opacity: [1, 0.2, 1] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                className="h-1.5 w-1 rounded-full bg-[#181818]/30"
-              />
-            </span>
-          </motion.div>
-        )}
+            <MessageCircle className="h-4 w-4" aria-hidden />
+            {t.cta3}
+          </Link>
+        </div>
       </div>
     </section>
   );

@@ -59,19 +59,19 @@ export function CompactMediaGallery({
 
   return (
     <div
-      className={["space-y-3", nestedDarkChrome ? "story-nested-dark" : "", className]
+      className={["space-y-2.5", nestedDarkChrome ? "story-nested-dark" : "", className]
         .filter(Boolean)
         .join(" ")}
     >
       <div className="relative">
         <div
           className={`absolute inset-0 rounded-[1.8rem] bg-[radial-gradient(circle_at_top_left,rgba(111,205,245,0.16),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(255,181,71,0.12),transparent_30%),linear-gradient(145deg,rgba(95,132,232,0.18),rgba(8,14,26,0))] ${
-            shouldUseLiteEffects ? "blur-xl opacity-75" : "blur-2xl"
+            shouldUseLiteEffects ? "blur-lg opacity-60" : "blur-xl"
           }`}
         />
-        <div className="relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-[linear-gradient(160deg,rgba(15,23,40,0.96),rgba(6,11,21,0.96))] p-2 sm:rounded-[1.65rem] sm:p-3">
+        <div className="relative overflow-hidden rounded-[1.2rem] border border-white/10 bg-[linear-gradient(160deg,rgba(15,23,40,0.96),rgba(6,11,21,0.96))] p-1.5 sm:rounded-[1.35rem] sm:p-2">
           <div
-            className={`relative overflow-hidden rounded-[1.15rem] border border-white/8 sm:rounded-[1.3rem] ${activeAspectClass} ${
+            className={`relative overflow-hidden rounded-[1rem] border border-white/8 sm:rounded-[1.1rem] ${activeAspectClass} ${
               usesContainedSurface
                 ? "bg-[linear-gradient(180deg,rgba(247,251,255,0.98),rgba(228,239,251,0.94))]"
                 : "bg-[linear-gradient(180deg,rgba(13,20,36,0.95),rgba(7,11,22,0.98))]"
@@ -109,9 +109,9 @@ export function CompactMediaGallery({
                   unoptimized={Boolean(isSvg)}
                   className={`h-full w-full ${
                     activeFit === "contain"
-                      ? "object-contain p-4 sm:p-5"
+                      ? "object-contain p-3 sm:p-4"
                       : "object-cover"
-                  } ${isSvg ? "bg-[linear-gradient(180deg,rgba(247,251,255,0.98),rgba(228,239,251,0.94))] p-4 sm:p-5" : ""}`}
+                  } ${isSvg ? "bg-[linear-gradient(180deg,rgba(247,251,255,0.98),rgba(228,239,251,0.94))] p-3 sm:p-4" : ""}`}
                 />
               </div>
             ) : (
@@ -134,21 +134,21 @@ export function CompactMediaGallery({
                     unoptimized={Boolean(isSvg)}
                     className={`h-full w-full ${
                       activeFit === "contain"
-                        ? "object-contain p-4 sm:p-5"
+                        ? "object-contain p-3 sm:p-4"
                         : "object-cover"
-                    } ${isSvg ? "bg-[linear-gradient(180deg,rgba(247,251,255,0.98),rgba(228,239,251,0.94))] p-4 sm:p-5" : ""}`}
+                    } ${isSvg ? "bg-[linear-gradient(180deg,rgba(247,251,255,0.98),rgba(228,239,251,0.94))] p-3 sm:p-4" : ""}`}
                   />
                 </motion.div>
               </AnimatePresence>
             )}
 
-            <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[rgba(6,10,20,0.78)] px-3 py-1.5 text-[0.64rem] font-medium uppercase tracking-[0.18em] text-soft sm:text-[0.68rem] sm:tracking-[0.2em]">
+            <div className="absolute left-2 top-2 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[rgba(6,10,20,0.78)] px-2.5 py-1 text-[0.58rem] font-medium uppercase tracking-[0.16em] text-soft">
               <Images className="h-3.5 w-3.5 text-brand-glow" />
               Gallery
             </div>
 
             {items.length > 1 ? (
-              <div className="absolute right-3 top-3 rounded-full border border-white/10 bg-[rgba(6,10,20,0.78)] px-3 py-1.5 text-[0.64rem] font-medium uppercase tracking-[0.18em] text-soft sm:text-[0.68rem] sm:tracking-[0.2em]">
+              <div className="absolute right-2 top-2 rounded-full border border-white/10 bg-[rgba(6,10,20,0.78)] px-2.5 py-1 text-[0.58rem] font-medium uppercase tracking-[0.16em] text-soft">
                 {activeIndex + 1}/{items.length}
               </div>
             ) : null}
@@ -158,7 +158,7 @@ export function CompactMediaGallery({
                 <button
                   type="button"
                   onClick={goPrev}
-                  className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white/80 transition hover:border-white/40 hover:bg-black/60 hover:text-white"
+                  className="absolute left-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white/80 transition hover:border-white/40 hover:bg-black/60 hover:text-white"
                   aria-label="Previous image"
                 >
                   <ChevronLeft className="h-4 w-4" />
@@ -166,7 +166,7 @@ export function CompactMediaGallery({
                 <button
                   type="button"
                   onClick={goNext}
-                  className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white/80 transition hover:border-white/40 hover:bg-black/60 hover:text-white"
+                  className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white/80 transition hover:border-white/40 hover:bg-black/60 hover:text-white"
                   aria-label="Next image"
                 >
                   <ChevronRight className="h-4 w-4" />
@@ -174,11 +174,11 @@ export function CompactMediaGallery({
               </>
             ) : null}
 
-            <div className="absolute bottom-3 left-3 right-3 rounded-[1rem] border border-white/10 bg-[rgba(7,11,22,0.82)] px-3 py-3">
-              <p className="text-[0.65rem] uppercase tracking-[0.22em] text-muted">
+            <div className="absolute bottom-2 left-2 right-2 rounded-[0.85rem] border border-white/10 bg-[rgba(7,11,22,0.82)] px-2.5 py-2">
+              <p className="text-[0.58rem] uppercase tracking-[0.18em] text-muted">
                 Current frame
               </p>
-              <p className="mt-1 text-xs leading-5 text-soft">
+              <p className="mt-1 line-clamp-2 text-[0.7rem] leading-4 text-soft">
                 {activeItem.alt}
               </p>
             </div>
@@ -187,7 +187,7 @@ export function CompactMediaGallery({
       </div>
 
       {items.length > 1 && !isCompactViewport ? (
-        <div className="flex gap-2 overflow-x-auto rounded-[1.2rem] border border-white/8 bg-[rgba(10,16,29,0.72)] p-2.5">
+        <div className="flex gap-1.5 overflow-x-auto rounded-[1rem] border border-white/8 bg-[rgba(10,16,29,0.72)] p-2">
           {items.map((item, index) => {
             const thumbIsSvg = item.src.endsWith(".svg");
             const thumbFit = item.fit ?? (thumbIsSvg ? "contain" : "cover");
@@ -198,7 +198,7 @@ export function CompactMediaGallery({
                 type="button"
                 onClick={() => setActiveIndex(index)}
                 aria-pressed={index === activeIndex}
-                className={`relative h-12 w-16 shrink-0 overflow-hidden rounded-xl border transition-all sm:h-14 sm:w-20 ${
+                className={`relative h-10 w-14 shrink-0 overflow-hidden rounded-lg border transition-all sm:h-11 sm:w-16 ${
                   index === activeIndex
                     ? "border-brand-glow ring-1 ring-brand-glow/30 opacity-100"
                     : "border-white/10 opacity-70 hover:border-white/30 hover:opacity-100"

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Github, Linkedin, Mail, MessageCircle } from "lucide-react";
+import { Github, Instagram, Linkedin, Mail, MessageCircle } from "lucide-react";
 import { PROFILE } from "@/data/profile";
 
 const footerLinks = [
@@ -14,6 +14,7 @@ const socialLinks = [
   { icon: Mail, href: `mailto:${PROFILE.socials.email}`, label: "Email" },
   { icon: Linkedin, href: PROFILE.socials.linkedin, label: "LinkedIn" },
   { icon: Github, href: PROFILE.socials.github, label: "GitHub" },
+  { icon: Instagram, href: PROFILE.socials.instagram, label: "Instagram" },
   { icon: MessageCircle, href: PROFILE.socials.whatsapp, label: "WhatsApp" },
 ];
 
@@ -39,7 +40,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-[#6f6a61]">
-              Software Engineer building scalable, reliable web applications.
+              Software Engineer building websites, dashboards, and business platforms.
             </p>
           </div>
 

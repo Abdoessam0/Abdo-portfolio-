@@ -41,6 +41,26 @@ export type Experience = {
 
 export const EXPERIENCE: Experience[] = [
   {
+    id: "feinsoft",
+    slug: "feinsoft",
+    featured: true,
+    role: "Long-Term Software Intern",
+    company: "Feinsoft",
+    location: "Ankara, Türkiye",
+    period: "2026 · 4 months",
+    start: "2026",
+    end: "2026",
+    summary:
+      "Long-term internship during my final year of Computer Engineering, focused on frontend implementation, software development tasks, and real business website work.",
+    stack: ["Frontend implementation", "Business websites", "Software development"],
+    impact: [
+      "Worked on business-facing web interfaces and frontend implementation.",
+      "Supported software development tasks in a real company environment.",
+      "Gained practical experience with client requirements and delivery workflows.",
+    ],
+    links: [{ label: "Feinsoft", href: "https://www.feinsoft.com/" }],
+  },
+  {
     id: "remax-wise",
     slug: "remax-wise",
     featured: true,
@@ -83,13 +103,13 @@ export const EXPERIENCE: Experience[] = [
     gallery: [
       {
         src: "/images/remax-lisbon/remax-lisbon-journey-wall.jpg",
-        alt: "Abdelrahman in front of the RE/MAX WISE office in Lisbon",
+        alt: "Abdo Essam in front of the RE/MAX WISE office in Lisbon",
         width: 1200,
         height: 1600,
       },
       {
         src: "/images/remax-lisbon/remax-lisbon-office.jpg",
-        alt: "Abdelrahman with the team inside the RE/MAX Lisbon office",
+        alt: "Abdo Essam with the team inside the RE/MAX Lisbon office",
         width: 1600,
         height: 900,
       },
@@ -113,13 +133,13 @@ export const EXPERIENCE: Experience[] = [
       },
       {
         src: "/images/remax-lisbon/updatedphoto.png",
-        alt: "RE/MAX platform and technology team page featuring Abdelrahman",
+        alt: "RE/MAX platform and technology team page featuring Abdo Essam",
         width: 673,
         height: 507,
       },
       {
         src: "/images/remax-lisbon/abdo-team-photo.webp",
-        alt: "Abdelrahman featured on the RE/MAX 5 Steps team page",
+        alt: "Abdo Essam featured on the RE/MAX 5 Steps team page",
         width: 768,
         height: 1227,
       },
@@ -171,13 +191,13 @@ export const EXPERIENCE: Experience[] = [
     gallery: [
       {
         src: "/images/afaqy/WhatsApp%20Image%202026-03-30%20at%2010.18.35%20PM%20(1).jpeg",
-        alt: "Group photo with Abdelrahman and the AFAQY team in Riyadh",
+        alt: "Group photo with Abdo Essam and the AFAQY team in Riyadh",
         width: 2048,
         height: 1152,
       },
       {
         src: "/images/afaqy/WhatsApp%20Image%202026-03-30%20at%2010.18.35%20PM.jpeg",
-        alt: "Abdelrahman receiving the AFAQY experience certificate with a team member in Riyadh",
+        alt: "Abdo Essam receiving the AFAQY experience certificate with a team member in Riyadh",
         width: 1152,
         height: 2048,
       },

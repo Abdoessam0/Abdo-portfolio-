@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, Github, Linkedin, Mail, MessageCircle } from "lucide-react";
+import { Download, Github, Instagram, Linkedin, Mail, MessageCircle } from "lucide-react";
 import { PROFILE } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
@@ -11,6 +11,7 @@ const iconByKind = {
   whatsapp: MessageCircle,
   linkedin: Linkedin,
   github: Github,
+  instagram: Instagram,
   resume: Download,
 } as const;
 

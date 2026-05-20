@@ -26,7 +26,7 @@ export type ContactChannel = {
   href: string;
   value: string;
   note: string;
-  kind: "email" | "whatsapp" | "linkedin" | "github" | "resume";
+  kind: "email" | "whatsapp" | "linkedin" | "github" | "instagram" | "resume";
 };
 
 export type SkillGroup = {
@@ -53,6 +53,7 @@ export type Profile = {
     email: string;
     linkedin: string;
     github: string;
+    instagram: string;
     whatsapp: string;
   };
   links: {
@@ -76,6 +77,19 @@ export type Profile = {
   };
   metrics: Metric[];
   factCards: FactCard[];
+  founder: {
+    title: string;
+    eyebrow: string;
+    description: string;
+    proof: string[];
+    primaryCta: HeroCta;
+    secondaryCta: HeroCta;
+  };
+  trust: Array<{
+    label: string;
+    value: string;
+    description: string;
+  }>;
   about: {
     intro: string;
     story: string[];
@@ -101,14 +115,14 @@ export type Profile = {
   };
 };
 
-const RESUME_PATH = "/CV updated.pdf";
+const RESUME_PATH = "/Abdo-Essam-CV.pdf";
 
 export const PROFILE: Profile = {
   person: {
-    name: "Abdelrahman Mohamed",
+    name: "Abdo Essam",
     role: "Software Engineer",
     summary:
-      "Software Engineer with a B.Sc. in Computer Engineering and a Full-Stack diploma from ALX. Frontend-first, full-stack capable, with hands-on experience building production web applications and digital products using Next.js, React, TypeScript, Node.js, and PHP/Laravel.",
+      "Software Engineer and founder of Kolaytec, building websites, business platforms, dashboards, and full-stack web systems for real businesses.",
     location: "Ankara, Turkey (relocatable)",
     nationality: "Egyptian",
     base: "Ankara, Turkey",
@@ -123,25 +137,26 @@ export const PROFILE: Profile = {
     email: "abdoessammo@gmail.com",
     linkedin: "https://linkedin.com/in/abdo-mo",
     github: "https://github.com/Abdoessam0",
+    instagram: "https://www.instagram.com/_Abdo_Essam",
     whatsapp:
-      "https://wa.me/905527508202?text=Hi%20Abdelrahman,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
+      "https://wa.me/905527508202?text=Hi%20Abdo,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
   },
   links: {
     portfolio: "https://abdo.kolaytec.com",
     resume: RESUME_PATH,
   },
   hero: {
-    eyebrow: "Software Engineer / Next.js / React / TypeScript",
+    eyebrow: "Software Engineer / Founder of Kolaytec",
     headline:
-      "Software Engineer building production web applications and digital products.",
+      "I build websites, dashboards, and web platforms that real businesses can use.",
     subheadline:
-      "Frontend-first, full-stack capable, with hands-on experience in Next.js, React, TypeScript, Node.js, and PHP/Laravel.",
+      "Frontend-first and full-stack capable, with production web work, client-facing support experience, and a practical product mindset.",
     description:
-      "Focused on scalable UI, API-driven systems, performance, and reliable delivery.",
+      "Open to software engineering roles, freelance builds, and long-term product work.",
     proofStrip: [
-      { label: "Education", value: "B.Sc. Computer Engineering" },
-      { label: "Diploma", value: "ALX Full-Stack Diploma" },
-      { label: "Focus", value: "Scalable UI / APIs / delivery" },
+      { label: "Since", value: "Building web products since 2022" },
+      { label: "Work", value: "Frontend + full-stack delivery" },
+      { label: "Focus", value: "Websites / dashboards / platforms" },
     ],
     ctas: [
       {
@@ -152,76 +167,119 @@ export const PROFILE: Profile = {
       {
         label: "Download CV",
         href: RESUME_PATH,
-        ariaLabel: "Download Abdelrahman Mohamed CV PDF",
+        ariaLabel: "Download Abdo Essam CV PDF",
       },
     ],
-    trustedBy: ["RE/MAX Wise", "NFS Soft", "AFAQY"],
+    trustedBy: ["Kolaytec", "RE/MAX Wise", "NFS Soft", "AFAQY"],
   },
   heroImage: {
     src: "/profile-image.jpg",
-    alt: "Portrait of Abdelrahman Mohamed",
+    alt: "Portrait of Abdo Essam",
     width: 482,
     height: 775,
   },
   metrics: [
     { label: "Projects", value: "11", helper: "11 shipped / 7 live" },
     {
-      label: "Approach",
-      value: "Frontend-first",
-      helper: "Frontend-first, full-stack capable",
+      label: "Since",
+      value: "2022",
+      helper: "Building web products",
     },
     { label: "Languages", value: "3", helper: "Arabic / English / Turkish" },
     {
       label: "Work",
       value: "Production",
-      helper: "In use now",
+      helper: "Web platforms and dashboards",
     },
   ],
   factCards: [
     {
       label: "Role",
-      value: "Software Engineer",
-      description: "B.Sc. Computer Engineering with an ALX Full-Stack diploma.",
+      value: "Software Engineer + Founder",
+      description: "B.Sc. Computer Engineering, ALX Full-Stack diploma, and Kolaytec founder.",
     },
     {
       label: "Build",
-      value: "Web applications and digital products",
+      value: "Websites, dashboards, and platforms",
       description: "Frontend-first, full-stack capable across real product work.",
     },
     {
       label: "Focus",
-      value: "Scalable UI and API systems",
-      description: "Performance, reliability, and clean delivery.",
+      value: "Clean delivery for real users",
+      description: "Production UI, API-connected systems, admin panels, and client work.",
+    },
+  ],
+  founder: {
+    eyebrow: "Founder",
+    title: "Founder of Kolaytec",
+    description:
+      "Kolaytec is my private workspace for building practical websites, admin panels, dashboards, and business platforms. I use it to turn client needs into clean, usable, production-ready web products.",
+    proof: [
+      "Business websites",
+      "Admin panels and dashboards",
+      "Full-stack delivery",
+    ],
+    primaryCta: {
+      label: "Visit Kolaytec",
+      href: "https://kolaytec.com",
+      ariaLabel: "Visit Kolaytec website",
+    },
+    secondaryCta: {
+      label: "Let's Talk",
+      href: "#contact",
+      ariaLabel: "Jump to contact section",
+    },
+  },
+  trust: [
+    {
+      label: "Production",
+      value: "Production web platforms",
+      description: "Real websites, dashboards, and product pages built for public use.",
+    },
+    {
+      label: "Delivery",
+      value: "Frontend + full-stack delivery",
+      description: "React/Next.js interfaces with API-connected workflows and data handling.",
+    },
+    {
+      label: "Experience",
+      value: "International internship experience",
+      description: "Software and client-facing work across Portugal, Saudi Arabia, and Turkey.",
+    },
+    {
+      label: "Systems",
+      value: "Admin panels and dashboards",
+      description: "Interfaces for managing data, events, content, and operational workflows.",
     },
   ],
   about: {
-    intro: "Software Engineer / Frontend-First",
+    intro: "Software Engineer / Founder / Frontend-First",
     story: [
-      "Software Engineer with a B.Sc. in Computer Engineering and a Full-Stack diploma from ALX.",
-      "Frontend-first, full-stack capable, with hands-on experience building production web applications and digital products using Next.js, React, TypeScript, Node.js, and PHP/Laravel.",
-      "Focused on scalable UI, API-driven systems, performance, and reliable delivery, with experience contributing in fast-paced agile product teams.",
+      "I am Abdo Essam, a Software Engineer who builds practical web products for real users.",
+      "My work is strongest around frontend implementation, API-connected workflows, admin panels, dashboards, and business websites.",
+      "I am interested in software engineering roles and product work where clean delivery, communication, and reliability matter.",
     ],
     focusAreas: [
       {
         title: "Frontend",
         description:
-          "Scalable UI, responsive interfaces, and clean component systems.",
+          "Responsive interfaces, clean component systems, and polished product pages.",
       },
       {
-        title: "Backend",
+        title: "Full-stack",
         description:
-          "API-driven systems, server-side logic, and real product workflows.",
+          "API-connected workflows, dashboards, admin panels, and business systems.",
       },
       {
         title: "Delivery",
         description:
-          "Performance, debugging, testing, and reliable delivery.",
+          "Clear communication, debugging, performance, and reliable launch work.",
       },
     ],
     principles: [
-      "Scalable UI",
+      "Production web platforms",
       "API-driven systems",
-      "Performance",
+      "Client-facing support",
       "Reliable delivery",
     ],
   },
@@ -344,7 +402,7 @@ export const PROFILE: Profile = {
   contact: {
     eyebrow: "Contact",
     title: "Open to full-time roles, freelance work, and collaborations.",
-    description: "The best way to reach me is by email or LinkedIn.",
+    description: "The best way to reach me is by email, LinkedIn, or Instagram.",
     availability: "If you have a role or project in mind, feel free to reach out.",
     channels: [
       {
@@ -369,8 +427,15 @@ export const PROFILE: Profile = {
         kind: "github",
       },
       {
+        label: "Instagram",
+        href: "https://www.instagram.com/_Abdo_Essam",
+        value: "instagram.com/_Abdo_Essam",
+        note: "Updates and contact",
+        kind: "instagram",
+      },
+      {
         label: "WhatsApp",
-        href: "https://wa.me/905527508202?text=Hi%20Abdelrahman,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
+        href: "https://wa.me/905527508202?text=Hi%20Abdo,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
         value: "+90 552 750 8202",
         note: "Quick follow-up",
         kind: "whatsapp",

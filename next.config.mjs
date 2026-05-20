@@ -30,7 +30,7 @@ const nextConfig = {
         headers: [{ key: "Content-Disposition", value: "inline" }],
       },
       {
-        source: "/CV updated.pdf",
+        source: "/Abdo-Essam-CV.pdf",
         headers: [{ key: "Content-Disposition", value: "inline" }],
       },
     ];

@@ -23,7 +23,7 @@ const sora = Sora({
 const siteUrl = new URL(PROFILE.links.portfolio);
 const title = `${PROFILE.person.name} | ${PROFILE.person.role}`;
 const description =
-  "Portfolio of a frontend-first Software Engineer building Next.js, React, TypeScript, and full-stack web products.";
+  "Portfolio of Abdo Essam, a frontend-first Software Engineer and founder of Kolaytec building websites, dashboards, and full-stack web products.";
 const previewImage = `${siteUrl.origin}/opengraph-image?v=2`;
 
 export const metadata: Metadata = {
@@ -35,7 +35,8 @@ export const metadata: Metadata = {
   description,
   applicationName: `${PROFILE.person.name} Portfolio`,
   keywords: [
-    "Abdelrahman Mohamed",
+    "Abdo Essam",
+    "Kolaytec",
     "Software Engineer",
     "Next.js",
     "React",

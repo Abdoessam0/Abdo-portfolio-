@@ -2,6 +2,7 @@ import { AboutSection } from "@/components/home/about-section";
 import { ContactSection } from "@/components/home/contact-section";
 import { CredentialsSection } from "@/components/home/credentials-section";
 import { ExperienceSection } from "@/components/home/experience-section";
+import { FounderSection } from "@/components/home/founder-section";
 // import { HeroSection } from "@/components/home/hero-section"; // replaced on this branch
 import { StoryHero } from "@/components/story/StoryHero";
 import { StoryProjectCTA } from "@/components/story/StoryProjectCTA";
@@ -20,7 +21,7 @@ const personSchema = {
   telephone: PROFILE.person.phone,
   nationality: PROFILE.person.nationality,
   knowsLanguage: PROFILE.person.languages,
-  sameAs: [PROFILE.socials.linkedin, PROFILE.socials.github],
+  sameAs: [PROFILE.socials.linkedin, PROFILE.socials.github, PROFILE.socials.instagram],
 };
 
 const websiteSchema = {
@@ -49,6 +50,10 @@ export default function HomePage() {
 
       <div className="space-y-14 sm:space-y-24 lg:space-y-28">
         <StoryHero />
+        <div className="deferred-section">
+          <div className="section-divider" />
+          <FounderSection />
+        </div>
         <div className="deferred-section">
           <div className="section-divider" />
           <ProjectsSection />
