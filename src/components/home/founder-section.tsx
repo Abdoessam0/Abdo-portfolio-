@@ -66,7 +66,7 @@ export function FounderSection() {
                     Kolaytec
                   </p>
                   <p className="mt-1 text-sm font-semibold text-[#181818]">
-                    Private web workspace
+                    Company project
                   </p>
                 </div>
                 <div className="relative h-14 w-14 overflow-hidden rounded-2xl border border-white bg-[#efe8dd] shadow-[0_6px_16px_rgba(24,24,24,0.12)]">

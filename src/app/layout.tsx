@@ -24,7 +24,7 @@ const sora = Sora({
 const siteUrl = new URL(PROFILE.links.portfolio);
 const title = "Abdo Essam | Software Engineer Portfolio";
 const description =
-  "Software Engineer portfolio of Abdo Essam, frontend-first full-stack developer based in Ankara, building web applications, dashboards, admin panels, and business platforms with Next.js, React, TypeScript, PHP/Laravel, and MySQL.";
+  "Portfolio of Abdo Essam, a software engineer focused on frontend, full-stack web applications, Next.js, React, TypeScript, and production-ready digital products.";
 const previewImage = `${siteUrl.origin}/opengraph-image?v=3`;
 
 export const metadata: Metadata = {
@@ -35,22 +35,28 @@ export const metadata: Metadata = {
   },
   description,
   applicationName: "Abdo Essam Portfolio",
+  robots: {
+    index: false,
+    follow: true,
+    googleBot: {
+      index: false,
+      follow: true,
+    },
+  },
   keywords: [
     "Abdo Essam",
-    "Abdo Kolaytec",
     "Abdo Essam portfolio",
     "Software Engineer Ankara",
     "Frontend Developer",
     "Full Stack Developer",
     "Next.js Developer",
     "React Developer",
-    "Kolaytec Founder",
   ],
   authors: [{ name: "Abdo Essam", url: PROFILE.socials.linkedin }],
   creator: "Abdo Essam",
   publisher: "Abdo Essam",
   alternates: {
-    canonical: siteUrl.toString(),
+    canonical: "https://abdo.kolaytec.com/",
   },
   openGraph: {
     title,

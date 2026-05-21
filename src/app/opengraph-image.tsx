@@ -146,8 +146,8 @@ export default function OpengraphImage() {
                 maxWidth: 620,
               }}
             >
-              Founder of Kolaytec. Building web applications, dashboards, admin
-              panels, and business platforms.
+              Building web applications, dashboards, admin panels, and
+              business platforms for real business needs.
             </div>
 
             <div

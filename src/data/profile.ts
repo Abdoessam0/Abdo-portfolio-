@@ -122,7 +122,7 @@ export const PROFILE: Profile = {
     name: "Abdo Essam",
     role: "Software Engineer",
     summary:
-      "Software Engineer and founder of Kolaytec based in Ankara, building web applications, dashboards, admin panels, and business platforms with Next.js, React, TypeScript, PHP/Laravel, and MySQL.",
+      "Software Engineer based in Ankara, building web applications, dashboards, admin panels, and business platforms with Next.js, React, TypeScript, PHP/Laravel, and MySQL.",
     location: "Ankara, Turkey (relocatable)",
     nationality: "Egyptian",
     base: "Ankara, Turkey",
@@ -146,7 +146,7 @@ export const PROFILE: Profile = {
     resume: RESUME_PATH,
   },
   hero: {
-    eyebrow: "Software Engineer / Founder of Kolaytec",
+    eyebrow: "Software Engineer / Full-Stack Developer",
     headline:
       "Abdo Essam builds web applications, dashboards, and business platforms.",
     subheadline:
@@ -174,7 +174,7 @@ export const PROFILE: Profile = {
   },
   heroImage: {
     src: "/profile-image.jpg",
-    alt: "Abdo Essam, Software Engineer and founder of Kolaytec",
+    alt: "Abdo Essam, Software Engineer and Full-Stack Developer",
     width: 482,
     height: 775,
   },
@@ -196,7 +196,7 @@ export const PROFILE: Profile = {
     {
       label: "Role",
       value: "Software Engineer + Founder",
-      description: "B.Sc. Computer Engineering, ALX Full-Stack diploma, and Kolaytec founder.",
+      description: "B.Sc. Computer Engineering, ALX Full-Stack diploma, and independent founder.",
     },
     {
       label: "Build",
@@ -211,9 +211,9 @@ export const PROFILE: Profile = {
   ],
   founder: {
     eyebrow: "Founder",
-    title: "Founder of Kolaytec",
+    title: "Kolaytec — Company Website Project",
     description:
-      "Kolaytec is my private workspace for building practical websites, admin panels, dashboards, and business platforms. I use it to turn client needs into clean, usable, production-ready web products.",
+      "Kolaytec is a company I founded for building practical websites, admin panels, dashboards, and business platforms. Through it, I turn client needs into clean, usable, production-ready web products.",
     proof: [
       "Business websites",
       "Admin panels and dashboards",

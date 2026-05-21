@@ -36,14 +36,14 @@ export type FloatingWhatsappCopy = {
 export const dict = {
   en: {
     dir: "ltr" as const,
-    label: "Abdo Essam - Software Engineer / Founder of Kolaytec",
+    label: "Abdo Essam - Software Engineer / Full-Stack Developer",
     headline: "I build websites, dashboards, and web platforms\nfor real business work.",
     sub: "Frontend-first and full-stack capable. I work with Next.js, React, TypeScript, Tailwind, PHP/Laravel, MySQL, and REST APIs to ship practical digital products.",
     cta1: "View My Work",
     cta2: "Download CV",
     cta3: "Let's Talk",
     toggle: "عربي",
-    marquee: "ABDO ESSAM - KOLAYTEC - SOFTWARE ENGINEER - NEXT.JS - REACT - TYPESCRIPT - PRODUCTION WEB APPS - UI/UX - API SYSTEMS - ",
+    marquee: "ABDO ESSAM - SOFTWARE ENGINEER - NEXT.JS - REACT - TYPESCRIPT - PRODUCTION WEB APPS - UI/UX - API SYSTEMS - ",
     nav: {
       about: "About",
       projects: "Projects",
@@ -90,7 +90,7 @@ export const dict = {
   },
   ar: {
     dir: "rtl" as const,
-    label: "عبدو عصام - مهندس برمجيات / مؤسس Kolaytec",
+    label: "عبدو عصام - مهندس برمجيات / مطور Full-Stack",
     headline: "أبني تطبيقات ويب سريعة وموثوقة\nبتجربة استخدام نظيفة.",
     sub: "أركز على الواجهات الحديثة، الأنظمة المعتمدة على APIs، الأداء، وإطلاق منتجات تعمل فعليًا في بيئة إنتاج.",
     cta1: "شاهد أعمالي",
