@@ -22,22 +22,20 @@ export function Reveal({
   const reducedMotion = useReducedMotion();
   const { shouldUseLiteMotion } = useMobileOptimization();
 
-  if (reducedMotion) {
+  // On mobile or reduced-motion, skip animation entirely — content always visible
+  if (reducedMotion || shouldUseLiteMotion) {
     return <div className={className}>{children}</div>;
   }
-
-  const travel = shouldUseLiteMotion ? Math.min(y, 12) : y;
-  const duration = shouldUseLiteMotion ? 0.32 : 0.44;
 
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: travel }}
+      initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, amount: 0.15, margin: "0px 0px -8% 0px" }}
+      viewport={{ once, amount: 0.1, margin: "0px 0px -5% 0px" }}
       transition={{
-        duration,
-        delay: shouldUseLiteMotion ? Math.min(delay, 0.12) : delay,
+        duration: 0.44,
+        delay,
         ease: [0.22, 1, 0.36, 1] as const,
       }}
     >

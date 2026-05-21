@@ -194,13 +194,15 @@ export function ExperienceCard({
                     className="aspect-[16/10] w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,11,22,0.08),rgba(7,11,22,0.16)_45%,rgba(4,8,16,0.76)_100%)]" />
-                  <div className="absolute bottom-2 left-2 right-2 rounded-[0.85rem] border border-white/10 bg-[rgba(7,11,22,0.74)] px-2.5 py-2 backdrop-blur-xl">
-                    <p className="text-[0.58rem] uppercase tracking-[0.18em] text-[#b9b4ab]">
-                      AFAQY team
+                  <div className="absolute bottom-2 left-2 right-2 select-none rounded-2xl border border-white/10 bg-[rgba(7,11,22,0.74)] px-2.5 py-2 backdrop-blur-xl">
+                    <p className="text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-[#b9b4ab]">
+                      {gallery[0].caption ?? "AFAQY — Riyadh"}
                     </p>
-                    <p className="mt-1 line-clamp-2 text-[0.7rem] leading-4 text-[#ebe7df]">
-                      {gallery[0].alt}
-                    </p>
+                    {gallery[0].captionSub ? (
+                      <p className="mt-0.5 text-[0.7rem] leading-[1.3] text-[#ebe7df]">
+                        {gallery[0].captionSub}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </div>

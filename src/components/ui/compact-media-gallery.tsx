@@ -12,13 +12,17 @@ export type CompactMediaItem = {
   width: number;
   height: number;
   fit?: "cover" | "contain";
+  /** Short title for caption overlay (e.g. "RE/MAX Wise — Lisbon") */
+  caption?: string;
+  /** Subtitle for caption overlay (e.g. "Software Developer Internship, 2025") */
+  captionSub?: string;
 };
 
 type CompactMediaGalleryProps = {
   items: CompactMediaItem[];
   imageSizes: string;
   className?: string;
-  /** When nested in light “story” cards, use so caption/badge text stays readable on dark chrome. */
+  /** When nested in light "story" cards, use so caption/badge text stays readable on dark chrome. */
   nestedDarkChrome?: boolean;
   priority?: boolean;
 };
@@ -174,21 +178,26 @@ export function CompactMediaGallery({
               </>
             ) : null}
 
-            <div className="absolute bottom-2 left-2 right-2 rounded-[0.85rem] border border-white/10 bg-[rgba(7,11,22,0.82)] px-2.5 py-2">
-              <p className="text-[0.58rem] uppercase tracking-[0.18em] text-muted">
-                Current frame
-              </p>
-              <p className="mt-1 line-clamp-2 text-[0.7rem] leading-4 text-soft">
-                {activeItem.alt}
-              </p>
-            </div>
+            {/* Caption overlay — uses dedicated caption/captionSub if set, else alt text */}
+            {(activeItem.caption ?? activeItem.alt) ? (
+              <div className="absolute bottom-2 left-2 right-2 select-none rounded-2xl border border-white/10 bg-[rgba(7,11,22,0.78)] px-2.5 py-2 backdrop-blur-xl sm:bottom-2.5 sm:left-2.5 sm:right-2.5">
+                <p className="text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-[#b9b4ab]">
+                  {activeItem.caption ?? activeItem.alt.split(" ").slice(0, 5).join(" ")}
+                </p>
+                {activeItem.captionSub ? (
+                  <p className="mt-0.5 text-[0.7rem] leading-[1.3] text-[#ebe7df]">
+                    {activeItem.captionSub}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
 
       {items.length > 1 && !isCompactViewport ? (
         <div className="flex gap-1.5 overflow-x-auto rounded-[1rem] border border-white/8 bg-[rgba(10,16,29,0.72)] p-2">
-          {items.map((item, index) => {
+          {items.map((item, thumbIndex) => {
             const thumbIsSvg = item.src.endsWith(".svg");
             const thumbFit = item.fit ?? (thumbIsSvg ? "contain" : "cover");
 
@@ -196,10 +205,10 @@ export function CompactMediaGallery({
               <button
                 key={item.src}
                 type="button"
-                onClick={() => setActiveIndex(index)}
-                aria-pressed={index === activeIndex}
+                onClick={() => setActiveIndex(thumbIndex)}
+                aria-pressed={thumbIndex === activeIndex}
                 className={`relative h-10 w-14 shrink-0 overflow-hidden rounded-lg border transition-all sm:h-11 sm:w-16 ${
-                  index === activeIndex
+                  thumbIndex === activeIndex
                     ? "border-brand-glow ring-1 ring-brand-glow/30 opacity-100"
                     : "border-white/10 opacity-70 hover:border-white/30 hover:opacity-100"
                 }`}

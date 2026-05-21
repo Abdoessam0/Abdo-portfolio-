@@ -81,12 +81,7 @@ const coreStack = [
 ];
 
 const visibleSkillOrder: Record<string, string[]> = {
-  Frontend: [
-    "React.js",
-    "Next.js",
-    "TypeScript",
-    "Tailwind CSS",
-  ],
+  Frontend: ["React.js", "Next.js", "TypeScript", "Tailwind CSS"],
   "Backend and APIs": ["Node.js", "RESTful APIs", "PHP", "Laravel"],
   Mobile: ["React Native", "Expo", "Expo Router"],
   Databases: ["PostgreSQL", "MySQL", "MongoDB"],
@@ -111,7 +106,8 @@ const aiWorkflowChips = [
   ["🚀", "Faster Prototyping"],
 ] as const;
 
-const MOBILE_CHIP_LIMIT = 3;
+// Mobile: show up to 4 chips per card
+const MOBILE_CHIP_LIMIT = 4;
 
 function SkillLogo({ label, compact = false }: { label: string; compact?: boolean }) {
   if (label === "AI Agents") {
@@ -176,6 +172,7 @@ export function SkillsSection() {
         />
       </Reveal>
 
+      {/* Core workflow chip bar */}
       <Reveal>
         <div className="rounded-[1rem] border border-[rgba(24,24,24,0.08)] bg-white/72 p-1.5 shadow-[0_8px_22px_rgba(24,24,24,0.045)] sm:rounded-[1.15rem] sm:p-2">
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
@@ -197,15 +194,9 @@ export function SkillsSection() {
         </div>
       </Reveal>
 
+      {/* AI Workflow card */}
       <Reveal>
-        <motion.div
-          initial={shouldAnimate ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
-          whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
-          viewport={{ once: true, margin: "-10%" }}
-          whileHover={shouldAnimate ? { y: -3 } : undefined}
-          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] as const }}
-          className="section-frame p-2.5 sm:p-3.5 sm:p-4"
-        >
+        <div className="section-frame p-2.5 sm:p-3.5">
           <div className="grid gap-2 sm:gap-3 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
             <div className="flex items-start gap-2 sm:gap-3">
               <div className="story-icon-wrap h-8 w-8 rounded-xl sm:h-9 sm:w-9 sm:rounded-2xl">
@@ -235,86 +226,85 @@ export function SkillsSection() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </Reveal>
 
+      {/* Skill group cards grid — always visible, no opacity:0 initial state */}
       <div className="grid grid-cols-1 gap-2 sm:gap-2.5 md:grid-cols-2 xl:grid-cols-3">
-        {PROFILE.skills.map((group, index) => {
+        {PROFILE.skills.map((group) => {
           const Icon = categoryIcons[group.title] ?? Code2;
           const preferred = visibleSkillOrder[group.title] ?? group.items.slice(0, 5);
           const visibleItems = preferred.filter((item) => group.items.includes(item));
           const hiddenCount = Math.max(group.items.length - visibleItems.length, 0);
 
-          /* On mobile, limit chips to avoid oversized cards */
+          // On mobile, show up to MOBILE_CHIP_LIMIT chips
           const mobileVisible = visibleItems.slice(0, MOBILE_CHIP_LIMIT);
-          const mobileHidden = visibleItems.length - MOBILE_CHIP_LIMIT + hiddenCount;
+          const mobileHidden = Math.max(
+            visibleItems.length - MOBILE_CHIP_LIMIT + hiddenCount,
+            0
+          );
 
           return (
-            <Reveal key={group.title} delay={index * 0.035} className="h-full">
-              <motion.div
-                initial={shouldAnimate ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
-                whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
-                viewport={{ once: true, margin: "-10%" }}
-                whileHover={shouldAnimate ? { y: -3 } : undefined}
-                transition={{
-                  duration: 0.22,
-                  ease: [0.22, 1, 0.36, 1] as const,
-                  delay: shouldAnimate ? index * 0.025 : 0,
-                }}
-                className="group section-frame h-full p-2.5 sm:p-3 sm:p-3.5"
-              >
-                <div className="flex h-full flex-col gap-2">
-                  <div className="flex items-start justify-between gap-2 sm:gap-3">
-                    <div className="flex items-start gap-2 sm:gap-3">
-                      <div className="story-icon-wrap mt-0.5 h-7 w-7 rounded-lg transition group-hover:scale-105 group-hover:shadow-[0_0_0_3px_rgba(6,181,107,0.08)] sm:h-8 sm:w-8 sm:rounded-xl">
-                        <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
-                      </div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                          <h3 className="font-heading text-[0.9rem] font-semibold leading-tight tracking-[-0.03em] text-[#181818] sm:text-[1rem]">
-                            {group.title}
-                          </h3>
-                          {coreCategories.has(group.title) ? (
-                            <span className="rounded-full border border-[#06b56b]/18 bg-[#f0fdf7] px-1.5 py-0.5 text-[0.52rem] font-semibold uppercase tracking-[0.12em] text-[#048c55] sm:text-[0.58rem]">
-                              Core
-                            </span>
-                          ) : null}
-                        </div>
-                        {group.summary ? (
-                          <p className="mt-0.5 max-w-md text-[0.7rem] leading-[1.4] text-[#6f6a61] sm:mt-1 sm:text-xs sm:leading-5">
-                            {group.summary}
-                          </p>
+            <motion.div
+              key={group.title}
+              whileHover={shouldAnimate ? { y: -3 } : undefined}
+              transition={{
+                duration: 0.22,
+                ease: [0.22, 1, 0.36, 1] as const,
+              }}
+              className="group section-frame h-full p-3 sm:p-3.5"
+            >
+              <div className="flex h-full flex-col gap-2">
+                <div className="flex items-start justify-between gap-2 sm:gap-3">
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <div className="story-icon-wrap mt-0.5 h-7 w-7 rounded-lg transition group-hover:scale-105 group-hover:shadow-[0_0_0_3px_rgba(6,181,107,0.08)] sm:h-8 sm:w-8 sm:rounded-xl">
+                      <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
+                    </div>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <h3 className="font-heading text-[0.9rem] font-semibold leading-tight tracking-[-0.03em] text-[#181818] sm:text-[1rem]">
+                          {group.title}
+                        </h3>
+                        {coreCategories.has(group.title) ? (
+                          <span className="rounded-full border border-[#06b56b]/18 bg-[#f0fdf7] px-1.5 py-0.5 text-[0.52rem] font-semibold uppercase tracking-[0.12em] text-[#048c55] sm:text-[0.58rem]">
+                            Core
+                          </span>
                         ) : null}
                       </div>
+                      {group.summary ? (
+                        <p className="mt-0.5 max-w-md text-[0.7rem] leading-[1.4] text-[#6f6a61] sm:mt-1 sm:text-xs sm:leading-5">
+                          {group.summary}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
-
-                  {/* Mobile: limited chips */}
-                  <div className="flex flex-wrap gap-1 sm:hidden">
-                    {mobileVisible.map((item) => (
-                      <SkillChip key={item} label={item} />
-                    ))}
-                    {mobileHidden > 0 ? (
-                      <span className="inline-flex min-h-6 items-center rounded-full border border-[rgba(24,24,24,0.08)] bg-white px-2 py-0.5 text-[0.65rem] font-semibold text-[#6f6a61]">
-                        +{mobileHidden} more
-                      </span>
-                    ) : null}
-                  </div>
-
-                  {/* Desktop: all visible chips */}
-                  <div className="hidden flex-wrap gap-1.5 sm:flex">
-                    {visibleItems.map((item) => (
-                      <SkillChip key={item} label={item} />
-                    ))}
-                    {hiddenCount > 0 ? (
-                      <span className="inline-flex min-h-7 items-center rounded-full border border-[rgba(24,24,24,0.08)] bg-white px-2.5 py-1 text-[0.72rem] font-semibold text-[#6f6a61]">
-                        +{hiddenCount} more
-                      </span>
-                    ) : null}
-                  </div>
                 </div>
-              </motion.div>
-            </Reveal>
+
+                {/* Mobile: up to 4 chips + "+N more" badge */}
+                <div className="flex flex-wrap gap-1 sm:hidden">
+                  {mobileVisible.map((item) => (
+                    <SkillChip key={item} label={item} />
+                  ))}
+                  {mobileHidden > 0 ? (
+                    <span className="inline-flex min-h-6 items-center rounded-full border border-[rgba(24,24,24,0.08)] bg-white px-2 py-0.5 text-[0.65rem] font-semibold text-[#6f6a61]">
+                      +{mobileHidden} more
+                    </span>
+                  ) : null}
+                </div>
+
+                {/* Desktop: all visible chips */}
+                <div className="hidden flex-wrap gap-1.5 sm:flex">
+                  {visibleItems.map((item) => (
+                    <SkillChip key={item} label={item} />
+                  ))}
+                  {hiddenCount > 0 ? (
+                    <span className="inline-flex min-h-7 items-center rounded-full border border-[rgba(24,24,24,0.08)] bg-white px-2.5 py-1 text-[0.72rem] font-semibold text-[#6f6a61]">
+                      +{hiddenCount} more
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            </motion.div>
           );
         })}
       </div>

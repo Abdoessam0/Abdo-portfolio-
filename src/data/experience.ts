@@ -6,6 +6,10 @@ export type ExperienceMedia = {
   width: number;
   height: number;
   fit?: "cover" | "contain";
+  /** Short title shown in caption overlay (e.g. "AFAQY — Riyadh") */
+  caption?: string;
+  /** Subtitle shown below caption title (e.g. "Technical Support Internship, 2024") */
+  captionSub?: string;
 };
 
 export type ExperienceLink = {
@@ -103,43 +107,57 @@ export const EXPERIENCE: Experience[] = [
     gallery: [
       {
         src: "/images/remax-lisbon/remax-lisbon-journey-wall.jpg",
-        alt: "Abdo Essam in front of the RE/MAX WISE office in Lisbon",
+        alt: "Abdo Essam in front of the RE/MAX Wise office in Lisbon",
+        caption: "RE/MAX Wise — Lisbon",
+        captionSub: "Software Developer Internship, 2025",
         width: 1200,
         height: 1600,
       },
       {
         src: "/images/remax-lisbon/remax-lisbon-office.jpg",
-        alt: "Abdo Essam with the team inside the RE/MAX Lisbon office",
+        alt: "Team photo inside the RE/MAX Lisbon office",
+        caption: "RE/MAX Lisbon Office",
+        captionSub: "Lisbon, Portugal, 2025",
         width: 1600,
         height: 900,
       },
       {
         src: "/images/remax-lisbon/remax-lisbon-team.jpg",
         alt: "Team photo at the RE/MAX Lisbon office",
+        caption: "RE/MAX Lisbon",
+        captionSub: "Team, 2025",
         width: 1200,
         height: 1600,
       },
       {
         src: "/projects/remax-lisbon-cover.png",
         alt: "Real Estate Lisbon production website",
+        caption: "Real Estate Lisbon",
+        captionSub: "Production website",
         width: 1440,
         height: 960,
       },
       {
         src: "/images/remax-lisbon/remax-lisbon-standup.jpg",
         alt: "Standup session at the RE/MAX Lisbon office",
+        caption: "RE/MAX Wise",
+        captionSub: "Team standup, Lisbon",
         width: 897,
         height: 1200,
       },
       {
         src: "/images/remax-lisbon/updatedphoto.png",
-        alt: "RE/MAX platform and technology team page featuring Abdo Essam",
+        alt: "RE/MAX platform and technology team page",
+        caption: "RE/MAX Platform Page",
+        captionSub: "Technology team listing",
         width: 673,
         height: 507,
       },
       {
         src: "/images/remax-lisbon/abdo-team-photo.webp",
-        alt: "Abdo Essam featured on the RE/MAX 5 Steps team page",
+        alt: "RE/MAX 5 Steps team page",
+        caption: "RE/MAX 5 Steps",
+        captionSub: "Team profile, Lisbon",
         width: 768,
         height: 1227,
       },
@@ -191,13 +209,17 @@ export const EXPERIENCE: Experience[] = [
     gallery: [
       {
         src: "/images/afaqy/WhatsApp%20Image%202026-03-30%20at%2010.18.35%20PM%20(1).jpeg",
-        alt: "Group photo with Abdo Essam and the AFAQY team in Riyadh",
+        alt: "AFAQY team photo in Riyadh",
+        caption: "AFAQY — Riyadh",
+        captionSub: "Technical Support Internship, 2024",
         width: 2048,
         height: 1152,
       },
       {
         src: "/images/afaqy/WhatsApp%20Image%202026-03-30%20at%2010.18.35%20PM.jpeg",
-        alt: "Abdo Essam receiving the AFAQY experience certificate with a team member in Riyadh",
+        alt: "AFAQY internship completion certificate, Riyadh",
+        caption: "AFAQY Internship",
+        captionSub: "Completion document, Riyadh",
         width: 1152,
         height: 2048,
       },
@@ -236,7 +258,9 @@ export const EXPERIENCE: Experience[] = [
     gallery: [
       {
         src: "/certificates/wordpress-internship.png",
-        alt: "NFS Soft internship certificate",
+        alt: "NFS Soft WordPress Developer internship certificate",
+        caption: "NFS Soft — Erzurum",
+        captionSub: "WordPress Developer Internship",
         width: 1200,
         height: 900,
       },
