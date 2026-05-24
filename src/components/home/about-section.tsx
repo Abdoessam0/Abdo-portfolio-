@@ -1,40 +1,32 @@
 "use client";
 
 import { CheckCircle2, Languages, ServerCog } from "lucide-react";
-import { PROFILE } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
+import { useLang } from "@/hooks/use-lang";
 
 const iconMap = [CheckCircle2, ServerCog, Languages];
 
-const whatIDo = [
-  "Websites",
-  "Dashboards",
-  "Full-stack systems",
-  "Production apps",
-];
-
 export function AboutSection() {
+  const { t } = useLang();
+
   return (
-    <section id="about" className="space-y-6 py-3 sm:space-y-8 sm:py-4">
+    <section id="about" dir={t.dir} className="space-y-6 py-3 sm:space-y-8 sm:py-4">
       <Reveal>
         <SectionHeading
-          eyebrow="About"
-          title="Software Engineer, frontend-first."
+          eyebrow={t.about.heading.eyebrow}
+          title={t.about.heading.title}
+          description={t.about.heading.description}
         />
       </Reveal>
 
       <Reveal className="grid items-start gap-4 xl:grid-cols-[1.14fr_0.86fr]">
         <div className="section-frame p-4 sm:p-5">
           <div className="space-y-4">
-            <p className="pill-label">{PROFILE.about.intro}</p>
+            <p className="pill-label">{t.about.intro}</p>
 
             <div className="flex flex-wrap gap-2">
-              {[
-                PROFILE.person.base,
-                PROFILE.person.nationality,
-                PROFILE.person.timezone,
-              ].map((item) => (
+              {t.about.badges.map((item) => (
                 <span key={item} className="tech-badge">
                   {item}
                 </span>
@@ -42,7 +34,7 @@ export function AboutSection() {
             </div>
 
             <div className="space-y-3">
-              {PROFILE.about.story.map((paragraph) => (
+              {t.about.story.map((paragraph) => (
                 <p
                   key={paragraph}
                   className="max-w-2xl text-sm leading-6 text-muted"
@@ -54,10 +46,10 @@ export function AboutSection() {
 
             <div className="rounded-[1.1rem] border border-white/8 bg-white/[0.03] p-3.5">
               <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
-                Work
+                {t.about.workLabel}
               </p>
               <ul className="mt-3 grid gap-2.5 text-sm text-soft sm:grid-cols-2">
-                {whatIDo.map((item) => (
+                {t.about.workItems.map((item) => (
                   <li key={item} className="flex items-start gap-2.5">
                     <span className="story-bullet mt-[0.42rem] h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
                     <span>{item}</span>
@@ -67,12 +59,12 @@ export function AboutSection() {
             </div>
 
             <div className="grid gap-2.5 pt-1 sm:grid-cols-3">
-              {PROFILE.about.focusAreas.map((item) => (
+              {t.about.focusAreas.map((item) => (
                 <div
-                  key={item.title}
+                  key={item.label}
                   className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3.5 py-3"
                 >
-                  <p className="text-sm font-semibold text-[#181818]">{item.title}</p>
+                  <p className="text-sm font-semibold text-[#181818]">{item.value}</p>
                   <p className="mt-2 text-sm leading-6 text-muted">
                     {item.description}
                   </p>
@@ -84,10 +76,10 @@ export function AboutSection() {
 
         <div className="space-y-4">
           <div className="section-frame p-4 sm:p-5">
-            <p className="pill-label">At a glance</p>
+            <p className="pill-label">{t.about.glanceLabel}</p>
 
             <div className="mt-4 space-y-3">
-              {PROFILE.factCards.map((card, index) => {
+              {t.about.factCards.map((card, index) => {
                 const Icon = iconMap[index] ?? CheckCircle2;
                 return (
                   <Reveal
@@ -120,9 +112,9 @@ export function AboutSection() {
           <div className="section-frame p-4 sm:p-5">
             <div className="space-y-5">
               <div>
-                <p className="pill-label">Education</p>
+                <p className="pill-label">{t.about.educationLabel}</p>
                 <div className="mt-4 space-y-3">
-                  {PROFILE.education.map((item) => (
+                  {t.about.education.map((item) => (
                     <div
                       key={`${item.degree}-${item.period}`}
                       className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3.5"
@@ -145,9 +137,9 @@ export function AboutSection() {
               <div className="section-divider" />
 
               <div>
-                <p className="pill-label">How I work</p>
+                <p className="pill-label">{t.about.howIWorkLabel}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {PROFILE.about.principles.map((item) => (
+                  {t.about.principles.map((item) => (
                     <span key={item} className="tech-badge">
                       {item}
                     </span>

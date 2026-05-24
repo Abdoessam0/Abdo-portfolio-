@@ -2,10 +2,10 @@
 
 import { Award, ExternalLink, GraduationCap, HandHeart } from "lucide-react";
 import { CERTIFICATES } from "@/data/certificates";
-import { PROFILE } from "@/data/profile";
 import { VOLUNTEERING } from "@/data/volunteering";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
+import { useLang } from "@/hooks/use-lang";
 
 const highlightedCertificates = [
   "remax-erasmus",
@@ -34,12 +34,19 @@ const selectedVolunteering = volunteeringOrder
   );
 
 export function CredentialsSection() {
+  const { t } = useLang();
+
   return (
-    <section id="credentials" className="space-y-7 py-3 sm:space-y-10 sm:py-4">
+    <section
+      id="credentials"
+      dir={t.dir}
+      className="space-y-7 py-3 sm:space-y-10 sm:py-4"
+    >
       <Reveal>
         <SectionHeading
-          eyebrow="Credentials"
-          title="Education, certificates, and volunteering"
+          eyebrow={t.credentials.heading.eyebrow}
+          title={t.credentials.heading.title}
+          description={t.credentials.heading.description}
         />
       </Reveal>
 
@@ -51,9 +58,11 @@ export function CredentialsSection() {
                 <GraduationCap className="h-4.5 w-4.5" aria-hidden />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-[#181818]">Education</p>
+                <p className="text-sm font-semibold text-[#181818]">
+                  {t.credentials.education}
+                </p>
                 <div className="mt-3 space-y-3">
-                  {PROFILE.education.map((education) => (
+                  {t.about.education.map((education) => (
                     <div
                       key={education.degree}
                       className="story-inner-card rounded-[1.15rem] px-4 py-3"
@@ -80,9 +89,14 @@ export function CredentialsSection() {
                 <HandHeart className="h-4.5 w-4.5" aria-hidden />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-[#181818]">Volunteering</p>
+                <p className="text-sm font-semibold text-[#181818]">
+                  {t.credentials.volunteering}
+                </p>
                 <div className="mt-3 grid gap-3 lg:grid-cols-2">
-                  {selectedVolunteering.map((item) => (
+                  {selectedVolunteering.map((item) => {
+                    const itemCopy = t.credentials.volunteeringItems[item.id];
+
+                    return (
                     <div
                       key={item.id}
                       className="story-inner-card rounded-[1.15rem] px-4 py-4"
@@ -90,13 +104,14 @@ export function CredentialsSection() {
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <p className="text-sm font-semibold text-[#181818]">
-                            {item.title}
+                            {itemCopy?.title ?? item.title}
                           </p>
                           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f6a61]">
                             {item.organization}
                           </p>
                           <p className="mt-2 text-xs text-[#6f6a61]">
-                            {item.location} / {item.period}
+                            {itemCopy?.location ?? item.location} /{" "}
+                            {itemCopy?.period ?? item.period}
                           </p>
                           <p className="mt-3 text-sm leading-6 text-[#6f6a61]">
                             {item.summary}
@@ -108,7 +123,9 @@ export function CredentialsSection() {
                             target="_blank"
                             rel="noreferrer"
                             className="story-link-btn h-9 w-9 rounded-full"
-                            aria-label={item.linkLabel ?? item.title}
+                            aria-label={
+                              itemCopy?.linkLabel ?? item.linkLabel ?? item.title
+                            }
                           >
                             <ExternalLink className="h-4 w-4" aria-hidden />
                           </a>
@@ -123,7 +140,8 @@ export function CredentialsSection() {
                         ))}
                       </ul>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -136,7 +154,9 @@ export function CredentialsSection() {
               <Award className="h-4.5 w-4.5" aria-hidden />
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-[#181818]">Certificates</p>
+              <p className="text-sm font-semibold text-[#181818]">
+                {t.credentials.certificates}
+              </p>
               <div className="mt-3 grid gap-3">
                 {highlightedCertificates.map((certificate) => (
                   <div

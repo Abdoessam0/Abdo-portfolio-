@@ -26,6 +26,21 @@ const title = "Abdo Essam | Software Engineer Portfolio";
 const description =
   "Portfolio of Abdo Essam, a software engineer focused on frontend, full-stack web applications, Next.js, React, TypeScript, and production-ready digital products.";
 const previewImage = `${siteUrl.origin}/opengraph-image?v=3`;
+const langBootstrapScript = `
+(() => {
+  try {
+    var key = "portfolio-lang";
+    var stored = window.localStorage.getItem(key);
+    var cookieMatch = document.cookie.match(new RegExp("(?:^|; )" + key + "=([^;]*)"));
+    var cookieLang = cookieMatch ? decodeURIComponent(cookieMatch[1]) : null;
+    var lang = stored === "ar" || stored === "en" ? stored : cookieLang;
+    if (lang !== "ar" && lang !== "en") lang = "en";
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    document.documentElement.dataset.lang = lang;
+  } catch (_) {}
+})();
+`;
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
@@ -97,10 +112,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
+      dir="ltr"
       className={`${inter.variable} ${sora.variable}`}
       suppressHydrationWarning
     >
       <body className="story-page">
+        <script dangerouslySetInnerHTML={{ __html: langBootstrapScript }} />
         <LangProvider>
         <a
           href="#content"

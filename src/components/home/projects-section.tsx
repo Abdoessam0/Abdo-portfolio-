@@ -13,6 +13,7 @@ import {
   PROJECTS,
   sortProjects,
 } from "@/data/projects";
+import { useLang } from "@/hooks/use-lang";
 
 const orderedProjects = sortProjects(PROJECTS);
 const liveProjectCount = orderedProjects.filter(
@@ -23,84 +24,72 @@ const liveProjectCount = orderedProjects.filter(
 const clientWorkCount = orderedProjects.filter(
   (project) => project.collection === "Client Work",
 ).length;
-const projectHighlights = [
-  {
-    label: "Projects",
-    value: `${orderedProjects.length} selected`,
-    helper: "Client work, shipped products, and prototypes",
-  },
-  {
-    label: "Live",
-    value: `${liveProjectCount} public launches`,
-    helper: "Confirmed live links and production sites",
-  },
-  {
-    label: "Client work",
-    value: `${clientWorkCount} recent builds`,
-    helper: "Freelance and production delivery work",
-  },
-];
-
-function getFilterDescription(value: ProjectFilterValue) {
-  switch (value) {
-    case "Client Work":
-      return "Live and production-facing work for business, education, and admissions projects.";
-    case "Independent":
-      return "Independent products built around marketplace, platform, and civic workflows.";
-    case "Prototype":
-      return "Exploratory builds focused on product flow, interfaces, and technical execution.";
-    case "Academic":
-      return "Academic project work with implementation depth and complete workflows.";
-    default:
-      return "All projects are shown together in one grid, ordered from newest to oldest, with filtering still available.";
-  }
-}
-
 export function ProjectsSection() {
+  const { t } = useLang();
   const [activeFilter, setActiveFilter] = useState<ProjectFilterValue>("all");
+  const projectHighlights = useMemo(
+    () => [
+      {
+        label: t.projects.stats.projects.label,
+        value: `${orderedProjects.length} ${t.projects.stats.projects.value}`,
+        helper: t.projects.stats.projects.helper,
+      },
+      {
+        label: t.projects.stats.live.label,
+        value: `${liveProjectCount} ${t.projects.stats.live.value}`,
+        helper: t.projects.stats.live.helper,
+      },
+      {
+        label: t.projects.stats.clientWork.label,
+        value: `${clientWorkCount} ${t.projects.stats.clientWork.value}`,
+        helper: t.projects.stats.clientWork.helper,
+      },
+    ],
+    [t],
+  );
 
   const filterOptions = useMemo(
     () => [
       {
         value: "all" as const,
-        label: "All work",
+        label: t.projects.filters.all.label,
         count: orderedProjects.length,
-        helper: "Newest first",
+        helper: t.projects.filters.all.helper,
       },
       {
         value: "Client Work" as const,
-        label: "Client Work",
+        label: t.projects.filters["Client Work"].label,
         count: orderedProjects.filter(
           (project) => project.collection === "Client Work",
         ).length,
-        helper: "Live builds",
+        helper: t.projects.filters["Client Work"].helper,
       },
       {
         value: "Independent" as const,
-        label: "Independent",
+        label: t.projects.filters.Independent.label,
         count: orderedProjects.filter(
           (project) => project.collection === "Independent",
         ).length,
-        helper: "Product work",
+        helper: t.projects.filters.Independent.helper,
       },
       {
         value: "Prototype" as const,
-        label: "Prototypes",
+        label: t.projects.filters.Prototype.label,
         count: orderedProjects.filter(
           (project) => project.collection === "Prototype",
         ).length,
-        helper: "Concepts and systems",
+        helper: t.projects.filters.Prototype.helper,
       },
       {
         value: "Academic" as const,
-        label: "Academic",
+        label: t.projects.filters.Academic.label,
         count: orderedProjects.filter(
           (project) => project.collection === "Academic",
         ).length,
-        helper: "Coursework",
+        helper: t.projects.filters.Academic.helper,
       },
     ],
-    [],
+    [t],
   );
 
   const filteredProjects = useMemo(() => {
@@ -116,15 +105,24 @@ export function ProjectsSection() {
   const activeFilterOption =
     filterOptions.find((option) => option.value === activeFilter) ??
     filterOptions[0];
+  const activeFilterDescription = t.projects.filters[activeFilter].description;
+  const shownLabel =
+    activeFilterOption.count === 1
+      ? t.projects.shownSingular
+      : t.projects.shownPlural;
 
   return (
-    <section id="projects" className="space-y-6 py-1 sm:space-y-8 lg:space-y-9">
+    <section
+      id="projects"
+      dir={t.dir}
+      className="space-y-6 py-1 sm:space-y-8 lg:space-y-9"
+    >
       <Reveal className="space-y-4 sm:space-y-5">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <SectionHeading
-            eyebrow="Projects"
-            title="Projects in one clean, filterable view"
-            description="Everything is shown together in a single grid, ordered from newest to oldest so the latest work appears first and stays easy to browse."
+            eyebrow={t.projects.heading.eyebrow}
+            title={t.projects.heading.title}
+            description={t.projects.heading.description}
           />
 
           {/* Stats strip — warm light cards */}
@@ -152,10 +150,10 @@ export function ProjectsSection() {
         <div className="flex flex-col gap-4 rounded-[1.4rem] border border-[rgba(24,24,24,0.1)] bg-[#fffdf8] p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-1.5">
             <p className="text-[0.68rem] uppercase tracking-[0.22em] text-[#6f6a61]">
-              Browse by type
+              {t.projects.browseByType}
             </p>
             <p className="text-sm leading-6 text-[#6f6a61]">
-              {getFilterDescription(activeFilter)}
+              {activeFilterDescription}
             </p>
           </div>
 
@@ -163,6 +161,7 @@ export function ProjectsSection() {
             value={activeFilter}
             options={filterOptions}
             onChange={setActiveFilter}
+            ariaLabel={t.projects.filterAriaLabel}
           />
         </div>
       </Reveal>
@@ -174,12 +173,11 @@ export function ProjectsSection() {
               {activeFilterOption.label}
             </p>
             <h3 className="font-heading text-[1.45rem] font-black tracking-[-0.04em] text-[#181818] sm:text-2xl">
-              {activeFilterOption.count}{" "}
-              {activeFilterOption.count === 1 ? "project" : "projects"} shown
+              {activeFilterOption.count} {shownLabel} {t.projects.shown}
             </h3>
           </div>
           <p className="max-w-lg text-sm leading-6 text-[#6f6a61]">
-            {getFilterDescription(activeFilter)}
+            {activeFilterDescription}
           </p>
         </Reveal>
 

@@ -118,7 +118,8 @@ function ProfilePhoto() {
 }
 
 export function StoryHero() {
-  const { t } = useLang();
+  const { lang, t } = useLang();
+  const isArabic = lang === "ar";
 
   return (
     <section
@@ -136,12 +137,18 @@ export function StoryHero() {
       <div className="relative z-10 mx-auto w-full max-w-[760px]">
         <ProfilePhoto />
 
-        <p className="mx-auto mb-4 max-w-[21rem] text-[0.74rem] font-semibold uppercase tracking-[0.18em] text-[#06a865] sm:max-w-none sm:text-[0.78rem]">
+        <p
+          className={`mx-auto mb-4 max-w-[21rem] text-[0.74rem] font-semibold text-[#06a865] sm:max-w-none sm:text-[0.78rem] ${
+            isArabic ? "tracking-normal" : "uppercase tracking-[0.18em]"
+          }`}
+        >
           {t.label}
         </p>
 
         <h1
-          className="mx-auto max-w-[22rem] text-balance font-heading text-[clamp(2.05rem,5.6vw,3.8rem)] font-black leading-[1.05] tracking-[-0.035em] text-[#181818] sm:max-w-[760px]"
+          className={`mx-auto max-w-[22rem] text-balance font-heading text-[clamp(2.05rem,5.6vw,3.8rem)] font-black leading-[1.05] text-[#181818] sm:max-w-[760px] ${
+            isArabic ? "tracking-normal" : "tracking-[-0.035em]"
+          }`}
           style={{ whiteSpace: "pre-line" }}
         >
           {t.headline}
@@ -157,7 +164,10 @@ export function StoryHero() {
             className="inline-flex min-h-[3.25rem] items-center justify-center gap-2 rounded-full bg-[#06b56b] px-7 py-3.5 text-[0.94rem] font-semibold text-white shadow-[0_12px_28px_rgba(6,181,107,0.22)] transition hover:bg-[#049f5e] hover:shadow-[0_14px_32px_rgba(6,181,107,0.28)] focus-visible:outline-offset-4 sm:min-w-[11.75rem]"
           >
             {t.cta1}
-            <ArrowRight className="h-4 w-4" aria-hidden />
+            <ArrowRight
+              className={`h-4 w-4 ${isArabic ? "rotate-180" : ""}`}
+              aria-hidden
+            />
           </Link>
 
           <a

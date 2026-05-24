@@ -35,6 +35,7 @@ import {
 import { PROFILE } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
+import { useLang } from "@/hooks/use-lang";
 import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 const categoryIcons: Record<string, LucideIcon> = {
@@ -158,17 +159,22 @@ function SkillChip({ label }: { label: string }) {
 }
 
 export function SkillsSection() {
+  const { t } = useLang();
   const reducedMotion = useReducedMotion();
   const { shouldUseLiteMotion } = useMobileOptimization();
   const shouldAnimate = !reducedMotion && !shouldUseLiteMotion;
 
   return (
-    <section id="skills" className="max-w-full space-y-3 overflow-x-hidden py-2 sm:space-y-5 sm:py-4">
+    <section
+      id="skills"
+      dir={t.dir}
+      className="max-w-full space-y-3 overflow-x-hidden py-2 sm:space-y-5 sm:py-4"
+    >
       <Reveal>
         <SectionHeading
-          eyebrow="Skills"
-          title="Skills"
-          description="A compact view of the technologies I use most across production websites, dashboards, backend work, mobile apps, and AI-assisted workflows."
+          eyebrow={t.skills.heading.eyebrow}
+          title={t.skills.heading.title}
+          description={t.skills.heading.description}
         />
       </Reveal>
 
@@ -177,7 +183,7 @@ export function SkillsSection() {
         <div className="rounded-[1rem] border border-[rgba(24,24,24,0.08)] bg-white/72 p-1.5 shadow-[0_8px_22px_rgba(24,24,24,0.045)] sm:rounded-[1.15rem] sm:p-2">
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <span className="rounded-full bg-white/90 px-2 py-0.5 text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-[#6f6a61] sm:px-2.5 sm:py-1 sm:text-[0.62rem]">
-              Core workflow
+              {t.skills.coreWorkflow}
             </span>
             {coreStack.map((item) => (
               <motion.div
@@ -204,16 +210,19 @@ export function SkillsSection() {
               </div>
               <div>
                 <h3 className="font-heading text-[0.95rem] font-semibold leading-tight tracking-[-0.035em] text-[#181818] sm:text-[1.08rem]">
-                  AI Agents & Workflow
+                  {t.skills.aiTitle}
                 </h3>
                 <p className="mt-1 max-w-2xl text-[0.7rem] leading-[1.45] text-[#6f6a61] sm:mt-1.5 sm:text-xs sm:leading-5">
-                  Comfortable using AI coding agents to plan, build, debug, refactor, review, and ship software faster while keeping control over code quality.
+                  {t.skills.aiDescription}
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-1 sm:gap-1.5">
-              {aiWorkflowChips.map(([icon, label]) => (
+              {aiWorkflowChips.map(([icon, fallbackLabel], index) => {
+                const label = t.skills.aiChips[index] ?? fallbackLabel;
+
+                return (
                 <span
                   key={label}
                   className="inline-flex min-h-6 items-center gap-1 rounded-full border border-[#06b56b]/16 bg-[#f0fdf7]/70 px-2 py-0.5 text-[0.65rem] font-medium text-[#20483a] shadow-[0_1px_8px_rgba(6,181,107,0.045)] sm:min-h-7 sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[0.72rem]"
@@ -223,7 +232,8 @@ export function SkillsSection() {
                   </span>
                   {label}
                 </span>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -236,6 +246,8 @@ export function SkillsSection() {
           const preferred = visibleSkillOrder[group.title] ?? group.items.slice(0, 5);
           const visibleItems = preferred.filter((item) => group.items.includes(item));
           const hiddenCount = Math.max(group.items.length - visibleItems.length, 0);
+          const title = t.skills.categoryTitles[group.title] ?? group.title;
+          const summary = t.skills.categorySummaries[group.title] ?? group.summary;
 
           // On mobile, show up to MOBILE_CHIP_LIMIT chips
           const mobileVisible = visibleItems.slice(0, MOBILE_CHIP_LIMIT);
@@ -263,17 +275,17 @@ export function SkillsSection() {
                     <div>
                       <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                         <h3 className="font-heading text-[0.9rem] font-semibold leading-tight tracking-[-0.03em] text-[#181818] sm:text-[1rem]">
-                          {group.title}
+                          {title}
                         </h3>
                         {coreCategories.has(group.title) ? (
                           <span className="rounded-full border border-[#06b56b]/18 bg-[#f0fdf7] px-1.5 py-0.5 text-[0.52rem] font-semibold uppercase tracking-[0.12em] text-[#048c55] sm:text-[0.58rem]">
-                            Core
+                            {t.common.core}
                           </span>
                         ) : null}
                       </div>
-                      {group.summary ? (
+                      {summary ? (
                         <p className="mt-0.5 max-w-md text-[0.7rem] leading-[1.4] text-[#6f6a61] sm:mt-1 sm:text-xs sm:leading-5">
-                          {group.summary}
+                          {summary}
                         </p>
                       ) : null}
                     </div>
@@ -287,7 +299,7 @@ export function SkillsSection() {
                   ))}
                   {mobileHidden > 0 ? (
                     <span className="inline-flex min-h-6 items-center rounded-full border border-[rgba(24,24,24,0.08)] bg-white px-2 py-0.5 text-[0.65rem] font-semibold text-[#6f6a61]">
-                      +{mobileHidden} more
+                      +{mobileHidden} {t.common.more}
                     </span>
                   ) : null}
                 </div>
@@ -299,7 +311,7 @@ export function SkillsSection() {
                   ))}
                   {hiddenCount > 0 ? (
                     <span className="inline-flex min-h-7 items-center rounded-full border border-[rgba(24,24,24,0.08)] bg-white px-2.5 py-1 text-[0.72rem] font-semibold text-[#6f6a61]">
-                      +{hiddenCount} more
+                      +{hiddenCount} {t.common.more}
                     </span>
                   ) : null}
                 </div>

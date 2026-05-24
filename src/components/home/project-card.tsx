@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { getProjectPrimaryUrl, type Project } from "@/data/projects";
+import { useLang } from "@/hooks/use-lang";
 import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 type ProjectCardProps = {
@@ -32,17 +33,27 @@ function getStatusBadgeClass(status: string) {
 }
 
 export function ProjectCard({ project, coverPriority = false }: ProjectCardProps) {
+  const { t } = useLang();
   const reducedMotion = useReducedMotion();
   const { shouldUseLiteMotion } = useMobileOptimization();
   const detailHref = `/projects/${project.slug}`;
   const primaryUrl = getProjectPrimaryUrl(project);
   const AccentIcon = project.archived ? Archive : ExternalLink;
+  const copy = t.projects.items[project.slug];
+  const title = copy?.title ?? project.title;
+  const collection =
+    t.projects.collectionLabels[project.collection] ?? project.collection;
+  const status = t.projects.statusLabels[project.status] ?? project.status;
+  const projectType = copy?.projectType ?? project.projectType;
+  const context = copy?.context ?? project.context;
+  const description = copy?.description ?? project.description;
+  const primaryCtaLabel = copy?.primaryCtaLabel ?? project.primaryCtaLabel;
   const coverFit = project.cover?.fit ?? "cover";
   const isSvgCover = project.cover?.src.endsWith(".svg") ?? false;
   const isContainedCover = coverFit === "contain";
   const visibleStack = project.stack.slice(0, 3);
   const remainingStackCount = Math.max(project.stack.length - visibleStack.length, 0);
-  const metaItems = [String(project.year), project.projectType, project.status];
+  const metaItems = [String(project.year), projectType, status];
 
   return (
     <motion.article
@@ -50,6 +61,7 @@ export function ProjectCard({ project, coverPriority = false }: ProjectCardProps
         reducedMotion || shouldUseLiteMotion ? undefined : { y: -4 }
       }
       transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] as const }}
+      dir={t.dir}
       className="group flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-[rgba(24,24,24,0.1)] bg-white shadow-[0_2px_12px_rgba(24,24,24,0.06)] transition-shadow hover:shadow-[0_8px_28px_rgba(24,24,24,0.12)]"
     >
       {/* Cover image */}
@@ -86,13 +98,13 @@ export function ProjectCard({ project, coverPriority = false }: ProjectCardProps
 
         {/* Collection badge */}
         <div className="absolute left-3 top-3 inline-flex max-w-[60%] rounded-full border border-[rgba(24,24,24,0.18)] bg-white/95 px-2 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-[#181818] backdrop-blur-none sm:bg-white/90 sm:backdrop-blur-sm sm:left-3.5 sm:top-3.5 sm:text-[0.62rem]">
-          {project.collection}
+          {collection}
         </div>
         {/* Status badge */}
         <div
           className={`absolute right-3 top-3 rounded-full px-2 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.18em] sm:right-3.5 sm:top-3.5 sm:text-[0.62rem] ${getStatusBadgeClass(project.status)}`}
         >
-          {project.status}
+          {status}
         </div>
       </div>
 
@@ -100,12 +112,12 @@ export function ProjectCard({ project, coverPriority = false }: ProjectCardProps
       <div className="flex flex-1 flex-col gap-3.5 p-3.5 sm:p-4">
         <div className="space-y-2.5">
           <p className="text-[0.64rem] uppercase tracking-[0.22em] text-[#6f6a61]">
-            {project.context}
+            {context}
           </p>
 
           <div className="space-y-1.5">
             <h3 className="line-clamp-2 font-heading text-[1rem] font-semibold tracking-[-0.035em] text-[#181818] sm:text-[1.08rem]">
-              {project.title}
+              {title}
             </h3>
 
             <div className="flex flex-wrap items-center gap-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-[#6f6a61]">
@@ -123,7 +135,7 @@ export function ProjectCard({ project, coverPriority = false }: ProjectCardProps
             </div>
 
             <p className="line-clamp-2 text-[0.92rem] leading-6 text-[#6f6a61]">
-              {project.description}
+              {description}
             </p>
           </div>
         </div>
@@ -140,7 +152,7 @@ export function ProjectCard({ project, coverPriority = false }: ProjectCardProps
           ))}
           {remainingStackCount > 0 ? (
             <span className="inline-flex items-center gap-1 rounded-full border border-[rgba(24,24,24,0.1)] bg-[#f5f3ef] px-2.5 py-1 text-[0.72rem] font-medium text-[#6f6a61]">
-              +{remainingStackCount}
+              +{remainingStackCount} {t.common.more}
             </span>
           ) : null}
         </div>
@@ -152,7 +164,7 @@ export function ProjectCard({ project, coverPriority = false }: ProjectCardProps
             href={detailHref}
             className="btn-primary-dark min-h-9 min-w-[8rem] px-3.5 text-[0.82rem] shadow-[0_2px_8px_rgba(24,24,24,0.2)] hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(24,24,24,0.28)]"
           >
-            View Project
+            {t.common.viewProject}
             <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
 
@@ -165,7 +177,7 @@ export function ProjectCard({ project, coverPriority = false }: ProjectCardProps
               className="btn-secondary min-h-9 px-3.5 text-[0.82rem] font-medium text-[#6f6a61] hover:border-[rgba(24,24,24,0.2)] hover:text-[#181818]"
             >
               <AccentIcon className="h-3.5 w-3.5" />
-              {project.primaryCtaLabel}
+              {primaryCtaLabel}
             </a>
           ) : null}
 
@@ -176,10 +188,10 @@ export function ProjectCard({ project, coverPriority = false }: ProjectCardProps
               target="_blank"
               rel="noreferrer"
               className="btn-secondary min-h-9 px-3.5 text-[0.82rem] font-medium text-[#6f6a61]"
-              aria-label={`Open ${project.title} repository`}
+              aria-label={`Open ${title} repository`}
             >
               <Github className="h-3.5 w-3.5" />
-              GitHub
+              {t.common.github}
             </a>
           ) : null}
         </div>

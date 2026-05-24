@@ -1,14 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { Github, Instagram, Linkedin, Mail, MessageCircle } from "lucide-react";
 import { PROFILE } from "@/data/profile";
+import { useLang } from "@/hooks/use-lang";
 
-const footerLinks = [
-  { label: "About", href: "/#about" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Experience", href: "/#experience" },
-  { label: "Skills", href: "/#skills" },
-  { label: "Contact", href: "/#contact" },
-];
+const footerLinkIds = ["about", "projects", "experience", "skills", "contact"] as const;
 
 const socialLinks = [
   { icon: Mail, href: `mailto:${PROFILE.socials.email}`, label: "Email" },
@@ -19,10 +16,14 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const { t } = useLang();
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[rgba(24,24,24,0.1)] px-3 pb-20 pt-8 sm:px-6 sm:pb-24 sm:pt-10 lg:px-8">
+    <footer
+      dir={t.dir}
+      className="border-t border-[rgba(24,24,24,0.1)] px-3 pb-20 pt-8 sm:px-6 sm:pb-24 sm:pt-10 lg:px-8"
+    >
       <div className="mx-auto max-w-[1280px]">
         <div className="flex flex-col gap-6 rounded-[1.75rem] border border-[rgba(24,24,24,0.1)] bg-white p-4 shadow-[0_2px_12px_rgba(24,24,24,0.06)] sm:p-6 lg:flex-row lg:items-start lg:justify-between">
           {/* Brand */}
@@ -40,19 +41,19 @@ export default function Footer() {
               </span>
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-[#6f6a61]">
-              Software Engineer building websites, dashboards, and business platforms.
+              {t.footer.description}
             </p>
           </div>
 
           {/* Nav links */}
           <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#6f6a61]">
-            {footerLinks.map((link) => (
+            {footerLinkIds.map((id) => (
               <Link
-                key={link.href}
-                href={link.href}
+                key={id}
+                href={`/#${id}`}
                 className="transition-colors hover:text-[#181818]"
               >
-                {link.label}
+                {t.nav[id]}
               </Link>
             ))}
           </nav>
@@ -76,9 +77,9 @@ export default function Footer() {
 
         <div className="mt-6 flex flex-col gap-2 px-1 text-xs leading-5 text-[#6f6a61] sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {year} {PROFILE.person.name}. All rights reserved.
+            &copy; {year} {PROFILE.person.name}. {t.footer.rights}
           </p>
-          <p>Built with Next.js, TypeScript, and Tailwind CSS</p>
+          <p>{t.footer.builtWith}</p>
         </div>
       </div>
     </footer>

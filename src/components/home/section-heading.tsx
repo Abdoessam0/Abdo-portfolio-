@@ -1,3 +1,7 @@
+"use client";
+
+import { useLang } from "@/hooks/use-lang";
+
 type SectionHeadingProps = {
   eyebrow: string;
   title: string;
@@ -12,9 +16,12 @@ export function SectionHeading({
   align = "left",
 }: SectionHeadingProps) {
   const isCentered = align === "center";
+  const { lang, t } = useLang();
+  const isArabic = lang === "ar";
 
   return (
     <div
+      dir={t.dir}
       className={`flex max-w-2xl flex-col gap-4 ${
         isCentered ? "mx-auto items-center text-center" : "items-start"
       }`}
@@ -25,13 +32,21 @@ export function SectionHeading({
         }`}
       >
         {/* Eyebrow pill — warm style matching StoryHero */}
-        <p className="inline-flex items-center rounded-full border border-[rgba(24,24,24,0.12)] bg-white px-3 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-[#6f6a61]">
+        <p
+          className={`inline-flex items-center rounded-full border border-[rgba(24,24,24,0.12)] bg-white px-3 py-1 text-[0.64rem] font-semibold text-[#6f6a61] ${
+            isArabic ? "tracking-normal" : "uppercase tracking-[0.22em]"
+          }`}
+        >
           {eyebrow}
         </p>
         <span className="hidden h-px flex-1 bg-gradient-to-r from-transparent via-[rgba(24,24,24,0.1)] to-transparent sm:block" />
       </div>
       <div className="space-y-2.5 sm:space-y-3">
-        <h2 className="font-heading text-[1.65rem] font-black leading-[1.08] tracking-[-0.04em] text-[#181818] sm:text-section">
+        <h2
+          className={`font-heading text-[1.65rem] font-black leading-[1.08] text-[#181818] sm:text-section ${
+            isArabic ? "tracking-normal" : "tracking-[-0.04em]"
+          }`}
+        >
           {title}
         </h2>
         {description ? (

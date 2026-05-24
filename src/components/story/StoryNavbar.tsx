@@ -30,7 +30,7 @@ function StoryBrandMark() {
 }
 
 export function StoryNavbar() {
-  const { t, toggle } = useLang();
+  const { lang, setLang, t } = useLang();
   const pathname = usePathname() ?? "/";
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -93,15 +93,32 @@ export function StoryNavbar() {
 
           {/* Right cluster: lang toggle + CV + hamburger */}
           <div className="flex items-center gap-2">
-            {/* Language toggle */}
-            <button
-              type="button"
-              onClick={toggle}
-              className="btn-ghost-nav hidden rounded-full px-3 py-1 text-[0.72rem] font-semibold sm:inline-flex"
-              aria-label="Toggle language"
+            <div
+              className="hidden items-center rounded-full border border-white/10 bg-white/[0.04] p-0.5 sm:inline-flex"
+              role="group"
+              aria-label={t.language.toggleLabel}
             >
-              {t.toggle}
-            </button>
+              {(["en", "ar"] as const).map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => setLang(option)}
+                  aria-pressed={lang === option}
+                  aria-label={
+                    option === "en"
+                      ? t.language.switchToEnglish
+                      : t.language.switchToArabic
+                  }
+                  className={`rounded-full px-2.5 py-1 text-[0.7rem] font-semibold transition ${
+                    lang === option
+                      ? "bg-[#06b56b] text-white shadow-[0_2px_8px_rgba(6,181,107,0.28)]"
+                      : "text-white/55 hover:bg-white/8 hover:text-white"
+                  }`}
+                >
+                  {t.language[option]}
+                </button>
+              ))}
+            </div>
 
             {/* CV download */}
             <a
@@ -155,15 +172,36 @@ export function StoryNavbar() {
                 ))}
               </div>
 
-              {/* Bottom row: lang + CV */}
               <div className="mt-3 flex items-center gap-2 border-t border-white/8 pt-3">
-                <button
-                  type="button"
-                  onClick={() => { toggle(); setMenuOpen(false); }}
-                  className="flex-1 rounded-2xl border border-white/15 py-2.5 text-center text-[0.8rem] font-semibold text-white/70 transition hover:bg-white/8 hover:text-white"
+                <div
+                  className="flex flex-1 rounded-2xl border border-white/15 bg-white/[0.03] p-1"
+                  role="group"
+                  aria-label={t.language.toggleLabel}
                 >
-                  {t.toggle}
-                </button>
+                  {(["en", "ar"] as const).map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => {
+                        setLang(option);
+                        setMenuOpen(false);
+                      }}
+                      aria-pressed={lang === option}
+                      aria-label={
+                        option === "en"
+                          ? t.language.switchToEnglish
+                          : t.language.switchToArabic
+                      }
+                      className={`flex-1 rounded-xl py-2 text-center text-[0.8rem] font-semibold transition ${
+                        lang === option
+                          ? "bg-[#06b56b] text-white"
+                          : "text-white/60 hover:bg-white/8 hover:text-white"
+                      }`}
+                    >
+                      {t.language[option]}
+                    </button>
+                  ))}
+                </div>
                 <a
                   href={PROFILE.links.resume}
                   target="_blank"

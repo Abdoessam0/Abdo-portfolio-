@@ -5,26 +5,29 @@ import Image from "next/image";
 import Link from "next/link";
 import { PROFILE } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
+import { useLang } from "@/hooks/use-lang";
 
 export function FounderSection() {
+  const { t } = useLang();
+
   return (
-    <section id="kolaytec" className="py-2 sm:py-3">
+    <section id="kolaytec" dir={t.dir} className="py-2 sm:py-3">
       <Reveal className="section-frame overflow-hidden p-4 shadow-[0_10px_28px_rgba(24,24,24,0.06)] sm:p-5 lg:p-6">
         <div className="grid gap-5 lg:grid-cols-[1fr_0.82fr] lg:items-center">
           <div className="max-w-2xl space-y-4">
-            <p className="pill-label">Founder</p>
+            <p className="pill-label">{t.founder.eyebrow}</p>
 
             <div className="space-y-2.5">
               <h2 className="font-heading text-[1.85rem] font-semibold leading-tight tracking-[-0.045em] text-[#181818] sm:text-[2.35rem]">
-                {PROFILE.founder.title}
+                {t.founder.title}
               </h2>
               <p className="max-w-xl text-sm leading-6 text-[#6f6a61] sm:text-base">
-                {PROFILE.founder.description}
+                {t.founder.description}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {PROFILE.founder.proof.map((item) => (
+              {t.founder.proof.map((item) => (
                 <span
                   key={item}
                   className="inline-flex min-h-9 items-center gap-2 rounded-full border border-[rgba(24,24,24,0.1)] bg-[#f7f4ee] px-3 py-1 text-xs font-semibold text-[#181818] shadow-[0_1px_6px_rgba(24,24,24,0.04)]"
@@ -43,7 +46,7 @@ export function FounderSection() {
                 aria-label={PROFILE.founder.primaryCta.ariaLabel}
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#06b56b] px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_18px_rgba(6,181,107,0.18)] transition hover:bg-[#049f5e] hover:shadow-[0_10px_22px_rgba(6,181,107,0.24)] sm:w-auto"
               >
-                <span className="text-white">{PROFILE.founder.primaryCta.label}</span>
+                <span className="text-white">{t.founder.primaryCta}</span>
                 <ExternalLink className="h-4 w-4 text-white" aria-hidden />
               </a>
               <Link
@@ -52,7 +55,7 @@ export function FounderSection() {
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[rgba(24,24,24,0.12)] bg-[#fffdf8] px-5 py-3 text-sm font-semibold text-[#181818] transition hover:border-[#06b56b]/35 hover:bg-[#f0fdf7] sm:w-auto"
               >
                 <MessageCircle className="h-4 w-4 text-[#06a865]" aria-hidden />
-                <span>{PROFILE.founder.secondaryCta.label}</span>
+                <span>{t.founder.secondaryCta}</span>
               </Link>
             </div>
           </div>
@@ -66,7 +69,7 @@ export function FounderSection() {
                     Kolaytec
                   </p>
                   <p className="mt-1 text-sm font-semibold text-[#181818]">
-                    Company project
+                    {t.founder.companyProject}
                   </p>
                 </div>
                 <div className="relative h-14 w-14 overflow-hidden rounded-2xl border border-white bg-[#efe8dd] shadow-[0_6px_16px_rgba(24,24,24,0.12)]">
@@ -82,7 +85,7 @@ export function FounderSection() {
               </div>
 
               <div className="mt-5 grid gap-2">
-                {["Websites", "Dashboards", "Admin panels"].map((item) => (
+                {t.founder.offerings.map((item) => (
                   <div
                     key={item}
                     className="flex items-center justify-between rounded-2xl border border-[rgba(24,24,24,0.08)] bg-[#fffdf8]/82 px-3 py-2.5 text-sm font-semibold text-[#181818] shadow-[0_2px_10px_rgba(24,24,24,0.04)]"
@@ -97,7 +100,7 @@ export function FounderSection() {
         </div>
 
         <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
-          {PROFILE.trust.map((item) => (
+          {t.founder.trust.map((item) => (
             <div
               key={item.label}
               className="rounded-[1rem] border border-[rgba(24,24,24,0.08)] bg-[#f7f4ee]/72 px-3.5 py-3"

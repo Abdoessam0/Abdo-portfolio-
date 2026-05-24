@@ -5,8 +5,9 @@ import { Reveal } from "@/components/home/reveal";
 import { useLang } from "@/hooks/use-lang";
 
 export function StoryProjectCTA() {
-  const { t } = useLang();
+  const { lang, t } = useLang();
   const c = t.projectCta;
+  const isArabic = lang === "ar";
 
   return (
     <section
@@ -24,12 +25,18 @@ export function StoryProjectCTA() {
       <Reveal delay={0.04}>
         <div className="overflow-hidden rounded-[1.75rem] border border-[rgba(255,255,255,0.14)] bg-[#1f1f1d] px-5 py-8 shadow-[0_24px_60px_rgba(0,0,0,0.18)] sm:px-8 sm:py-10">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="inline-flex items-center rounded-full border border-[rgba(255,255,255,0.14)] bg-[rgba(255,255,255,0.06)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#d8d1c6]">
+            <p
+              className={`inline-flex items-center rounded-full border border-[rgba(255,255,255,0.14)] bg-[rgba(255,255,255,0.06)] px-3 py-1 text-[0.68rem] font-semibold text-[#d8d1c6] ${
+                isArabic ? "tracking-normal" : "uppercase tracking-[0.2em]"
+              }`}
+            >
               {c.badge}
             </p>
             <h2
               id="project-cta-heading"
-              className="mt-5 font-heading text-[clamp(1.65rem,4vw,2.35rem)] font-black leading-[1.12] tracking-[-0.04em] text-white"
+              className={`mt-5 font-heading text-[clamp(1.65rem,4vw,2.35rem)] font-black leading-[1.12] text-white ${
+                isArabic ? "tracking-normal" : "tracking-[-0.04em]"
+              }`}
             >
               {c.title}
             </h2>

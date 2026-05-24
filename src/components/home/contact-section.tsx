@@ -4,6 +4,7 @@ import { Download, Github, Instagram, Linkedin, Mail, MessageCircle } from "luci
 import { PROFILE } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
+import { useLang } from "@/hooks/use-lang";
 import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 const iconByKind = {
@@ -16,15 +17,16 @@ const iconByKind = {
 } as const;
 
 export function ContactSection() {
+  const { t } = useLang();
   const { shouldUseLiteEffects } = useMobileOptimization();
 
   return (
-    <section id="contact" className="space-y-6 py-4 sm:space-y-7">
+    <section id="contact" dir={t.dir} className="space-y-6 py-4 sm:space-y-7">
       <Reveal>
         <SectionHeading
-          eyebrow={PROFILE.contact.eyebrow}
-          title={PROFILE.contact.title}
-          description={PROFILE.contact.description}
+          eyebrow={t.contact.heading.eyebrow}
+          title={t.contact.heading.title}
+          description={t.contact.heading.description}
         />
       </Reveal>
 
@@ -44,22 +46,23 @@ export function ContactSection() {
 
         <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">
-            <p className="pill-label">Contact</p>
+            <p className="pill-label">{t.contact.panelEyebrow}</p>
             <p className="story-accent-badge mt-4 inline-flex min-h-9 items-center gap-2 rounded-full px-3 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.18em] sm:text-[0.68rem] sm:tracking-[0.22em]">
               <span className="h-2 w-2 rounded-full bg-[#06b56b]" aria-hidden />
-              Open to work
+              {t.contact.openToWork}
             </p>
             <h3 className="mt-3 font-heading text-[1.55rem] font-semibold tracking-[-0.04em] text-[#181818] sm:text-[2rem]">
-              {PROFILE.contact.availability}
+              {t.contact.availability}
             </h3>
             <p className="mt-3 text-sm leading-6 text-[#6f6a61]">
-              {PROFILE.contact.description}
+              {t.contact.description}
             </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 lg:w-[32rem]">
             {PROFILE.contact.channels.map((channel, index) => {
               const Icon = iconByKind[channel.kind];
+              const channelCopy = t.contact.channels[channel.kind];
 
               return (
                 <Reveal
@@ -78,12 +81,14 @@ export function ContactSection() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#6f6a61]">
-                        {channel.label}
+                        {channelCopy.label}
                       </p>
                       <p className="mt-1 break-words text-sm font-semibold text-[#181818]">
-                        {channel.value}
+                        {channelCopy.value ?? channel.value}
                       </p>
-                      <p className="mt-1 text-xs text-[#6f6a61]">{channel.note}</p>
+                      <p className="mt-1 text-xs text-[#6f6a61]">
+                        {channelCopy.note}
+                      </p>
                     </div>
                   </a>
                 </Reveal>

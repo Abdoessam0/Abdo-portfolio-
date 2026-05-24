@@ -5,14 +5,21 @@ import { PROJECTS } from "@/data/projects";
 import { ExperienceCard } from "@/components/home/experience-card";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
+import { useLang } from "@/hooks/use-lang";
 
 const featuredExperience = EXPERIENCE.filter((item) => item.featured);
 
 export function ExperienceSection() {
+  const { t } = useLang();
+
   return (
-    <section id="experience" className="space-y-6 py-3 sm:space-y-8 sm:py-4">
+    <section id="experience" dir={t.dir} className="space-y-6 py-3 sm:space-y-8 sm:py-4">
       <Reveal>
-        <SectionHeading eyebrow="Experience" title="Experience" />
+        <SectionHeading
+          eyebrow={t.experience.heading.eyebrow}
+          title={t.experience.heading.title}
+          description={t.experience.heading.description}
+        />
       </Reveal>
 
       <div className="space-y-4">

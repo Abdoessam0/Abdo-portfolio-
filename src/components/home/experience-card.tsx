@@ -7,6 +7,7 @@ import Link from "next/link";
 import { CompactMediaGallery } from "@/components/ui/compact-media-gallery";
 import type { Experience } from "@/data/experience";
 import type { Project } from "@/data/projects";
+import { useLang } from "@/hooks/use-lang";
 import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 type ExperienceCardProps = {
@@ -18,6 +19,7 @@ export function ExperienceCard({
   experience,
   relatedProjects,
 }: ExperienceCardProps) {
+  const { t } = useLang();
   const reducedMotion = useReducedMotion();
   const { shouldUseLiteMotion } = useMobileOptimization();
   const href = `/experience/${experience.slug}`;
@@ -25,6 +27,9 @@ export function ExperienceCard({
   const hasGallery = gallery.length > 0;
   const isAfaqyCollage = experience.slug === "afaqy" && gallery.length >= 2;
   const isCompactExperience = experience.slug === "feinsoft";
+  const copy = t.experience.items[experience.id];
+  const metrics = copy?.metrics ?? experience.metrics;
+  const impact = copy?.impact ?? experience.impact;
 
   return (
     <motion.article
@@ -32,6 +37,7 @@ export function ExperienceCard({
         reducedMotion || shouldUseLiteMotion ? undefined : { y: -2 }
       }
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      dir={t.dir}
       className={`section-frame overflow-hidden ${
         isCompactExperience ? "p-3.5 sm:p-4" : "p-3.5 sm:p-4"
       }`}
@@ -46,10 +52,10 @@ export function ExperienceCard({
         <div className={isCompactExperience ? "max-w-3xl space-y-2.5" : "space-y-3"}>
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-[rgba(24,24,24,0.12)] bg-white px-2.5 py-1 text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-[#6f6a61]">
-              {experience.period}
+              {copy?.period ?? experience.period}
             </span>
             <span className="rounded-full border border-[rgba(24,24,24,0.1)] bg-[#f5f3ef] px-2.5 py-1 text-[0.72rem] text-[#6f6a61]">
-              {experience.location}
+              {copy?.location ?? experience.location}
             </span>
           </div>
 
@@ -64,16 +70,16 @@ export function ExperienceCard({
                   : "text-[1.35rem] sm:text-[1.65rem]"
               }`}
             >
-              {experience.role}
+              {copy?.role ?? experience.role}
             </h3>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-              {experience.summary}
+              {copy?.summary ?? experience.summary}
             </p>
           </div>
 
-          {experience.metrics?.length ? (
+          {metrics?.length ? (
             <div className="grid gap-2 sm:grid-cols-2">
-              {experience.metrics.map((metric) => (
+              {metrics.map((metric) => (
                 <div
                   key={metric.label}
                   className="story-inner-card rounded-2xl px-3 py-2.5"
@@ -93,7 +99,7 @@ export function ExperienceCard({
           ) : null}
 
           <ul className={isCompactExperience ? "space-y-1.5" : "space-y-2"}>
-            {experience.impact.map((item) => (
+            {impact.map((item) => (
               <li key={item} className="flex gap-2.5 text-sm leading-6 text-[#6f6a61]">
                 <span className="story-bullet mt-[0.6rem] h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
                 <span>{item}</span>
@@ -112,7 +118,7 @@ export function ExperienceCard({
           {experience.documents?.length ? (
             <div className="space-y-1.5">
               <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
-                Documents
+                {t.experience.labels.documents}
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {experience.documents.map((document) => (
@@ -124,7 +130,7 @@ export function ExperienceCard({
                     className="btn-secondary px-2.5 py-1 text-[0.72rem] font-medium text-[#6f6a61]"
                   >
                     <FileText className="h-3 w-3" />
-                    {document.label}
+                    {copy?.documents?.[document.label] ?? document.label}
                   </a>
                 ))}
               </div>
@@ -134,7 +140,7 @@ export function ExperienceCard({
           {experience.links?.length ? (
             <div className="space-y-1.5">
               <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
-                Links
+                {t.experience.labels.links}
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {experience.links.map((link) => (
@@ -156,7 +162,7 @@ export function ExperienceCard({
           {relatedProjects.length ? (
             <div className="space-y-1.5">
               <p className="text-[0.68rem] uppercase tracking-[0.2em] text-muted">
-                Related work
+                {t.experience.labels.relatedWork}
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {relatedProjects.map((project) => (
@@ -173,7 +179,7 @@ export function ExperienceCard({
           ) : null}
 
           <Link href={href} className="btn-primary-dark px-3.5 py-2 text-xs">
-            View experience details
+            {t.experience.labels.details}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -223,12 +229,12 @@ export function ExperienceCard({
                 </div>
 
                 <div className="rounded-[1.15rem] border border-white/10 bg-[linear-gradient(160deg,rgba(18,28,48,0.84),rgba(7,12,24,0.96))] p-3">
-                  <p className="pill-label">Moments</p>
+                  <p className="pill-label">{t.experience.labels.moments}</p>
                   <p className="mt-3 text-sm font-medium text-[#f5f3ef]">
-                    Photos from my internship in Riyadh.
+                    {t.experience.labels.momentsTitle}
                   </p>
                   <p className="mt-2 text-xs leading-5 text-[#c9c4bc]">
-                    Team moments and certificate handoff during the role.
+                    {t.experience.labels.momentsDescription}
                   </p>
                 </div>
               </div>
