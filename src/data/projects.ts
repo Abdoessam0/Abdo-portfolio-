@@ -68,6 +68,85 @@ export function getProjectPrimaryUrl(project: Project) {
 
 export const PROJECTS: Project[] = [
   {
+    slug: "easypick",
+    title: "Easypick",
+    featured: true,
+    priority: 1,
+    year: 2026,
+    collection: "Prototype",
+    projectType: "Restaurant Decision-Support Platform",
+    context: "Interactive Smart Table Prototype",
+    summary:
+      "Built a warm, data-driven restaurant decision-support interface that helps smart-table users choose meals through Quick Pick and Smart Pick flows.",
+    description:
+      "Smart-table restaurant experience with mood-based and preference-based meal recommendations, comparison, and QR confirmation.",
+    caseStudy:
+      "Easypick is a futuristic restaurant decision-support platform designed for a smart dining table with an embedded horizontal touchscreen. Instead of behaving like a typical food ordering app, it guides customers through mood-based and preference-based flows so they can choose meals quickly and confidently. Users can select a mood, tune nutrition preferences, review curated meal cards, compare two dishes side by side, receive a final recommendation, and display a QR code for ordering. The interface is warm, minimal, data-driven, and optimized for collaborative use on a shared table, reducing decision fatigue by turning a long menu into a focused interactive experience.",
+    role: "Frontend Developer",
+    timeline: "2026",
+    status: "Prototype",
+    cover: {
+      src: "/images/easypick/easypick-welcome.png",
+      alt: "Easypick welcome screen with Smart Pick and Quick Pick mode cards",
+      width: 1024,
+      height: 768,
+    },
+    gallery: [
+      {
+        src: "/images/easypick/easypick-quick-pick.png",
+        alt: "Easypick Quick Pick mood selection screen with Hungry, Light, and Fast options",
+        width: 1024,
+        height: 768,
+      },
+      {
+        src: "/images/easypick/easypick-smart-pick.png",
+        alt: "Easypick Smart Pick screen with nutrition preference sliders",
+        width: 1024,
+        height: 768,
+      },
+      {
+        src: "/images/easypick/easypick-results.png",
+        alt: "Easypick curated meal results with nutrition stats and compare controls",
+        width: 1024,
+        height: 768,
+      },
+      {
+        src: "/images/easypick/easypick-compare.png",
+        alt: "Easypick side-by-side meal comparison screen with recommendation scores",
+        width: 1024,
+        height: 768,
+      },
+      {
+        src: "/images/easypick/easypick-choose.png",
+        alt: "Easypick final recommendation screen with QR code order confirmation",
+        width: 1024,
+        height: 768,
+      },
+    ],
+    stack: [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "Mock Data",
+      "Interactive UI",
+    ],
+    highlights: [
+      "Built Quick Pick and Smart Pick flows for mood-based and nutrition-based decisions.",
+      "Designed meal cards with food imagery, nutrition stats, match labels, and compare actions.",
+      "Added side-by-side dish comparison, final recommendation reasoning, and QR confirmation.",
+      "Implemented rotate logic for 0, 90, 180, and 270 degree table interaction.",
+    ],
+    metrics: [
+      { label: "Flows", value: "Quick Pick and Smart Pick" },
+      { label: "Context", value: "Shared smart dining table" },
+      { label: "Integration", value: "Frontend-only mock data" },
+    ],
+    liveUrl: "https://easypick--salmaaashraf10.replit.app/",
+    primaryCtaLabel: "Live Demo",
+    secondaryCtaLabel: "View Project",
+  },
+  {
     slug: "real-estate-platforms",
     title: "RE/MAX Wise Real Estate Platforms",
     featured: true,

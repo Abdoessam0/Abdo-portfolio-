@@ -446,6 +446,13 @@ export const dict: Record<Lang, SiteCopy> = {
         Completed: "Completed",
       },
       items: {
+        easypick: {
+          context: "Interactive Smart Table Prototype",
+          projectType: "Restaurant Decision-Support Platform",
+          description:
+            "Smart-table restaurant experience with mood-based and preference-based meal recommendations, comparison, and QR confirmation.",
+          primaryCtaLabel: "Live Demo",
+        },
         "real-estate-platforms": {
           context: "RE/MAX Wise",
           projectType: "Multi-Site Real Estate Platform",
@@ -969,6 +976,13 @@ export const dict: Record<Lang, SiteCopy> = {
         Completed: "مكتمل",
       },
       items: {
+        easypick: {
+          context: "نموذج أولي لطاولة ذكية تفاعلية",
+          projectType: "منصة دعم قرار للمطاعم",
+          description:
+            "تجربة مطعم لطاولة ذكية تقدم ترشيحات وجبات حسب المزاج والتفضيلات، مع المقارنة وتأكيد الطلب عبر QR.",
+          primaryCtaLabel: "العرض المباشر",
+        },
         "real-estate-platforms": {
           context: "RE/MAX Wise",
           projectType: "منصة عقارية متعددة المواقع",
