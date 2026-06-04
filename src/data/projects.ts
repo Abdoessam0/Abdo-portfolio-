@@ -69,7 +69,7 @@ export function getProjectPrimaryUrl(project: Project) {
 export const PROJECTS: Project[] = [
   {
     slug: "real-estate-platforms",
-    title: "Real Estate Funnels & Multi-Site Platform",
+    title: "RE/MAX Wise Real Estate Platforms",
     featured: true,
     priority: 1,
     year: 2025,
@@ -186,7 +186,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "erzurum-sikayet",
-    title: "ErzurumSikayet",
+    title: "ErzurumŞikayet",
     featured: true,
     priority: 7,
     year: 2025,
@@ -198,13 +198,13 @@ export const PROJECTS: Project[] = [
     description:
       "City complaint platform with public flows, dashboard tools, and admin-side management.",
     caseStudy:
-      "ErzurumSikayet was built as a full-stack review and complaint platform for local services. I handled the public complaint flow, category browsing, and the dashboard structure for companies and admins so the product could support real reports and moderation work.",
+      "ErzurumŞikayet was built as a full-stack review and complaint platform for local services. I handled the public complaint flow, category browsing, and the dashboard structure for companies and admins so the product could support real reports and moderation work.",
     role: "Full-Stack Software Engineer",
     timeline: "2025",
     status: "Production",
     cover: {
       src: "/projects/erzurum-sikayet-cover.png",
-      alt: "ErzurumSikayet homepage showing complaint search and dashboard metrics",
+      alt: "ErzurumŞikayet homepage showing complaint search and dashboard metrics",
       width: 1440,
       height: 960,
     },
@@ -665,6 +665,45 @@ export const PROJECTS: Project[] = [
       { label: "Focus", value: "Navigation and mobile UI" },
     ],
     liveUrl: "https://ustunleretborsasi.com/",
+    primaryCtaLabel: "Live Site",
+    secondaryCtaLabel: "View Project",
+  },
+  {
+    slug: "kolaytec-business-platform",
+    title: "Kolaytec Business Platform",
+    featured: true,
+    priority: 4,
+    year: 2026,
+    collection: "Client Work",
+    projectType: "Business Website",
+    context: "Kolaytec",
+    employer: "Kolaytec",
+    summary:
+      "Built a production-ready business platform with service pages, multilingual content, contact flow, SEO setup, and deployment.",
+    description:
+      "Company website, service pages, multilingual content, contact flow, SEO setup, and production deployment.",
+    caseStudy:
+      "Designed and developed a production-ready business website for Kolaytec to present services, packages, references, and contact flows. Built with a clean UI, responsive layouts, multilingual support, SEO structure, and conversion-focused pages.",
+    role: "Full-Stack Developer",
+    timeline: "2026",
+    status: "Production",
+    cover: {
+      src: "/projects/kolaytec-business-platform-cover.png",
+      alt: "Kolaytec website homepage showing the Code. Connect. Create the Future hero section",
+      width: 1600,
+      height: 1000,
+    },
+    stack: ["React", "Vite", "Tailwind CSS", "SEO", "Hosting"],
+    highlights: [
+      "Built service, package, reference, and contact pages.",
+      "Added multilingual content structure and SEO-ready metadata.",
+      "Deployed and maintained the live production platform.",
+    ],
+    metrics: [
+      { label: "Role", value: "Full-stack development" },
+      { label: "Result", value: "Live production platform" },
+    ],
+    liveUrl: "https://kolaytec.com",
     primaryCtaLabel: "Live Site",
     secondaryCtaLabel: "View Project",
   },

@@ -73,15 +73,15 @@ export default function HomePage() {
         <StoryHero />
         <div className="deferred-section">
           <div className="section-divider" />
+          <ExperienceSection />
+        </div>
+        <div className="deferred-section">
+          <div className="section-divider" />
           <FounderSection />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
           <ProjectsSection />
-        </div>
-        <div className="deferred-section">
-          <div className="section-divider" />
-          <ExperienceSection />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />

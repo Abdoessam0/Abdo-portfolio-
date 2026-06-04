@@ -195,8 +195,8 @@ export const PROFILE: Profile = {
   factCards: [
     {
       label: "Role",
-      value: "Software Engineer + Founder",
-      description: "B.Sc. Computer Engineering, ALX Full-Stack diploma, and independent founder.",
+      value: "Software Engineer / Full-Stack Developer",
+      description: "B.Sc. Computer Engineering, ALX Full-Stack diploma, and production web delivery.",
     },
     {
       label: "Build",
@@ -253,7 +253,7 @@ export const PROFILE: Profile = {
     },
   ],
   about: {
-    intro: "Software Engineer / Founder / Frontend-First",
+    intro: "Software Engineer / Full-Stack Developer / Frontend-First",
     story: [
       "I am Abdo Essam, a Software Engineer who builds practical web products for real users.",
       "My work is strongest around frontend implementation, API-connected workflows, admin panels, dashboards, and business websites.",

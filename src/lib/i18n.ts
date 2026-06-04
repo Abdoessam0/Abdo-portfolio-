@@ -264,8 +264,8 @@ export const dict: Record<Lang, SiteCopy> = {
       downloadCv: "Download CV",
     },
     founder: {
-      eyebrow: "Founder",
-      title: "Kolaytec - Company Website Project",
+      eyebrow: "Case Study",
+      title: "Kolaytec Business Platform",
       description:
         "Kolaytec is a company I founded for building practical websites, admin panels, dashboards, and business platforms. Through it, I turn client needs into clean, usable, production-ready web products.",
       proof: [
@@ -305,7 +305,7 @@ export const dict: Record<Lang, SiteCopy> = {
         eyebrow: "About",
         title: "Software Engineer, frontend-first.",
       },
-      intro: "Software Engineer / Founder / Frontend-First",
+      intro: "Software Engineer / Full-Stack Developer / Frontend-First",
       badges: ["Ankara, Turkey", "Egyptian", "GMT+3"],
       story: [
         "I am Abdo Essam, a Software Engineer who builds practical web products for real users.",
@@ -335,8 +335,8 @@ export const dict: Record<Lang, SiteCopy> = {
       factCards: [
         {
           label: "Role",
-          value: "Software Engineer + Founder",
-          description: "B.Sc. Computer Engineering, ALX Full-Stack diploma, and independent founder.",
+          value: "Software Engineer / Full-Stack Developer",
+          description: "B.Sc. Computer Engineering, ALX Full-Stack diploma, and production web delivery.",
         },
         {
           label: "Build",
@@ -493,6 +493,13 @@ export const dict: Record<Lang, SiteCopy> = {
           projectType: "Desktop Management System",
           description:
             "Desktop library system for books, students, issuing, returns, and reports.",
+          primaryCtaLabel: "Live Site",
+        },
+        "kolaytec-business-platform": {
+          context: "Kolaytec",
+          projectType: "Business Website",
+          description:
+            "Company website, service pages, multilingual content, contact flow, SEO setup, and production deployment.",
           primaryCtaLabel: "Live Site",
         },
         easy4learning: {

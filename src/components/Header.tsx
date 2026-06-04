@@ -11,8 +11,8 @@ import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
 
 const navItems = [
   { id: "about", label: "About" },
-  { id: "projects", label: "Projects" },
   { id: "experience", label: "Experience" },
+  { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
   { id: "credentials", label: "Credentials" },
   { id: "contact", label: "Contact" },
