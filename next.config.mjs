@@ -1,10 +1,5 @@
-import { fileURLToPath } from "node:url";
-
-const workspaceRoot = fileURLToPath(new URL(".", import.meta.url));
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  outputFileTracingRoot: workspaceRoot,
   images: {
     deviceSizes: [320, 375, 390, 430, 640, 750, 768, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
