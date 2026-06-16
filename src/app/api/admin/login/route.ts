@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { authenticateAdmin, createAdminLoginResponse } from "@/lib/auth";
+import { logAdminError } from "@/lib/admin-diagnostics";
 import { formatZodError, loginSchema } from "@/lib/validators";
 import { ZodError } from "zod";
 
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: formatZodError(error) }, { status: 400 });
     }
 
-    console.error(error);
+    logAdminError("admin-login", error);
     return NextResponse.json({ error: "Login failed. Check server configuration." }, { status: 500 });
   }
 }
