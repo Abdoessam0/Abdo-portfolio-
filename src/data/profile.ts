@@ -115,7 +115,7 @@ export type Profile = {
   };
 };
 
-const RESUME_PATH = "/Abdo-Essam-CV.pdf";
+const RESUME_PATH = "/Abdelrahman_Mohamed_Full_Stack_AI_CV_Eye_Friendly.pdf";
 
 export const PROFILE: Profile = {
   person: {

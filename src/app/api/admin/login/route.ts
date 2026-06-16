@@ -1,23 +1,29 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+import { authenticateAdmin, createAdminLoginResponse } from "@/lib/auth";
+import { formatZodError, loginSchema } from "@/lib/validators";
+import { ZodError } from "zod";
 
-export async function POST(req: NextRequest) {
-  const { password } = (await req.json()) as { password?: string };
-  const expected = process.env.ADMIN_PASSWORD;
+export async function POST(request: NextRequest) {
+  try {
+    const rawBody = await request.json().catch(() => null);
+    if (!rawBody) {
+      return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
+    }
 
-  if (!expected) {
-    return NextResponse.json({ error: "ADMIN_PASSWORD not configured" }, { status: 500 });
+    const body = loginSchema.parse(rawBody);
+    const user = await authenticateAdmin(body.identifier, body.password);
+
+    if (!user) {
+      return NextResponse.json({ error: "Invalid username/email or password." }, { status: 401 });
+    }
+
+    return createAdminLoginResponse(user);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json({ error: formatZodError(error) }, { status: 400 });
+    }
+
+    console.error(error);
+    return NextResponse.json({ error: "Login failed. Check server configuration." }, { status: 500 });
   }
-
-  if (password === expected) {
-    const res = NextResponse.json({ ok: true });
-    res.cookies.set("admin-auth", "true", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30,
-      sameSite: "lax",
-      httpOnly: false,
-    });
-    return res;
-  }
-
-  return NextResponse.json({ error: "Wrong password" }, { status: 401 });
 }

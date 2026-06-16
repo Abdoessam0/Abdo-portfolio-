@@ -1,0 +1,22 @@
+import type { NextRequest } from "next/server";
+import { createProjectImage, listProjectImages } from "@/lib/admin-repository";
+import { ok, withAdminApi } from "@/lib/admin-route-utils";
+import { parsePositiveId } from "@/lib/validators";
+
+type Context = {
+  params: Promise<{ id: string }>;
+};
+
+export async function GET(request: NextRequest, context: Context) {
+  return withAdminApi(request, async () => {
+    const { id } = await context.params;
+    return ok({ items: await listProjectImages(parsePositiveId(id)) });
+  });
+}
+
+export async function POST(request: NextRequest, context: Context) {
+  return withAdminApi(request, async () => {
+    const { id } = await context.params;
+    return ok(await createProjectImage(parsePositiveId(id), await request.json()));
+  });
+}
