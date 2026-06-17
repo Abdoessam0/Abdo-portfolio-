@@ -3,6 +3,7 @@ import "server-only";
 import { NextResponse, type NextRequest } from "next/server";
 import { ZodError } from "zod";
 import { requireAdminApiSession, unauthorizedResponse } from "@/lib/auth";
+import { isDatabaseError, toSafeDatabaseError } from "@/lib/db";
 import { formatZodError } from "@/lib/validators";
 
 export async function withAdminApi(
@@ -23,11 +24,20 @@ export async function withAdminApi(
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    if (error instanceof Error && error.message.includes("Duplicate entry")) {
-      return NextResponse.json({ error: "A record with that unique value already exists." }, { status: 409 });
+    if (isDatabaseError(error)) {
+      const dbError = toSafeDatabaseError(error);
+      console.error(`[admin-api] code=${dbError.originalCode} category=${dbError.category}`);
+      return NextResponse.json(
+        {
+          success: false,
+          error: dbError.message,
+          code: dbError.category,
+        },
+        { status: dbError.statusCode },
+      );
     }
 
-    console.error(error);
+    console.error("[admin-api]", error instanceof Error ? error.message : error);
     return NextResponse.json({ error: "Admin request failed." }, { status: 500 });
   }
 }

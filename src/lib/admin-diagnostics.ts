@@ -1,6 +1,10 @@
 import "server-only";
 
-import { getDbPool } from "@/lib/db";
+import {
+  checkDbConnection,
+  getSafeDatabaseErrorCategory,
+  getSafeDatabaseErrorCode,
+} from "@/lib/db";
 
 type AdminEnvKey =
   | "DB_HOST"
@@ -12,12 +16,6 @@ type AdminEnvKey =
 
 type AdminEnvPresence = Record<AdminEnvKey, boolean>;
 
-type SafeErrorWithCode = {
-  code?: unknown;
-  errno?: unknown;
-  message?: unknown;
-};
-
 export function getAdminEnvPresence(): AdminEnvPresence {
   return {
     DB_HOST: Boolean(process.env.DB_HOST),
@@ -27,15 +25,6 @@ export function getAdminEnvPresence(): AdminEnvPresence {
     DB_PASSWORD: Boolean(process.env.DB_PASSWORD),
     ADMIN_SESSION_SECRET: Boolean(process.env.ADMIN_SESSION_SECRET),
   };
-}
-
-function sanitizeErrorCode(value: unknown) {
-  if (typeof value !== "string" && typeof value !== "number") {
-    return "UNKNOWN";
-  }
-
-  const normalized = String(value).toUpperCase().replace(/[^A-Z0-9_]/g, "_");
-  return normalized || "UNKNOWN";
 }
 
 export function getSafeAdminErrorCode(error: unknown) {
@@ -50,16 +39,11 @@ export function getSafeAdminErrorCode(error: unknown) {
     }
   }
 
-  const maybeError = error as SafeErrorWithCode | null;
-  if (maybeError?.code !== undefined) {
-    return sanitizeErrorCode(maybeError.code);
-  }
+  return getSafeDatabaseErrorCode(error);
+}
 
-  if (maybeError?.errno !== undefined) {
-    return sanitizeErrorCode(maybeError.errno);
-  }
-
-  return "UNKNOWN";
+export function getSafeAdminErrorCategory(error: unknown) {
+  return getSafeDatabaseErrorCategory(error);
 }
 
 export function logAdminError(scope: string, error: unknown) {
@@ -70,15 +54,19 @@ export function logAdminError(scope: string, error: unknown) {
 
 export async function checkAdminDbConnection() {
   try {
-    await getDbPool().query("SELECT 1 AS ok");
+    await checkDbConnection();
     return {
       connectionSuccess: true,
       errorCode: null,
+      errorCategory: null,
     };
   } catch (error) {
+    const code = getSafeAdminErrorCode(error);
+    const category = getSafeAdminErrorCategory(error);
     return {
       connectionSuccess: false,
-      errorCode: getSafeAdminErrorCode(error),
+      errorCode: code,
+      errorCategory: category,
     };
   }
 }

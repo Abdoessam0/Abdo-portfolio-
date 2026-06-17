@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:db": "node --no-warnings --experimental-strip-types scripts/check-db-connection.ts"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
