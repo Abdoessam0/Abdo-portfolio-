@@ -32,7 +32,7 @@ import {
   SiVercel,
   SiWordpress,
 } from "react-icons/si";
-import { PROFILE } from "@/data/profile";
+import { PROFILE, type SkillGroup } from "@/data/profile";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
 import { useLang } from "@/hooks/use-lang";
@@ -158,7 +158,7 @@ function SkillChip({ label }: { label: string }) {
   );
 }
 
-export function SkillsSection() {
+export function SkillsSection({ skills = PROFILE.skills }: { skills?: SkillGroup[] }) {
   const { t } = useLang();
   const reducedMotion = useReducedMotion();
   const { shouldUseLiteMotion } = useMobileOptimization();
@@ -241,7 +241,7 @@ export function SkillsSection() {
 
       {/* Skill group cards grid — always visible, no opacity:0 initial state */}
       <div className="grid grid-cols-1 gap-2 sm:gap-2.5 md:grid-cols-2 xl:grid-cols-3">
-        {PROFILE.skills.map((group) => {
+        {skills.map((group) => {
           const Icon = categoryIcons[group.title] ?? Code2;
           const preferred = visibleSkillOrder[group.title] ?? group.items.slice(0, 5);
           const visibleItems = preferred.filter((item) => group.items.includes(item));

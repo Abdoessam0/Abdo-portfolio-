@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { Archive, ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import { CompactMediaGallery } from "@/components/ui/compact-media-gallery";
 import { PROFILE } from "@/data/profile";
-import { getProjectPrimaryUrl, PROJECTS } from "@/data/projects";
+import { getProjectPrimaryUrl } from "@/data/projects";
+import { getPublishedProjects } from "@/lib/public-data";
 
 type ProjectDetailPageProps = {
   params: Promise<{
@@ -14,19 +15,18 @@ type ProjectDetailPageProps = {
 
 const siteOrigin = new URL(PROFILE.links.portfolio).origin;
 
-function getProject(slug: string) {
-  return PROJECTS.find((project) => project.slug === slug);
-}
+export const dynamic = "force-dynamic";
 
-export function generateStaticParams() {
-  return PROJECTS.map((project) => ({ slug: project.slug }));
+async function getProject(slug: string) {
+  const projects = await getPublishedProjects();
+  return projects.find((project) => project.slug === slug);
 }
 
 export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
   if (!project) return {};
 
   const canonical = `${siteOrigin}/projects/${project.slug}`;
@@ -58,7 +58,7 @@ export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
 
   if (!project) {
     notFound();

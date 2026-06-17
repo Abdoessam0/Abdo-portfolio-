@@ -3,9 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, FileText } from "lucide-react";
 import { CompactMediaGallery } from "@/components/ui/compact-media-gallery";
-import { EXPERIENCE } from "@/data/experience";
 import { PROFILE } from "@/data/profile";
-import { PROJECTS } from "@/data/projects";
+import { getPublishedProjects, getVisibleExperience } from "@/lib/public-data";
 
 type ExperiencePageProps = {
   params: Promise<{ slug: string }>;
@@ -13,19 +12,18 @@ type ExperiencePageProps = {
 
 const siteOrigin = new URL(PROFILE.links.portfolio).origin;
 
-function getExperience(slug: string) {
-  return EXPERIENCE.find((item) => item.slug === slug);
-}
+export const dynamic = "force-dynamic";
 
-export function generateStaticParams() {
-  return EXPERIENCE.map((item) => ({ slug: item.slug }));
+async function getExperience(slug: string) {
+  const experience = await getVisibleExperience();
+  return experience.find((item) => item.slug === slug);
 }
 
 export async function generateMetadata({
   params,
 }: ExperiencePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const experience = getExperience(slug);
+  const experience = await getExperience(slug);
   if (!experience) return {};
 
   const canonical = `${siteOrigin}/experience/${experience.slug}`;
@@ -57,7 +55,7 @@ export async function generateMetadata({
 
 export default async function ExperiencePage({ params }: ExperiencePageProps) {
   const { slug } = await params;
-  const experience = getExperience(slug);
+  const experience = await getExperience(slug);
 
   if (!experience) {
     notFound();
@@ -67,7 +65,8 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
   const primaryDocument = experience.documents?.find((document) =>
     document.href.toLowerCase().endsWith(".pdf"),
   );
-  const relatedProjects = PROJECTS.filter((project) =>
+  const projects = await getPublishedProjects();
+  const relatedProjects = projects.filter((project) =>
     experience.projectSlugs?.includes(project.slug),
   );
 

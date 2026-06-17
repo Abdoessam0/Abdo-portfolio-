@@ -4,11 +4,27 @@ import { CheckCircle2, Languages, ServerCog } from "lucide-react";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
 import { useLang } from "@/hooks/use-lang";
+import type { PublicEducation, PublicProfileSettings } from "@/lib/public-data";
 
 const iconMap = [CheckCircle2, ServerCog, Languages];
 
-export function AboutSection() {
+function splitBio(value: string | undefined) {
+  return String(value ?? "")
+    .split(/\n+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+export function AboutSection({
+  education,
+  profileSettings,
+}: {
+  education?: PublicEducation[];
+  profileSettings?: PublicProfileSettings;
+}) {
   const { t } = useLang();
+  const story = profileSettings?.bio ? splitBio(profileSettings.bio) : t.about.story;
+  const visibleEducation = education ?? t.about.education;
 
   return (
     <section id="about" dir={t.dir} className="space-y-6 py-3 sm:space-y-8 sm:py-4">
@@ -34,7 +50,7 @@ export function AboutSection() {
             </div>
 
             <div className="space-y-3">
-              {t.about.story.map((paragraph) => (
+              {story.map((paragraph) => (
                 <p
                   key={paragraph}
                   className="max-w-2xl text-sm leading-6 text-muted"
@@ -114,7 +130,7 @@ export function AboutSection() {
               <div>
                 <p className="pill-label">{t.about.educationLabel}</p>
                 <div className="mt-4 space-y-3">
-                  {t.about.education.map((item) => (
+                  {visibleEducation.map((item) => (
                     <div
                       key={`${item.degree}-${item.period}`}
                       className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3.5"

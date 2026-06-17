@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { deleteProject, getProjectWithImages, patchProject, updateProject } from "@/lib/admin-repository";
 import { ok, withAdminApi } from "@/lib/admin-route-utils";
+import { revalidatePortfolioPublicPages } from "@/lib/revalidate-portfolio";
 import { parsePositiveId } from "@/lib/validators";
 
 type Context = {
@@ -29,6 +30,7 @@ export async function PUT(request: NextRequest, context: Context) {
       return NextResponse.json({ error: "Project not found." }, { status: 404 });
     }
 
+    revalidatePortfolioPublicPages();
     return ok(project);
   });
 }
@@ -42,6 +44,7 @@ export async function PATCH(request: NextRequest, context: Context) {
       return NextResponse.json({ error: "Project not found." }, { status: 404 });
     }
 
+    revalidatePortfolioPublicPages();
     return ok(project);
   });
 }
@@ -49,7 +52,12 @@ export async function PATCH(request: NextRequest, context: Context) {
 export async function DELETE(request: NextRequest, context: Context) {
   return withAdminApi(request, async () => {
     const { id } = await context.params;
-    await deleteProject(parsePositiveId(id));
+    const deleted = await deleteProject(parsePositiveId(id));
+    if (!deleted) {
+      return NextResponse.json({ error: "Project not found." }, { status: 404 });
+    }
+
+    revalidatePortfolioPublicPages();
     return ok({ ok: true });
   });
 }

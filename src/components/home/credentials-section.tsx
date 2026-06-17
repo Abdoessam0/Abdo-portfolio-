@@ -1,24 +1,20 @@
 "use client";
 
 import { Award, ExternalLink, GraduationCap, HandHeart } from "lucide-react";
-import { CERTIFICATES } from "@/data/certificates";
+import { CERTIFICATES, type Certificate } from "@/data/certificates";
 import { VOLUNTEERING } from "@/data/volunteering";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
 import { useLang } from "@/hooks/use-lang";
+import type { PublicEducation } from "@/lib/public-data";
 
-const highlightedCertificates = [
+const highlightedCertificateIds = [
   "remax-erasmus",
   "alx-fullstack",
   "wordpress-internship",
   "vtest-english",
   "rosetta-english",
-]
-  .map((id) => CERTIFICATES.find((certificate) => certificate.id === id))
-  .filter(
-    (certificate): certificate is NonNullable<(typeof CERTIFICATES)[number]> =>
-      Boolean(certificate),
-  );
+] as const;
 
 const volunteeringOrder = [
   "youth-summer-fest",
@@ -33,8 +29,25 @@ const selectedVolunteering = volunteeringOrder
     (item): item is NonNullable<(typeof VOLUNTEERING)[number]> => Boolean(item),
   );
 
-export function CredentialsSection() {
+function selectHighlightedCertificates(certificates: Certificate[]) {
+  const byId = new Map(certificates.map((certificate) => [certificate.id, certificate]));
+  const selected = highlightedCertificateIds
+    .map((id) => byId.get(id))
+    .filter((certificate): certificate is Certificate => Boolean(certificate));
+
+  return selected.length > 0 ? selected : certificates.slice(0, 5);
+}
+
+export function CredentialsSection({
+  certificates = CERTIFICATES,
+  education,
+}: {
+  certificates?: Certificate[];
+  education?: PublicEducation[];
+}) {
   const { t } = useLang();
+  const visibleEducation = education ?? t.about.education;
+  const highlightedCertificates = selectHighlightedCertificates(certificates);
 
   return (
     <section
@@ -62,7 +75,7 @@ export function CredentialsSection() {
                   {t.credentials.education}
                 </p>
                 <div className="mt-3 space-y-3">
-                  {t.about.education.map((education) => (
+                  {visibleEducation.map((education) => (
                     <div
                       key={education.degree}
                       className="story-inner-card rounded-[1.15rem] px-4 py-3"

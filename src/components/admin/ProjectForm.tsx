@@ -44,6 +44,23 @@ const emptyImage = {
   order_index: 0,
 };
 
+function formValueFromProject(project: AdminProject): ProjectFormValue {
+  return {
+    title: project.title,
+    slug: project.slug,
+    short_description: project.short_description,
+    long_description: project.long_description,
+    category: project.category,
+    tech_stack: project.tech_stack,
+    thumbnail_url: project.thumbnail_url,
+    live_url: project.live_url,
+    github_url: project.github_url,
+    featured: project.featured,
+    published: project.published,
+    order_index: project.order_index,
+  };
+}
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -71,6 +88,8 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
   const [editingImage, setEditingImage] = useState<AdminProjectImage | null>(null);
   const [imageSaving, setImageSaving] = useState(false);
   const [deleteImageTarget, setDeleteImageTarget] = useState<AdminProjectImage | null>(null);
+  const [deleteProjectOpen, setDeleteProjectOpen] = useState(false);
+  const [deletingProject, setDeletingProject] = useState(false);
 
   useEffect(() => {
     if (mode !== "edit" || !projectId) return;
@@ -86,20 +105,7 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
       }
 
       const data = (await response.json()) as ProjectWithImages;
-      setProject({
-        title: data.title,
-        slug: data.slug,
-        short_description: data.short_description,
-        long_description: data.long_description,
-        category: data.category,
-        tech_stack: data.tech_stack,
-        thumbnail_url: data.thumbnail_url,
-        live_url: data.live_url,
-        github_url: data.github_url,
-        featured: data.featured,
-        published: data.published,
-        order_index: data.order_index,
-      });
+      setProject(formValueFromProject(data));
       setImages(data.images ?? []);
       setLoading(false);
     };
@@ -134,12 +140,31 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
     }
 
     const saved = (await response.json()) as AdminProject;
+    setProject(formValueFromProject(saved));
     setSaving(false);
     setToast({ type: "success", message: "Project saved." });
 
     if (mode === "create") {
       router.replace(`/admin/projects/${saved.id}/edit`);
     }
+  };
+
+  const deleteCurrentProject = async () => {
+    if (!projectId) return;
+    setDeletingProject(true);
+
+    const response = await fetch(`/api/admin/projects/${projectId}`, { method: "DELETE" });
+
+    if (!response.ok) {
+      setToast({ type: "error", message: await readError(response) });
+      setDeletingProject(false);
+      return;
+    }
+
+    setToast({ type: "success", message: "Project deleted." });
+    setDeletingProject(false);
+    setDeleteProjectOpen(false);
+    router.replace("/admin/projects");
   };
 
   const startEditImage = (image: AdminProjectImage) => {
@@ -331,15 +356,36 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
           </label>
         </div>
 
-        <div className="flex justify-end md:col-span-2">
+        <div className="flex flex-col gap-3 md:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            {mode === "edit" ? (
+              <button
+                type="button"
+                onClick={() => setDeleteProjectOpen(true)}
+                disabled={saving}
+                className="inline-flex items-center gap-2 rounded-lg border border-red-400/30 px-4 py-2 text-sm font-semibold text-red-200 transition hover:bg-red-400/10 disabled:opacity-60"
+              >
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
+                Delete project
+              </button>
+            ) : null}
+          </div>
+          <div className="flex justify-end gap-3">
+            <Link
+              href="/admin/projects"
+              className="inline-flex items-center rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-900"
+            >
+              Cancel
+            </Link>
           <button
             type="submit"
             disabled={saving}
             className="inline-flex items-center gap-2 rounded-lg bg-emerald-300 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-200 disabled:cursor-wait disabled:opacity-70"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Save className="h-4 w-4" aria-hidden="true" />}
-            Save project
+              {mode === "edit" ? "Save Changes" : "Save project"}
           </button>
+          </div>
         </div>
       </form>
 
@@ -442,6 +488,14 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
         </section>
       ) : null}
 
+      <ConfirmDialog
+        open={deleteProjectOpen}
+        title="Delete project?"
+        description={`This deletes "${project.title || "this project"}" and its stored image URLs from MySQL.`}
+        loading={deletingProject}
+        onCancel={() => setDeleteProjectOpen(false)}
+        onConfirm={deleteCurrentProject}
+      />
       <ConfirmDialog
         open={Boolean(deleteImageTarget)}
         title="Delete image?"

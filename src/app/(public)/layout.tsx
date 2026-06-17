@@ -5,6 +5,7 @@ import { FloatingWhatsApp } from "@/components/story/FloatingWhatsApp";
 import { StoryNavbar } from "@/components/story/StoryNavbar";
 import { PROFILE } from "@/data/profile";
 import { LangProvider } from "@/hooks/use-lang";
+import { getProfileSettings } from "@/lib/public-data";
 
 const siteUrl = new URL(PROFILE.links.portfolio);
 const title = "Abdo Essam | Software Engineer Portfolio";
@@ -93,7 +94,11 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-export default function PublicLayout({ children }: { children: ReactNode }) {
+export const dynamic = "force-dynamic";
+
+export default async function PublicLayout({ children }: { children: ReactNode }) {
+  const profileSettings = await getProfileSettings();
+
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: langBootstrapScript }} />
@@ -106,7 +111,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
         </a>
 
         <div className="flex min-h-screen flex-col">
-          <StoryNavbar />
+          <StoryNavbar profileSettings={profileSettings} />
           <main
             id="content"
             className="mx-auto flex w-full max-w-[1280px] flex-1 px-3 pb-28 pt-5 sm:px-6 sm:pb-32 sm:pt-10 lg:px-8"
@@ -114,7 +119,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             <div className="w-full">{children}</div>
           </main>
           <FloatingWhatsApp />
-          <Footer />
+          <Footer profileSettings={profileSettings} />
         </div>
       </LangProvider>
     </>

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { PROFILE } from "@/data/profile";
 import { useLang } from "@/hooks/use-lang";
 import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
+import type { PublicProfileSettings } from "@/lib/public-data";
 
 function Marquee({ text, dir }: { text: string; dir: "ltr" | "rtl" }) {
   const repeated = `${text}${text}${text}`;
@@ -117,9 +118,11 @@ function ProfilePhoto() {
   );
 }
 
-export function StoryHero() {
+export function StoryHero({ profileSettings }: { profileSettings?: PublicProfileSettings }) {
   const { lang, t } = useLang();
   const isArabic = lang === "ar";
+  const headline = profileSettings?.headline || t.headline;
+  const cvUrl = profileSettings?.cvUrl || PROFILE.links.resume;
 
   return (
     <section
@@ -151,7 +154,7 @@ export function StoryHero() {
           }`}
           style={{ whiteSpace: "pre-line" }}
         >
-          {t.headline}
+          {headline}
         </h1>
 
         <p className="mx-auto mt-5 max-w-[22rem] text-[clamp(0.96rem,2vw,1.1rem)] leading-[1.7] text-[#6f6a61] sm:max-w-[560px]">
@@ -171,7 +174,7 @@ export function StoryHero() {
           </Link>
 
           <a
-            href={PROFILE.links.resume}
+            href={cvUrl}
             target="_blank"
             rel="noreferrer"
             className="inline-flex min-h-[3.25rem] items-center justify-center gap-2 rounded-full border-2 border-[#181818] bg-transparent px-7 py-3.5 text-[0.94rem] font-semibold text-[#181818] transition hover:bg-[#181818] hover:text-white focus-visible:outline-offset-4 sm:min-w-[11.75rem]"

@@ -1,36 +1,31 @@
 "use client";
 
 import { EXPERIENCE } from "@/data/experience";
-import { PROJECTS } from "@/data/projects";
+import type { Experience } from "@/data/experience";
+import { PROJECTS, type Project } from "@/data/projects";
 import { ExperienceCard } from "@/components/home/experience-card";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
 import { useLang } from "@/hooks/use-lang";
 
-const featuredExperience = EXPERIENCE.filter((item) => item.featured);
-const summaryCards = [
-  {
-    company: "RE/MAX Wise",
-    role: "Software Developer",
-    summary:
-      "Built and improved production real-estate platforms using Next.js, TypeScript, Tailwind, Supabase, and Vercel.",
-  },
-  {
-    company: "AFAQY",
-    role: "Technical Support Engineer",
-    summary:
-      "Supported fleet operations for 650+ vehicles, handled client support, technical coordination, and reporting workflows.",
-  },
-  {
-    company: "NFS Soft",
-    role: "WordPress Developer Intern",
-    summary:
-      "Built responsive WordPress websites, custom themes, and client-facing web pages.",
-  },
-];
+function buildSummaryCards(experience: Experience[]) {
+  return experience.slice(0, 3).map((item) => ({
+    company: item.company,
+    role: item.role,
+    summary: item.summary,
+  }));
+}
 
-export function ExperienceSection() {
+export function ExperienceSection({
+  experience = EXPERIENCE,
+  projects = PROJECTS,
+}: {
+  experience?: Experience[];
+  projects?: Project[];
+}) {
   const { t } = useLang();
+  const featuredExperience = experience.filter((item) => item.featured);
+  const summaryCards = buildSummaryCards(featuredExperience.length ? featuredExperience : experience);
 
   return (
     <section id="experience" dir={t.dir} className="space-y-6 py-3 sm:space-y-8 sm:py-4">
@@ -68,7 +63,7 @@ export function ExperienceSection() {
           <Reveal key={experience.id} delay={index * 0.05}>
             <ExperienceCard
               experience={experience}
-              relatedProjects={PROJECTS.filter((project) =>
+              relatedProjects={projects.filter((project) =>
                 experience.projectSlugs?.includes(project.slug),
               )}
             />

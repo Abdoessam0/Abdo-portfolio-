@@ -97,7 +97,7 @@ export function SettingsForm() {
     <>
       <PageHeading
         title="Profile Settings"
-        description="Manage profile settings in MySQL for a future public data switch. The public site is not reading these values yet."
+        description="Manage public profile settings stored in MySQL. Public pages use these values with hardcoded fallback."
       />
 
       {loading ? (

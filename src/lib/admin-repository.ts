@@ -240,14 +240,19 @@ export async function createProject(input: unknown) {
     ],
   );
 
-  return getProject(result.insertId);
+  const project = await getProject(result.insertId);
+  if (!project) {
+    throw new Error("Project write failed.");
+  }
+
+  return project;
 }
 
 export async function updateProject(id: number, input: unknown) {
   await ensureAdminSchema();
   const payload = projectSchema.parse(input);
 
-  await executeStatement(
+  const result = await executeStatement(
     `
       UPDATE portfolio_projects
       SET title = ?, slug = ?, short_description = ?, long_description = ?, category = ?,
@@ -272,6 +277,10 @@ export async function updateProject(id: number, input: unknown) {
     ],
   );
 
+  if (result.affectedRows === 0) {
+    return getProject(id);
+  }
+
   return getProject(id);
 }
 
@@ -286,15 +295,23 @@ export async function patchProject(id: number, input: unknown) {
 
   const assignments = columns.map((column) => `${column} = ?`).join(", ");
   const values = columns.map((column) => serializeValue(payload[column as keyof typeof payload]));
-  await executeStatement(`UPDATE portfolio_projects SET ${assignments} WHERE id = ?`, [...values, id]);
+  const result = await executeStatement(`UPDATE portfolio_projects SET ${assignments} WHERE id = ?`, [...values, id]);
+
+  if (result.affectedRows === 0) {
+    return getProject(id);
+  }
 
   return getProject(id);
 }
 
 export async function deleteProject(id: number) {
   await ensureAdminSchema();
+  const project = await getProject(id);
+  if (!project) return false;
+
   await executeStatement("DELETE FROM portfolio_project_images WHERE project_id = ?", [id]);
-  await executeStatement("DELETE FROM portfolio_projects WHERE id = ?", [id]);
+  const result = await executeStatement("DELETE FROM portfolio_projects WHERE id = ?", [id]);
+  return result.affectedRows > 0;
 }
 
 export async function listProjectImages(projectId: number) {
@@ -314,6 +331,9 @@ export async function listProjectImages(projectId: number) {
 
 export async function createProjectImage(projectId: number, input: unknown) {
   await ensureAdminSchema();
+  const project = await getProject(projectId);
+  if (!project) return null;
+
   const payload = projectImageSchema.parse(input);
   const result = await executeStatement(
     `
@@ -323,7 +343,12 @@ export async function createProjectImage(projectId: number, input: unknown) {
     [projectId, payload.image_url, payload.alt_text, payload.order_index],
   );
 
-  return getProjectImage(projectId, result.insertId);
+  const image = await getProjectImage(projectId, result.insertId);
+  if (!image) {
+    throw new Error("Project image write failed.");
+  }
+
+  return image;
 }
 
 export async function getProjectImage(projectId: number, imageId: number) {
@@ -339,7 +364,7 @@ export async function getProjectImage(projectId: number, imageId: number) {
 export async function updateProjectImage(projectId: number, imageId: number, input: unknown) {
   await ensureAdminSchema();
   const payload = projectImageSchema.parse(input);
-  await executeStatement(
+  const result = await executeStatement(
     `
       UPDATE portfolio_project_images
       SET image_url = ?, alt_text = ?, order_index = ?
@@ -348,12 +373,17 @@ export async function updateProjectImage(projectId: number, imageId: number, inp
     [payload.image_url, payload.alt_text, payload.order_index, projectId, imageId],
   );
 
+  if (result.affectedRows === 0) {
+    return getProjectImage(projectId, imageId);
+  }
+
   return getProjectImage(projectId, imageId);
 }
 
 export async function deleteProjectImage(projectId: number, imageId: number) {
   await ensureAdminSchema();
-  await executeStatement("DELETE FROM portfolio_project_images WHERE project_id = ? AND id = ?", [projectId, imageId]);
+  const result = await executeStatement("DELETE FROM portfolio_project_images WHERE project_id = ? AND id = ?", [projectId, imageId]);
+  return result.affectedRows > 0;
 }
 
 function getResourceConfig(name: ResourceName) {
@@ -409,7 +439,12 @@ export async function createResource(name: ResourceName, input: unknown) {
     columns.map((column) => serializeValue(payload[column])),
   );
 
-  return getResource(name, result.insertId);
+  const resource = await getResource(name, result.insertId);
+  if (!resource) {
+    throw new Error(`${name} write failed.`);
+  }
+
+  return resource;
 }
 
 export async function updateResource(name: ResourceName, id: number, input: unknown) {
@@ -418,10 +453,14 @@ export async function updateResource(name: ResourceName, id: number, input: unkn
   const payload = config.schema.parse(input);
   const columns = config.columns;
   const assignments = columns.map((column) => `${column} = ?`).join(", ");
-  await executeStatement(
+  const result = await executeStatement(
     `UPDATE ${config.table} SET ${assignments} WHERE id = ?`,
     [...columns.map((column) => serializeValue(payload[column])), id],
   );
+
+  if (result.affectedRows === 0) {
+    return getResource(name, id);
+  }
 
   return getResource(name, id);
 }
@@ -429,7 +468,8 @@ export async function updateResource(name: ResourceName, id: number, input: unkn
 export async function deleteResource(name: ResourceName, id: number) {
   await ensureAdminSchema();
   const config = getResourceConfig(name);
-  await executeStatement(`DELETE FROM ${config.table} WHERE id = ?`, [id]);
+  const result = await executeStatement(`DELETE FROM ${config.table} WHERE id = ?`, [id]);
+  return result.affectedRows > 0;
 }
 
 export async function getProfileSettings() {
@@ -458,7 +498,7 @@ export async function updateProfileSettings(input: unknown) {
   await ensureAdminSchema();
   const payload = profileSettingsSchema.parse(input);
 
-  await executeStatement(
+  const result = await executeStatement(
     `
       INSERT INTO portfolio_profile_settings (
         id, name, headline, bio, email, github_url, linkedin_url, cv_url
@@ -475,6 +515,15 @@ export async function updateProfileSettings(input: unknown) {
     `,
     [payload.name, payload.headline, payload.bio, payload.email, payload.github_url, payload.linkedin_url, payload.cv_url],
   );
+
+  if (result.affectedRows === 0) {
+    const settings = await getProfileSettings();
+    if (!settings) {
+      throw new Error("Profile settings write failed.");
+    }
+
+    return settings;
+  }
 
   return getProfileSettings();
 }

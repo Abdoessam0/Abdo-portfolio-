@@ -77,6 +77,13 @@ async function readError(response: Response) {
   return data?.error || `Request failed with HTTP ${response.status}`;
 }
 
+function sortByOrder(items: ResourceItem[]) {
+  return [...items].sort((left, right) => {
+    const orderDelta = Number(left.order_index ?? 0) - Number(right.order_index ?? 0);
+    return orderDelta !== 0 ? orderDelta : Number(left.id) - Number(right.id);
+  });
+}
+
 export function AdminResourceManager({ config }: { config: ResourceManagerConfig }) {
   const [items, setItems] = useState<ResourceItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -147,12 +154,13 @@ export function AdminResourceManager({ config }: { config: ResourceManagerConfig
 
     const saved = (await response.json()) as ResourceItem;
     setItems((current) => {
-      if (!editing) return [saved, ...current];
-      return current.map((item) => (item.id === saved.id ? saved : item));
+      if (!editing) return sortByOrder([saved, ...current]);
+      return sortByOrder(current.map((item) => (item.id === saved.id ? saved : item)));
     });
     setToast({ type: "success", message: editing ? "Item updated." : "Item created." });
     setSaving(false);
     setModalOpen(false);
+    setEditing(null);
   };
 
   const deleteItem = async () => {
@@ -400,7 +408,7 @@ export function AdminResourceManager({ config }: { config: ResourceManagerConfig
                   className="inline-flex items-center gap-2 rounded-lg bg-emerald-300 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-200 disabled:cursor-wait disabled:opacity-70"
                 >
                   {saving ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
-                  Save
+                  {editing ? "Save Changes" : "Save"}
                 </button>
               </div>
             </form>

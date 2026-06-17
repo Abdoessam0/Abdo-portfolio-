@@ -4,20 +4,21 @@ import Link from "next/link";
 import { Github, Instagram, Linkedin, Mail, MessageCircle } from "lucide-react";
 import { PROFILE } from "@/data/profile";
 import { useLang } from "@/hooks/use-lang";
+import type { PublicProfileSettings } from "@/lib/public-data";
 
 const footerLinkIds = ["about", "projects", "experience", "skills", "contact"] as const;
 
-const socialLinks = [
-  { icon: Mail, href: `mailto:${PROFILE.socials.email}`, label: "Email" },
-  { icon: Linkedin, href: PROFILE.socials.linkedin, label: "LinkedIn" },
-  { icon: Github, href: PROFILE.socials.github, label: "GitHub" },
-  { icon: Instagram, href: PROFILE.socials.instagram, label: "Instagram" },
-  { icon: MessageCircle, href: PROFILE.socials.whatsapp, label: "WhatsApp" },
-];
-
-export default function Footer() {
+export default function Footer({ profileSettings }: { profileSettings?: PublicProfileSettings }) {
   const { t } = useLang();
   const year = new Date().getFullYear();
+  const name = profileSettings?.name || PROFILE.person.name;
+  const socialLinks = [
+    { icon: Mail, href: `mailto:${profileSettings?.email || PROFILE.socials.email}`, label: "Email" },
+    { icon: Linkedin, href: profileSettings?.linkedinUrl || PROFILE.socials.linkedin, label: "LinkedIn" },
+    { icon: Github, href: profileSettings?.githubUrl || PROFILE.socials.github, label: "GitHub" },
+    { icon: Instagram, href: PROFILE.socials.instagram, label: "Instagram" },
+    { icon: MessageCircle, href: PROFILE.socials.whatsapp, label: "WhatsApp" },
+  ];
 
   return (
     <footer
@@ -37,7 +38,7 @@ export default function Footer() {
                 </span>
               </span>
               <span className="text-sm font-semibold text-[#181818]">
-                {PROFILE.person.name}
+                {name}
               </span>
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-[#6f6a61]">
@@ -77,7 +78,7 @@ export default function Footer() {
 
         <div className="mt-6 flex flex-col gap-2 px-1 text-xs leading-5 text-[#6f6a61] sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {year} {PROFILE.person.name}. {t.footer.rights}
+            &copy; {year} {name}. {t.footer.rights}
           </p>
           <p>{t.footer.builtWith}</p>
         </div>

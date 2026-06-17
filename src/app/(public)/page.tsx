@@ -9,57 +9,62 @@ import { StoryProjectCTA } from "@/components/story/StoryProjectCTA";
 import { ProjectsSection } from "@/components/home/projects-section";
 import { SkillsSection } from "@/components/home/skills-section";
 import { PROFILE } from "@/data/profile";
+import { getPublicPortfolioData } from "@/lib/public-data";
 
-const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": `${PROFILE.links.portfolio}#person`,
-  name: PROFILE.person.name,
-  alternateName: "Abdelrahman Mohamed",
-  jobTitle: PROFILE.person.role,
-  description: PROFILE.person.summary,
-  url: PROFILE.links.portfolio,
-  image: `${PROFILE.links.portfolio}/profile-image.jpg`,
-  email: PROFILE.socials.email,
-  telephone: PROFILE.person.phone,
-  nationality: PROFILE.person.nationality,
-  knowsLanguage: PROFILE.person.languages,
-  sameAs: [
-    PROFILE.socials.linkedin,
-    PROFILE.socials.github,
-    PROFILE.socials.instagram,
-    "https://kolaytec.com",
-  ],
-};
+export const dynamic = "force-dynamic";
 
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": `${PROFILE.links.portfolio}#website`,
-  name: `${PROFILE.person.name} Portfolio`,
-  url: PROFILE.links.portfolio,
-  description: PROFILE.person.summary,
-  publisher: {
+export default async function HomePage() {
+  const portfolio = await getPublicPortfolioData();
+  const profileSettings = portfolio.profileSettings;
+  const personName = profileSettings.name || PROFILE.person.name;
+  const personDescription = profileSettings.headline || PROFILE.person.summary;
+  const personEmail = profileSettings.email || PROFILE.socials.email;
+  const linkedinUrl = profileSettings.linkedinUrl || PROFILE.socials.linkedin;
+  const githubUrl = profileSettings.githubUrl || PROFILE.socials.github;
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
     "@id": `${PROFILE.links.portfolio}#person`,
-  },
-};
+    name: personName,
+    alternateName: "Abdelrahman Mohamed",
+    jobTitle: PROFILE.person.role,
+    description: personDescription,
+    url: PROFILE.links.portfolio,
+    image: `${PROFILE.links.portfolio}/profile-image.jpg`,
+    email: personEmail,
+    telephone: PROFILE.person.phone,
+    nationality: PROFILE.person.nationality,
+    knowsLanguage: PROFILE.person.languages,
+    sameAs: [linkedinUrl, githubUrl, PROFILE.socials.instagram, "https://kolaytec.com"],
+  };
 
-const profilePageSchema = {
-  "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  "@id": `${PROFILE.links.portfolio}#profile-page`,
-  name: "Abdo Essam Software Engineer Portfolio",
-  url: PROFILE.links.portfolio,
-  description: PROFILE.person.summary,
-  mainEntity: {
-    "@id": `${PROFILE.links.portfolio}#person`,
-  },
-  isPartOf: {
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
     "@id": `${PROFILE.links.portfolio}#website`,
-  },
-};
+    name: `${personName} Portfolio`,
+    url: PROFILE.links.portfolio,
+    description: personDescription,
+    publisher: {
+      "@id": `${PROFILE.links.portfolio}#person`,
+    },
+  };
 
-export default function HomePage() {
+  const profilePageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": `${PROFILE.links.portfolio}#profile-page`,
+    name: `${personName} Software Engineer Portfolio`,
+    url: PROFILE.links.portfolio,
+    description: personDescription,
+    mainEntity: {
+      "@id": `${PROFILE.links.portfolio}#person`,
+    },
+    isPartOf: {
+      "@id": `${PROFILE.links.portfolio}#website`,
+    },
+  };
+
   return (
     <>
       <script
@@ -70,10 +75,10 @@ export default function HomePage() {
       />
 
       <div className="space-y-14 sm:space-y-24 lg:space-y-28">
-        <StoryHero />
+        <StoryHero profileSettings={profileSettings} />
         <div className="deferred-section">
           <div className="section-divider" />
-          <ExperienceSection />
+          <ExperienceSection experience={portfolio.experience} projects={portfolio.projects} />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
@@ -81,19 +86,19 @@ export default function HomePage() {
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
-          <ProjectsSection />
+          <ProjectsSection projects={portfolio.projects} />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
-          <AboutSection />
+          <AboutSection education={portfolio.education} profileSettings={profileSettings} />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
-          <SkillsSection />
+          <SkillsSection skills={portfolio.skills} />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
-          <CredentialsSection />
+          <CredentialsSection certificates={portfolio.certificates} education={portfolio.education} />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
@@ -101,7 +106,7 @@ export default function HomePage() {
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
-          <ContactSection />
+          <ContactSection profileSettings={profileSettings} />
         </div>
       </div>
     </>

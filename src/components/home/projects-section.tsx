@@ -12,21 +12,31 @@ import {
   getProjectPrimaryUrl,
   PROJECTS,
   sortProjects,
+  type Project,
 } from "@/data/projects";
 import { useLang } from "@/hooks/use-lang";
 
-const orderedProjects = sortProjects(PROJECTS);
-const liveProjectCount = orderedProjects.filter(
-  (project) =>
-    Boolean(getProjectPrimaryUrl(project)) ||
-    Boolean(project.additionalLinks?.length),
-).length;
-const clientWorkCount = orderedProjects.filter(
-  (project) => project.collection === "Client Work",
-).length;
-export function ProjectsSection() {
+const fallbackOrderedProjects = sortProjects(PROJECTS);
+
+export function ProjectsSection({ projects = fallbackOrderedProjects }: { projects?: Project[] }) {
   const { t } = useLang();
   const [activeFilter, setActiveFilter] = useState<ProjectFilterValue>("all");
+  const orderedProjects = projects;
+  const liveProjectCount = useMemo(
+    () =>
+      orderedProjects.filter(
+        (project) =>
+          Boolean(getProjectPrimaryUrl(project)) ||
+          Boolean(project.additionalLinks?.length),
+      ).length,
+    [orderedProjects],
+  );
+  const clientWorkCount = useMemo(
+    () =>
+      orderedProjects.filter((project) => project.collection === "Client Work")
+        .length,
+    [orderedProjects],
+  );
   const projectHighlights = useMemo(
     () => [
       {
@@ -45,7 +55,7 @@ export function ProjectsSection() {
         helper: t.projects.stats.clientWork.helper,
       },
     ],
-    [t],
+    [clientWorkCount, liveProjectCount, orderedProjects.length, t],
   );
 
   const filterOptions = useMemo(
@@ -89,7 +99,7 @@ export function ProjectsSection() {
         helper: t.projects.filters.Academic.helper,
       },
     ],
-    [t],
+    [orderedProjects, t],
   );
 
   const filteredProjects = useMemo(() => {
@@ -100,7 +110,7 @@ export function ProjectsSection() {
     return orderedProjects.filter(
       (project) => project.collection === activeFilter,
     );
-  }, [activeFilter]);
+  }, [activeFilter, orderedProjects]);
 
   const activeFilterOption =
     filterOptions.find((option) => option.value === activeFilter) ??

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { executeStatement } from "@/lib/db";
+import { executeStatement, queryRow } from "@/lib/db";
 
 let schemaReady: Promise<void> | null = null;
 
@@ -149,6 +149,61 @@ async function createSchema() {
       KEY portfolio_admin_users_active_idx (active)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
+
+  await ensurePortfolioIndexes();
+}
+
+async function ensureIndex(table: string, indexName: string, columns: string[]) {
+  const existing = await queryRow<{ total: number }>(
+    `
+      SELECT COUNT(*) AS total
+      FROM INFORMATION_SCHEMA.STATISTICS
+      WHERE TABLE_SCHEMA = DATABASE()
+        AND TABLE_NAME = ?
+        AND INDEX_NAME = ?
+    `,
+    [table, indexName],
+  );
+
+  if (Number(existing?.total ?? 0) > 0) {
+    return;
+  }
+
+  try {
+    await executeStatement(
+      `ALTER TABLE ${table} ADD INDEX ${indexName} (${columns.join(", ")})`,
+    );
+  } catch (error) {
+    const mysqlError = error as { code?: string } | null;
+    if (mysqlError?.code !== "ER_DUP_KEYNAME") {
+      throw error;
+    }
+  }
+}
+
+async function ensurePortfolioIndexes() {
+  await ensureIndex("portfolio_projects", "portfolio_projects_public_idx", [
+    "published",
+    "featured",
+    "order_index",
+  ]);
+  await ensureIndex("portfolio_skills", "portfolio_skills_visible_category_order_idx", [
+    "visible",
+    "category",
+    "order_index",
+  ]);
+  await ensureIndex("portfolio_experience", "portfolio_experience_visible_order_idx", [
+    "visible",
+    "order_index",
+  ]);
+  await ensureIndex("portfolio_education", "portfolio_education_visible_order_idx", [
+    "visible",
+    "order_index",
+  ]);
+  await ensureIndex("portfolio_certificates", "portfolio_certificates_visible_order_idx", [
+    "visible",
+    "order_index",
+  ]);
 }
 
 export async function ensureAdminSchema() {

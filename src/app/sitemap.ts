@@ -1,11 +1,14 @@
 import type { MetadataRoute } from "next";
 import { PROFILE } from "@/data/profile";
-import { PROJECTS } from "@/data/projects";
-import { EXPERIENCE } from "@/data/experience";
+import { getPublishedProjects, getVisibleExperience } from "@/lib/public-data";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const origin = new URL(PROFILE.links.portfolio).origin;
   const now = new Date();
+  const [projects, experience] = await Promise.all([
+    getPublishedProjects(),
+    getVisibleExperience(),
+  ]);
 
   return [
     {
@@ -20,13 +23,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.6,
     },
-    ...PROJECTS.map((project) => ({
+    ...projects.map((project) => ({
       url: `${origin}/projects/${project.slug}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    ...EXPERIENCE.filter((item) => item.slug).map((item) => ({
+    ...experience.filter((item) => item.slug).map((item) => ({
       url: `${origin}/experience/${item.slug}`,
       lastModified: now,
       changeFrequency: "monthly" as const,

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PROFILE } from "@/data/profile";
 import { useLang } from "@/hooks/use-lang";
+import type { PublicProfileSettings } from "@/lib/public-data";
 
 // ─── Nav items are driven by the dictionary ───────────────────────────────
 const NAV_IDS = ["about", "projects", "experience", "skills", "contact"] as const;
@@ -29,11 +30,12 @@ function StoryBrandMark() {
   );
 }
 
-export function StoryNavbar() {
+export function StoryNavbar({ profileSettings }: { profileSettings?: PublicProfileSettings }) {
   const { lang, setLang, t } = useLang();
   const pathname = usePathname() ?? "/";
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const cvUrl = profileSettings?.cvUrl || PROFILE.links.resume;
 
   // Close mobile menu on route change
   useEffect(() => setMenuOpen(false), [pathname]);
@@ -122,7 +124,7 @@ export function StoryNavbar() {
 
             {/* CV download */}
             <a
-              href={PROFILE.links.resume}
+              href={cvUrl}
               target="_blank"
               rel="noreferrer"
               className="btn-primary-green hidden px-4 py-1.5 text-[0.78rem] shadow-[0_2px_10px_rgba(6,181,107,0.35)] hover:shadow-[0_4px_14px_rgba(6,181,107,0.5)] sm:inline-flex"
@@ -203,7 +205,7 @@ export function StoryNavbar() {
                   ))}
                 </div>
                 <a
-                  href={PROFILE.links.resume}
+                  href={cvUrl}
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => setMenuOpen(false)}

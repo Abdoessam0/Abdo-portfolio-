@@ -6,6 +6,7 @@ import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
 import { useLang } from "@/hooks/use-lang";
 import { useMobileOptimization } from "@/hooks/use-mobile-optimization";
+import type { PublicProfileSettings } from "@/lib/public-data";
 
 const iconByKind = {
   email: Mail,
@@ -16,9 +17,32 @@ const iconByKind = {
   resume: Download,
 } as const;
 
-export function ContactSection() {
+export function ContactSection({ profileSettings }: { profileSettings?: PublicProfileSettings }) {
   const { t } = useLang();
   const { shouldUseLiteEffects } = useMobileOptimization();
+  const channels = PROFILE.contact.channels.map((channel) => {
+    if (channel.kind === "email" && profileSettings?.email) {
+      return {
+        ...channel,
+        href: `mailto:${profileSettings.email}?subject=Portfolio%20Inquiry`,
+        value: profileSettings.email,
+      };
+    }
+
+    if (channel.kind === "github" && profileSettings?.githubUrl) {
+      return { ...channel, href: profileSettings.githubUrl, value: profileSettings.githubUrl.replace(/^https?:\/\//, "") };
+    }
+
+    if (channel.kind === "linkedin" && profileSettings?.linkedinUrl) {
+      return { ...channel, href: profileSettings.linkedinUrl, value: profileSettings.linkedinUrl.replace(/^https?:\/\//, "") };
+    }
+
+    if (channel.kind === "resume" && profileSettings?.cvUrl) {
+      return { ...channel, href: profileSettings.cvUrl };
+    }
+
+    return channel;
+  });
 
   return (
     <section id="contact" dir={t.dir} className="space-y-6 py-4 sm:space-y-7">
@@ -60,7 +84,7 @@ export function ContactSection() {
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 lg:w-[32rem]">
-            {PROFILE.contact.channels.map((channel, index) => {
+            {channels.map((channel, index) => {
               const Icon = iconByKind[channel.kind];
               const channelCopy = t.contact.channels[channel.kind];
 
