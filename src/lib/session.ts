@@ -6,13 +6,33 @@ export const ADMIN_SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
+type BufferConstructorLike = {
+  from(input: string, encoding?: string): ArrayLike<number> & { toString(encoding?: string): string };
+  from(input: Uint8Array): { toString(encoding?: string): string };
+};
+
+function getGlobalBuffer() {
+  return (globalThis as typeof globalThis & { Buffer?: BufferConstructorLike }).Buffer;
+}
+
 function bytesToBase64Url(bytes: Uint8Array) {
+  const buffer = getGlobalBuffer();
+  if (buffer) {
+    return buffer
+      .from(bytes)
+      .toString("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/g, "");
+  }
+
   let binary = "";
   for (const byte of bytes) {
     binary += String.fromCharCode(byte);
   }
 
-  return btoa(binary)
+  return globalThis
+    .btoa(binary)
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=+$/g, "");
@@ -20,7 +40,12 @@ function bytesToBase64Url(bytes: Uint8Array) {
 
 function base64UrlToBytes(value: string) {
   const padded = value.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(value.length / 4) * 4, "=");
-  const binary = atob(padded);
+  const buffer = getGlobalBuffer();
+  if (buffer) {
+    return new Uint8Array(buffer.from(padded, "base64"));
+  }
+
+  const binary = globalThis.atob(padded);
   const bytes = new Uint8Array(binary.length);
 
   for (let index = 0; index < binary.length; index += 1) {
@@ -42,22 +67,34 @@ function safeEqual(left: string, right: string) {
 }
 
 async function sign(value: string, secret: string) {
-  const key = await crypto.subtle.importKey(
+  const subtle = globalThis.crypto?.subtle;
+  if (!subtle) {
+    throw new Error("Web Crypto is unavailable.");
+  }
+
+  const key = await subtle.importKey(
     "raw",
     encoder.encode(secret),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"],
   );
-  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(value));
+  const signature = await subtle.sign("HMAC", key, encoder.encode(value));
   return bytesToBase64Url(new Uint8Array(signature));
 }
 
-function getSessionSecret(secret = process.env.ADMIN_SESSION_SECRET) {
+function getSessionSecret() {
+  const secret = process.env.ADMIN_SESSION_SECRET;
   if (!secret || secret.length < 32) {
     throw new Error("ADMIN_SESSION_SECRET must be set to at least 32 characters.");
   }
+  return secret;
+}
 
+/** Returns the secret or null — used in verify path so missing secret doesn't crash requests. */
+function getSessionSecretSafe(): string | null {
+  const secret = process.env.ADMIN_SESSION_SECRET;
+  if (!secret || secret.length < 32) return null;
   return secret;
 }
 
@@ -78,10 +115,13 @@ export async function verifySessionToken(token: string | undefined | null) {
   if (!token) return null;
 
   try {
+    const secret = getSessionSecretSafe();
+    if (!secret) return null;
+
     const [body, signature] = token.split(".");
     if (!body || !signature) return null;
 
-    const expected = await sign(body, getSessionSecret());
+    const expected = await sign(body, secret);
     if (!safeEqual(signature, expected)) return null;
 
     const session = JSON.parse(decoder.decode(base64UrlToBytes(body))) as AdminSession;
