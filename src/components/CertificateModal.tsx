@@ -2,7 +2,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import type { Certificate } from "@/data/certificates";
 
@@ -17,8 +16,8 @@ const focusableSelector =
 const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const open = Boolean(certificate);
-  const fileUrl = certificate ? `/certificates/${certificate.file}` : "";
-  const isPdf = useMemo(() => (certificate?.file ? certificate.file.toLowerCase().endsWith(".pdf") : false), [certificate]);
+  const fileUrl = certificate?.file ? `/certificates/${certificate.file}` : certificate?.link ?? "";
+  const isPdf = useMemo(() => fileUrl.toLowerCase().split("?")[0]?.endsWith(".pdf") ?? false, [fileUrl]);
 
   useEffect(() => {
     if (!open || !dialogRef.current) return;
@@ -96,15 +95,14 @@ const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
               src={`${fileUrl}#view=FitH&pagemode=none&toolbar=0`}
               className="h-full w-full"
             />
+          ) : fileUrl ? (
+            <div className="flex h-full w-full items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={fileUrl} alt={`${certificate.title} preview`} className="max-h-full max-w-full object-contain" />
+            </div>
           ) : (
-            <div className="relative h-full w-full">
-              <Image
-                src={fileUrl}
-                alt={`${certificate.title} preview`}
-                fill
-                sizes="(min-width: 768px) 80vw, 100vw"
-                className="object-contain"
-              />
+            <div className="flex h-full items-center justify-center p-6 text-center text-sm text-muted">
+              No certificate file is available.
             </div>
           )}
         </div>
@@ -124,14 +122,16 @@ const CertificateModal = ({ certificate, onClose }: CertificateModalProps) => {
                 Verify
               </Link>
             ) : null}
-            <a
-              href={fileUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="font-semibold text-accent underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              Open in new tab
-            </a>
+            {fileUrl ? (
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-accent underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                Open in new tab
+              </a>
+            ) : null}
           </div>
         </div>
       </div>

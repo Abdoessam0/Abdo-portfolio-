@@ -128,7 +128,14 @@ export async function getDashboardOverview(): Promise<DashboardOverview> {
     featuredProjects: number;
     totalSkills: number;
     totalExperience: number;
+    totalEducation: number;
     totalCertificates: number;
+    hiddenSkills: number;
+    hiddenExperience: number;
+    profileName: string | null;
+    profileHeadline: string | null;
+    profileEmail: string | null;
+    profileCvUrl: string | null;
     lastUpdatedContent: Date | string | null;
   }>(`
     SELECT
@@ -138,15 +145,28 @@ export async function getDashboardOverview(): Promise<DashboardOverview> {
       (SELECT COUNT(*) FROM portfolio_projects WHERE featured = 1) AS featuredProjects,
       (SELECT COUNT(*) FROM portfolio_skills) AS totalSkills,
       (SELECT COUNT(*) FROM portfolio_experience) AS totalExperience,
+      (SELECT COUNT(*) FROM portfolio_education) AS totalEducation,
       (SELECT COUNT(*) FROM portfolio_certificates) AS totalCertificates,
+      (SELECT COUNT(*) FROM portfolio_skills WHERE visible = 0) AS hiddenSkills,
+      (SELECT COUNT(*) FROM portfolio_experience WHERE visible = 0) AS hiddenExperience,
+      (SELECT name FROM portfolio_profile_settings WHERE id = 1) AS profileName,
+      (SELECT headline FROM portfolio_profile_settings WHERE id = 1) AS profileHeadline,
+      (SELECT email FROM portfolio_profile_settings WHERE id = 1) AS profileEmail,
+      (SELECT cv_url FROM portfolio_profile_settings WHERE id = 1) AS profileCvUrl,
       GREATEST(
         COALESCE((SELECT MAX(updated_at) FROM portfolio_projects), '1970-01-01'),
         COALESCE((SELECT MAX(updated_at) FROM portfolio_skills), '1970-01-01'),
         COALESCE((SELECT MAX(updated_at) FROM portfolio_experience), '1970-01-01'),
+        COALESCE((SELECT MAX(updated_at) FROM portfolio_education), '1970-01-01'),
         COALESCE((SELECT MAX(updated_at) FROM portfolio_certificates), '1970-01-01'),
         COALESCE((SELECT MAX(updated_at) FROM portfolio_profile_settings), '1970-01-01')
       ) AS lastUpdatedContent
   `);
+
+  const profileName = String(row?.profileName ?? "").trim();
+  const profileHeadline = String(row?.profileHeadline ?? "").trim();
+  const profileEmail = String(row?.profileEmail ?? "").trim();
+  const profileCvUrl = String(row?.profileCvUrl ?? "").trim();
 
   return {
     totalProjects: Number(row?.totalProjects ?? 0),
@@ -155,7 +175,15 @@ export async function getDashboardOverview(): Promise<DashboardOverview> {
     featuredProjects: Number(row?.featuredProjects ?? 0),
     totalSkills: Number(row?.totalSkills ?? 0),
     totalExperience: Number(row?.totalExperience ?? 0),
+    totalEducation: Number(row?.totalEducation ?? 0),
     totalCertificates: Number(row?.totalCertificates ?? 0),
+    hiddenSkills: Number(row?.hiddenSkills ?? 0),
+    hiddenExperience: Number(row?.hiddenExperience ?? 0),
+    profileName,
+    profileHeadline,
+    profileEmail,
+    profileCvUrl,
+    profileComplete: profileName.length > 0 && profileHeadline.length > 0 && profileEmail.length > 0,
     lastUpdatedContent: toIso(row?.lastUpdatedContent),
   };
 }
@@ -486,6 +514,10 @@ export async function getProfileSettings() {
       github_url: "",
       linkedin_url: "",
       cv_url: "",
+      whatsapp_url: "",
+      instagram_url: "",
+      footer_text: "",
+      twitter_url: "",
       created_at: null,
       updated_at: null,
     } satisfies AdminProfileSettings;
@@ -501,9 +533,10 @@ export async function updateProfileSettings(input: unknown) {
   const result = await executeStatement(
     `
       INSERT INTO portfolio_profile_settings (
-        id, name, headline, bio, email, github_url, linkedin_url, cv_url
+        id, name, headline, bio, email, github_url, linkedin_url, cv_url,
+        whatsapp_url, instagram_url, footer_text, twitter_url
       )
-      VALUES (1, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE
         name = VALUES(name),
         headline = VALUES(headline),
@@ -511,9 +544,25 @@ export async function updateProfileSettings(input: unknown) {
         email = VALUES(email),
         github_url = VALUES(github_url),
         linkedin_url = VALUES(linkedin_url),
-        cv_url = VALUES(cv_url)
+        cv_url = VALUES(cv_url),
+        whatsapp_url = VALUES(whatsapp_url),
+        instagram_url = VALUES(instagram_url),
+        footer_text = VALUES(footer_text),
+        twitter_url = VALUES(twitter_url)
     `,
-    [payload.name, payload.headline, payload.bio, payload.email, payload.github_url, payload.linkedin_url, payload.cv_url],
+    [
+      payload.name,
+      payload.headline,
+      payload.bio,
+      payload.email,
+      payload.github_url,
+      payload.linkedin_url,
+      payload.cv_url,
+      payload.whatsapp_url,
+      payload.instagram_url,
+      payload.footer_text,
+      payload.twitter_url,
+    ],
   );
 
   if (result.affectedRows === 0) {

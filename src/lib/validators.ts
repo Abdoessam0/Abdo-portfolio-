@@ -122,6 +122,10 @@ export const profileSettingsSchema = z.object({
   github_url: textValue(2000),
   linkedin_url: textValue(2000),
   cv_url: textValue(2000),
+  whatsapp_url: textValue(2000),
+  instagram_url: textValue(2000),
+  footer_text: textValue(1000),
+  twitter_url: textValue(2000),
 });
 
 export function formatZodError(error: z.ZodError) {

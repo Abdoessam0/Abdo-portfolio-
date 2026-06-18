@@ -151,6 +151,7 @@ async function createSchema() {
   `);
 
   await ensurePortfolioIndexes();
+  await ensureProfileSettingsColumns();
 }
 
 async function ensureIndex(table: string, indexName: string, columns: string[]) {
@@ -204,6 +205,35 @@ async function ensurePortfolioIndexes() {
     "visible",
     "order_index",
   ]);
+}
+
+async function ensureColumn(table: string, column: string, definition: string) {
+  const existing = await queryRow<{ total: number }>(
+    `
+      SELECT COUNT(*) AS total
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE TABLE_SCHEMA = DATABASE()
+        AND TABLE_NAME = ?
+        AND COLUMN_NAME = ?
+    `,
+    [table, column],
+  );
+
+  if (Number(existing?.total ?? 0) > 0) return;
+
+  try {
+    await executeStatement(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+  } catch (error) {
+    const mysqlError = error as { code?: string } | null;
+    if (mysqlError?.code !== "ER_DUP_FIELDNAME") throw error;
+  }
+}
+
+async function ensureProfileSettingsColumns() {
+  await ensureColumn("portfolio_profile_settings", "whatsapp_url", "TEXT NULL AFTER cv_url");
+  await ensureColumn("portfolio_profile_settings", "instagram_url", "TEXT NULL AFTER whatsapp_url");
+  await ensureColumn("portfolio_profile_settings", "footer_text", "TEXT NULL AFTER instagram_url");
+  await ensureColumn("portfolio_profile_settings", "twitter_url", "TEXT NULL AFTER footer_text");
 }
 
 export async function ensureAdminSchema() {

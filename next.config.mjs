@@ -1,5 +1,11 @@
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  outputFileTracingRoot: __dirname,
   images: {
     deviceSizes: [320, 375, 390, 430, 640, 750, 768, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

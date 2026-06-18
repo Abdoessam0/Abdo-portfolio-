@@ -18,7 +18,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const session = await verifySessionToken(request.cookies.get(ADMIN_SESSION_COOKIE)?.value);
+  let session = null;
+  try {
+    session = await verifySessionToken(request.cookies.get(ADMIN_SESSION_COOKIE)?.value);
+  } catch {
+    // Treat verification failure as unauthenticated — don't crash the request
+  }
 
   if (session) {
     return NextResponse.next();

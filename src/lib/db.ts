@@ -172,9 +172,13 @@ export function getDbPool() {
       user: requireEnv("DB_USER"),
       password: requireEnv("DB_PASSWORD"),
       waitForConnections: true,
-      connectionLimit: 10,
+      connectionLimit: 5,
       queueLimit: 0,
       charset: "utf8mb4",
+      connectTimeout: 10000,
+      enableKeepAlive: true,
+      keepAliveInitialDelay: 10000,
+      timezone: "+00:00",
     });
   }
 

@@ -4,7 +4,7 @@ import { Download, ExternalLink } from "lucide-react";
 import { PROFILE } from "@/data/profile";
 import { useLang } from "@/hooks/use-lang";
 
-export function CvPageContent() {
+export function CvPageContent({ cvUrl = PROFILE.links.resume }: { cvUrl?: string }) {
   const { t } = useLang();
 
   return (
@@ -20,7 +20,7 @@ export function CvPageContent() {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <a
-            href={PROFILE.links.resume}
+            href={cvUrl}
             download
             className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-canvas transition hover:bg-brand-glow"
           >
@@ -28,7 +28,7 @@ export function CvPageContent() {
             {t.cv.download}
           </a>
           <a
-            href={PROFILE.links.resume}
+            href={cvUrl}
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white transition hover:border-brand/30 hover:bg-white/[0.08]"

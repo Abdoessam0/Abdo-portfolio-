@@ -104,6 +104,10 @@ export type AdminProfileSettings = {
   github_url: string;
   linkedin_url: string;
   cv_url: string;
+  whatsapp_url: string;
+  instagram_url: string;
+  footer_text: string;
+  twitter_url: string;
   created_at: string | null;
   updated_at: string | null;
 };
@@ -115,6 +119,14 @@ export type DashboardOverview = {
   featuredProjects: number;
   totalSkills: number;
   totalExperience: number;
+  totalEducation: number;
   totalCertificates: number;
+  hiddenSkills: number;
+  hiddenExperience: number;
+  profileComplete: boolean;
+  profileName: string;
+  profileHeadline: string;
+  profileEmail: string;
+  profileCvUrl: string;
   lastUpdatedContent: string | null;
 };
