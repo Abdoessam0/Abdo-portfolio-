@@ -230,9 +230,9 @@ type SiteCopy = {
 export const dict: Record<Lang, SiteCopy> = {
   en: {
     dir: "ltr",
-    label: "Abdo Essam - Software Engineer / Full-Stack Developer",
+    label: "Abdo Essam - Computer Engineering Graduate / Junior Full-Stack Developer",
     headline: "I build websites, dashboards, and web platforms\nfor real business work.",
-    sub: "Frontend-first and full-stack capable. I work with Next.js, React, TypeScript, Tailwind, PHP/Laravel, MySQL, and REST APIs to ship practical digital products.",
+    sub: "Computer Engineering graduate, frontend-first and full-stack capable. I work with Next.js, React, TypeScript, Tailwind, PHP/Laravel, MySQL, REST APIs, and AI-assisted coding workflows to ship practical digital products.",
     cta1: "View My Work",
     cta2: "Download CV",
     cta3: "Let's Talk",
@@ -290,8 +290,8 @@ export const dict: Record<Lang, SiteCopy> = {
         },
         {
           label: "Experience",
-          value: "International internship experience",
-          description: "Software and client-facing work across Portugal, Saudi Arabia, and Turkey.",
+          value: "IME and international experience",
+          description: "FeinSoft İME internship, Erasmus+ software work in Portugal, and client-facing support in Saudi Arabia.",
         },
         {
           label: "Systems",
@@ -308,12 +308,13 @@ export const dict: Record<Lang, SiteCopy> = {
       intro: "Software Engineer / Full-Stack Developer / Frontend-First",
       badges: ["Ankara, Turkey", "Egyptian", "GMT+3"],
       story: [
-        "I am Abdo Essam, a Software Engineer who builds practical web products for real users.",
-        "My work is strongest around frontend implementation, API-connected workflows, admin panels, dashboards, and business websites.",
-        "I am interested in software engineering roles and product work where clean delivery, communication, and reliability matter.",
+        "I am Abdo Essam, a Computer Engineering graduate from Atatürk University who builds practical web products for real users.",
+        "My work is strongest around frontend implementation, API-connected workflows, admin panels, dashboards, business websites, and applied AI/computer vision interfaces.",
+        "My background includes a FeinSoft İME internship in Ankara, Erasmus+ traineeship experience in Portugal, client-facing technical support in Saudi Arabia, and freelance production web work.",
+        "I am interested in junior software engineering, full-stack, frontend, and AI-assisted coding roles where clean delivery, communication, and reliability matter.",
       ],
       workLabel: "Work",
-      workItems: ["Websites", "Dashboards", "Full-stack systems", "Production apps"],
+      workItems: ["Websites", "Dashboards", "Full-stack systems", "AI-assisted workflows"],
       focusAreas: [
         {
           label: "Frontend",
@@ -335,8 +336,8 @@ export const dict: Record<Lang, SiteCopy> = {
       factCards: [
         {
           label: "Role",
-          value: "Software Engineer / Full-Stack Developer",
-          description: "B.Sc. Computer Engineering, ALX Full-Stack diploma, and production web delivery.",
+          value: "Junior Software Engineer / Full-Stack Developer",
+          description: "B.Sc. Computer Engineering from Atatürk University, ALX Full-Stack diploma, and production web delivery.",
         },
         {
           label: "Build",
@@ -353,7 +354,7 @@ export const dict: Record<Lang, SiteCopy> = {
       education: [
         {
           degree: "B.Sc. Computer Engineering",
-          institution: "Ataturk University",
+          institution: "Atatürk University",
           location: "Erzurum, Turkey",
           period: "Graduated Jun 2026",
         },
@@ -369,7 +370,7 @@ export const dict: Record<Lang, SiteCopy> = {
         "Production web platforms",
         "API-driven systems",
         "Client-facing support",
-        "Reliable delivery",
+        "AI-assisted coding workflows",
       ],
     },
     projects: {
@@ -454,10 +455,11 @@ export const dict: Record<Lang, SiteCopy> = {
           primaryCtaLabel: "Live Demo",
         },
         "real-estate-platforms": {
+          title: "RE/MAX Algarve and Wise Real Estate Platforms",
           context: "RE/MAX Wise",
           projectType: "Multi-Site Real Estate Platform",
           description:
-            "Reusable UI, SEO-safe routing, and shared layouts across three production real estate platforms.",
+            "Reusable UI, SEO-safe routing, and shared layouts across live Algarve, Lisbon, and 5 Steps real estate platforms.",
           primaryCtaLabel: "Live Site",
         },
         trustedbuildr: {
@@ -475,7 +477,7 @@ export const dict: Record<Lang, SiteCopy> = {
           primaryCtaLabel: "Live Site",
         },
         "campus-safety-app": {
-          context: "Ataturk University",
+          context: "Atatürk University",
           projectType: "Mobile Safety App",
           description:
             "Mobile safety app for alerts, incident reporting, profile tools, and admin-side workflows.",
@@ -509,6 +511,13 @@ export const dict: Record<Lang, SiteCopy> = {
             "Company website, service pages, multilingual content, contact flow, SEO setup, and production deployment.",
           primaryCtaLabel: "Live Site",
         },
+        portfolio: {
+          context: "Personal Project",
+          projectType: "Personal Portfolio",
+          description:
+            "Next.js portfolio with structured sections, project detail pages, CV links, SEO metadata, and recruiter-friendly positioning.",
+          primaryCtaLabel: "Live Site",
+        },
         easy4learning: {
           context: "Freelance Client",
           projectType: "Education Website",
@@ -524,17 +533,19 @@ export const dict: Record<Lang, SiteCopy> = {
           primaryCtaLabel: "Live Site",
         },
         "ustunler-et-borsasi": {
+          title: "Üstünler Et Borsası",
           context: "Freelance Client",
           projectType: "Business Website",
           description:
-            "Improved navigation, page flow, and responsive UI for a business website.",
+            "Improved navigation, page flow, and responsive UI for the Et Borsası business website.",
           primaryCtaLabel: "Live Site",
         },
         "bels-digital-application-system": {
+          title: "BELS Digital Campus",
           context: "Freelance Client",
-          projectType: "Admissions Platform",
+          projectType: "Digital Campus / Admissions Platform",
           description:
-            "Improved form flow, action clarity, and interface structure for school admissions.",
+            "Improved form flow, action clarity, and interface structure for a digital campus admissions workflow.",
           primaryCtaLabel: "Live Site",
         },
       },
@@ -556,26 +567,26 @@ export const dict: Record<Lang, SiteCopy> = {
       },
       items: {
         feinsoft: {
-          role: "Long-Term Software Intern",
-          location: "Ankara, Turkiye",
+          role: "İME Software Engineering Intern",
+          location: "Ankara, Türkiye",
           period: "2026 - 4 months",
           summary:
-            "Long-term internship during my final year of Computer Engineering, focused on frontend implementation, software development tasks, and real business website work.",
+            "Atatürk University İME internship during my final year of Computer Engineering, focused on frontend implementation, software development tasks, and real business website work.",
           impact: [
             "Worked on business-facing web interfaces and frontend implementation.",
             "Supported software development tasks in a real company environment.",
-            "Gained practical experience with client requirements and delivery workflows.",
+            "Gained practical experience with client requirements, team workflows, and delivery expectations.",
           ],
         },
         "remax-wise": {
           role: "Software Developer",
           location: "Lisbon, Portugal",
           period: "Sep 2025 - Nov 2025",
-          summary: "Worked on real production real estate websites.",
+          summary: "Worked on production real estate websites during an Erasmus+ traineeship in Lisbon.",
           impact: [
             "Built reusable UI components and shared layouts across multiple sites.",
             "Improved page structure, routing, and internal linking.",
-            "Helped keep site launches clean and consistent.",
+            "Helped keep site launches clean, consistent, and easier to maintain.",
           ],
           metrics: [
             { label: "Sites", value: "3", helper: "Lisbon, Algarve, and 5 Steps" },
@@ -884,7 +895,7 @@ export const dict: Record<Lang, SiteCopy> = {
       education: [
         {
           degree: "بكالوريوس هندسة الحاسوب",
-          institution: "Ataturk University",
+          institution: "Atatürk University",
           location: "أرضروم، تركيا",
           period: "تخرج في يونيو 2026",
         },
@@ -1005,7 +1016,7 @@ export const dict: Record<Lang, SiteCopy> = {
           primaryCtaLabel: "الموقع",
         },
         "campus-safety-app": {
-          context: "Ataturk University",
+          context: "Atatürk University",
           projectType: "تطبيق سلامة جامعية",
           description:
             "تطبيق موبايل للتنبيهات، بلاغات الحوادث، أدوات الحساب، وسير عمل الإدارة.",

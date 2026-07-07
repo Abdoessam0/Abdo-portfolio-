@@ -122,7 +122,7 @@ export const PROFILE: Profile = {
     name: "Abdo Essam",
     role: "Software Engineer",
     summary:
-      "Software Engineer based in Ankara, building web applications, dashboards, admin panels, and business platforms with Next.js, React, TypeScript, PHP/Laravel, and MySQL.",
+      "Computer Engineering graduate based in Ankara, building web applications, dashboards, admin panels, and business platforms with Next.js, React, TypeScript, PHP/Laravel, and MySQL.",
     location: "Ankara, Turkey (relocatable)",
     nationality: "Egyptian",
     base: "Ankara, Turkey",
@@ -146,17 +146,17 @@ export const PROFILE: Profile = {
     resume: RESUME_PATH,
   },
   hero: {
-    eyebrow: "Software Engineer / Full-Stack Developer",
+    eyebrow: "Computer Engineering Graduate / Junior Full-Stack Developer",
     headline:
       "Abdo Essam builds web applications, dashboards, and business platforms.",
     subheadline:
-      "Frontend-first and full-stack capable, with production web work, client-facing support experience, and a practical product mindset.",
+      "Frontend-first and full-stack capable, with production web work, FeinSoft İME internship experience, Erasmus+ international experience, and a practical product mindset.",
     description:
       "Open to software engineering roles, freelance builds, and long-term product work.",
     proofStrip: [
       { label: "Since", value: "Building web products since 2022" },
       { label: "Work", value: "Frontend + full-stack delivery" },
-      { label: "Focus", value: "Websites / dashboards / platforms" },
+      { label: "Focus", value: "Web apps / dashboards / AI-assisted work" },
     ],
     ctas: [
       {
@@ -196,7 +196,7 @@ export const PROFILE: Profile = {
     {
       label: "Role",
       value: "Software Engineer / Full-Stack Developer",
-      description: "B.Sc. Computer Engineering, ALX Full-Stack diploma, and production web delivery.",
+      description: "B.Sc. Computer Engineering from Atatürk University, ALX Full-Stack diploma, and production web delivery.",
     },
     {
       label: "Build",
@@ -243,8 +243,8 @@ export const PROFILE: Profile = {
     },
     {
       label: "Experience",
-      value: "International internship experience",
-      description: "Software and client-facing work across Portugal, Saudi Arabia, and Turkey.",
+      value: "İME and international experience",
+      description: "FeinSoft İME internship, Erasmus+ software work in Portugal, and client-facing support in Saudi Arabia.",
     },
     {
       label: "Systems",
@@ -255,9 +255,10 @@ export const PROFILE: Profile = {
   about: {
     intro: "Software Engineer / Full-Stack Developer / Frontend-First",
     story: [
-      "I am Abdo Essam, a Software Engineer who builds practical web products for real users.",
-      "My work is strongest around frontend implementation, API-connected workflows, admin panels, dashboards, and business websites.",
-      "I am interested in software engineering roles and product work where clean delivery, communication, and reliability matter.",
+      "I am Abdo Essam, a Computer Engineering graduate from Atatürk University who builds practical web products for real users.",
+      "My work is strongest around frontend implementation, API-connected workflows, admin panels, dashboards, business websites, and applied AI/computer vision interfaces.",
+      "My background includes a FeinSoft İME internship in Ankara, Erasmus+ traineeship experience in Portugal, client-facing technical support in Saudi Arabia, and freelance production web work.",
+      "I am interested in junior software engineering, full-stack, frontend, and AI-assisted coding roles where clean delivery, communication, and reliability matter.",
     ],
     focusAreas: [
       {
@@ -280,13 +281,13 @@ export const PROFILE: Profile = {
       "Production web platforms",
       "API-driven systems",
       "Client-facing support",
-      "Reliable delivery",
+      "AI-assisted coding workflows",
     ],
   },
   education: [
     {
       degree: "B.Sc. Computer Engineering",
-      institution: "Ataturk University",
+      institution: "Atatürk University",
       location: "Erzurum, Turkey",
       period: "Graduated Jun 2026",
     },

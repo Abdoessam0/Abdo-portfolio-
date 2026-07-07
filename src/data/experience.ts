@@ -48,21 +48,21 @@ export const EXPERIENCE: Experience[] = [
     id: "feinsoft",
     slug: "feinsoft",
     featured: true,
-    role: "Long-Term Software Intern",
-    company: "Feinsoft",
+    role: "İME Software Engineering Intern",
+    company: "FeinSoft",
     location: "Ankara, Türkiye",
     period: "2026 · 4 months",
     start: "2026",
     end: "2026",
     summary:
-      "Long-term internship during my final year of Computer Engineering, focused on frontend implementation, software development tasks, and real business website work.",
-    stack: ["Frontend implementation", "Business websites", "Software development"],
+      "Atatürk University İME internship during my final year of Computer Engineering, focused on frontend implementation, software development tasks, and real business website work.",
+    stack: ["Frontend implementation", "Business websites", "Software development", "İME internship"],
     impact: [
       "Worked on business-facing web interfaces and frontend implementation.",
       "Supported software development tasks in a real company environment.",
-      "Gained practical experience with client requirements and delivery workflows.",
+      "Gained practical experience with client requirements, team workflows, and delivery expectations.",
     ],
-    links: [{ label: "Feinsoft", href: "https://www.feinsoft.com/" }],
+    links: [{ label: "FeinSoft", href: "https://www.feinsoft.com/" }],
   },
   {
     id: "remax-wise",
@@ -75,7 +75,7 @@ export const EXPERIENCE: Experience[] = [
     start: "2025-09",
     end: "2025-11",
     summary:
-      "Worked on real production real estate websites.",
+      "Worked on production real estate websites during an Erasmus+ traineeship in Lisbon.",
     stack: [
       "Next.js 15",
       "TypeScript",
@@ -87,7 +87,7 @@ export const EXPERIENCE: Experience[] = [
     impact: [
       "Built reusable UI components and shared layouts across multiple sites.",
       "Improved page structure, routing, and internal linking.",
-      "Helped keep site launches clean and consistent.",
+      "Helped keep site launches clean, consistent, and easier to maintain.",
     ],
     metrics: [
       { label: "Sites", value: "3", helper: "Lisbon, Algarve, and 5 Steps" },
