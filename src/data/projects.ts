@@ -35,8 +35,6 @@ export type Project = {
   summary: string;
   description: string;
   caseStudy: string;
-  problem?: string;
-  result?: string;
   role: string;
   timeline: string;
   status: string;
@@ -84,10 +82,6 @@ export const PROJECTS: Project[] = [
       "Smart-table restaurant experience with mood-based and preference-based meal recommendations, comparison, and QR confirmation.",
     caseStudy:
       "Easypick is a futuristic restaurant decision-support platform designed for a smart dining table with an embedded horizontal touchscreen. Instead of behaving like a typical food ordering app, it guides customers through mood-based and preference-based flows so they can choose meals quickly and confidently. Users can select a mood, tune nutrition preferences, review curated meal cards, compare two dishes side by side, receive a final recommendation, and display a QR code for ordering. The interface is warm, minimal, data-driven, and optimized for collaborative use on a shared table, reducing decision fatigue by turning a long menu into a focused interactive experience.",
-    problem:
-      "Restaurant customers can struggle to choose from long menus, especially in a shared smart-table experience.",
-    result:
-      "Produced a working frontend prototype that turns meal selection into a guided, easier-to-explain decision flow.",
     role: "Frontend Developer",
     timeline: "2026",
     status: "Prototype",
@@ -154,7 +148,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "real-estate-platforms",
-    title: "RE/MAX Algarve and Wise Real Estate Platforms",
+    title: "RE/MAX Wise Real Estate Platforms",
     featured: true,
     priority: 1,
     year: 2025,
@@ -168,10 +162,6 @@ export const PROJECTS: Project[] = [
       "Reusable UI, SEO-safe routing, and shared layouts across three production real estate platforms.",
     caseStudy:
       "This work covered three live real estate platforms built for different audiences on the same product base. I focused on reusable UI, SEO-safe routing, shared layouts, and launch stability so new site work could ship faster without breaking the desktop or mobile experience.",
-    problem:
-      "The team needed consistent real estate websites for Algarve, Lisbon, and 5 Steps without duplicating UI and routing work.",
-    result:
-      "Helped ship and maintain three live sites with reusable components, clearer page structure, and more consistent launches.",
     role: "Software Developer",
     timeline: "2025",
     status: "Production",
@@ -242,10 +232,6 @@ export const PROJECTS: Project[] = [
       "Verified property marketplace with bilingual browsing, SEO-ready pages, and location-based discovery.",
     caseStudy:
       "TrustedBuildr.pt was built as a full-stack marketplace for verified land and construction opportunities. I worked on the product structure, bilingual content flow, SEO-friendly pages, and scalable data handling so the browsing experience stayed clear as the platform grew.",
-    problem:
-      "Property and construction opportunities needed a clearer, trust-focused marketplace structure for browsing and discovery.",
-    result:
-      "Built a bilingual marketplace foundation with listing pages, SEO structure, and location-based browsing.",
     role: "Full-Stack Software Engineer",
     timeline: "2025",
     status: "Production",
@@ -292,10 +278,6 @@ export const PROJECTS: Project[] = [
       "City complaint platform with public flows, dashboard tools, and admin-side management.",
     caseStudy:
       "ErzurumŞikayet was built as a full-stack review and complaint platform for local services. I handled the public complaint flow, category browsing, and the dashboard structure for companies and admins so the product could support real reports and moderation work.",
-    problem:
-      "Local users needed a simple place to submit complaints and reviews, while companies and admins needed management tools.",
-    result:
-      "Launched a production Laravel platform with public submissions, category browsing, and admin/company dashboards.",
     role: "Full-Stack Software Engineer",
     timeline: "2025",
     status: "Production",
@@ -335,17 +317,13 @@ export const PROJECTS: Project[] = [
     year: 2025,
     collection: "Prototype",
     projectType: "Mobile Safety App",
-    context: "Atatürk University",
+    context: "Ataturk University",
     summary:
       "Built a campus safety mobile app prototype with emergency alerts, map-based incident reporting, account flows, and admin-side safety workflows.",
     description:
       "Mobile safety app for alerts, incident reporting, profile tools, and admin-side workflows.",
     caseStudy:
-      "This mobile app was designed for campus safety workflows at Atatürk University. I worked on the product flow for emergency alerts, incident reporting, profile management, notification preferences, and the admin-side tools needed to manage safety updates.",
-    problem:
-      "Students and campus staff needed faster ways to report incidents, view alerts, and understand nearby safety updates.",
-    result:
-      "Built a mobile prototype that connected reporting, map views, emergency alerts, and admin-side safety workflows.",
+      "This mobile app was designed for campus safety workflows at Ataturk University. I worked on the product flow for emergency alerts, incident reporting, profile management, notification preferences, and the admin-side tools needed to manage safety updates.",
     role: "Mobile App Developer",
     timeline: "2025",
     status: "Prototype",
@@ -424,10 +402,6 @@ export const PROJECTS: Project[] = [
       "Event platform prototype with auth, ticketing, weather data, and admin tools.",
     caseStudy:
       "EventSys was built as a full-stack event workflow that covers account access, event discovery, ticket purchases, and admin updates. I worked across the React frontend and Node.js backend, including the event feed, purchase flow, and weather data integration.",
-    problem:
-      "Event discovery, ticket purchase, and admin updates were separated into workflows that needed one connected prototype.",
-    result:
-      "Built a full-stack prototype that tied user accounts, event browsing, ticketing, weather data, and admin tools together.",
     role: "Full-Stack Software Engineer",
     timeline: "2023",
     status: "Prototype",
@@ -496,10 +470,6 @@ export const PROJECTS: Project[] = [
       "Real-time detection system with live inference, analytics, and a Streamlit monitoring layer.",
     caseStudy:
       "This project combined model evaluation with a browser-based monitoring interface for real-time object detection. I focused on the interface and presentation layer that showed live detections, model setup, analytics, and training results in a way that was easier to review and explain.",
-    problem:
-      "YOLO detection output and training metrics needed to be easier to run, inspect, and explain in one place.",
-    result:
-      "Built a Streamlit monitoring workflow for live inference, model analytics, and training result review.",
     role: "Computer Vision Developer",
     timeline: "2024",
     status: "Prototype",
@@ -569,10 +539,6 @@ export const PROJECTS: Project[] = [
       "Desktop library system for books, students, issuing, returns, and reports.",
     caseStudy:
       "This project was built as a desktop workflow for day-to-day library operations. I used Windows Forms and SQL Server to handle book records, student records, issue and return logic, and reporting for staff use.",
-    problem:
-      "Library staff needed a structured desktop system for books, students, issuing, returns, and reports.",
-    result:
-      "Completed a Windows Forms and SQL Server system that reinforced database design and workflow implementation.",
     role: "Desktop Developer",
     timeline: "2022",
     status: "Completed",
@@ -657,10 +623,6 @@ export const PROJECTS: Project[] = [
       "Improved content structure, responsive layout, and readability for course pages.",
     caseStudy:
       "This project focused on making course content easier to scan and easier to use across devices. I improved page structure, reading flow, and responsive layout so the site could present learning content more clearly.",
-    problem:
-      "Learning pages needed clearer structure and more reliable responsive behavior for students reading on different devices.",
-    result:
-      "Improved the course-page layout, reading flow, and mobile readability for a live education website.",
     role: "Web Developer",
     timeline: "2026",
     status: "Live",
@@ -700,10 +662,6 @@ export const PROJECTS: Project[] = [
       "Clarified service presentation, strengthened hierarchy, and improved responsive behavior for a business website.",
     caseStudy:
       "Future Intelligen focused on making a business and technology brand feel clearer, more polished, and easier to trust. I improved the service presentation, tightened the visual hierarchy, refined mobile responsiveness, and cleaned up the overall frontend experience so visitors could understand the offer faster.",
-    problem:
-      "The business website needed clearer service messaging, stronger hierarchy, and a more reliable mobile presentation.",
-    result:
-      "Delivered a cleaner live website experience with improved service sections, spacing, and responsive UI.",
     role: "Frontend Engineer",
     timeline: "2026",
     status: "Live",
@@ -752,7 +710,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "ustunler-et-borsasi",
-    title: "Üstünler Et Borsası",
+    title: "Ustunler Et Borsasi",
     featured: false,
     priority: 2,
     year: 2026,
@@ -766,16 +724,12 @@ export const PROJECTS: Project[] = [
       "Improved navigation, page flow, and responsive UI for a business website.",
     caseStudy:
       "I worked on the structure and frontend flow of this business website so the content stayed clear and the mobile experience felt more reliable. The main work was around layout, navigation, and cleaner page transitions.",
-    problem:
-      "The business site needed simpler navigation, clearer page flow, and a mobile experience that felt more stable.",
-    result:
-      "Improved navigation, responsive layout, and content flow for the live Et Borsası business website.",
     role: "Software Engineer",
     timeline: "2026",
     status: "Live",
     cover: {
       src: "/projects/ustunler-et-borsasi-cover.png",
-      alt: "Üstünler Et Borsası business website homepage",
+      alt: "Ustunler Et Borsasi business website homepage",
       width: 1440,
       height: 960,
     },
@@ -809,10 +763,6 @@ export const PROJECTS: Project[] = [
       "Company website, service pages, multilingual content, contact flow, SEO setup, and production deployment.",
     caseStudy:
       "Designed and developed a production-ready business website for Kolaytec to present services, packages, references, and contact flows. Built with a clean UI, responsive layouts, multilingual support, SEO structure, and conversion-focused pages.",
-    problem:
-      "Kolaytec needed a professional website to present services, packages, references, and contact paths clearly.",
-    result:
-      "Delivered a live production business platform with multilingual structure, SEO setup, and conversion-focused pages.",
     role: "Full-Stack Developer",
     timeline: "2026",
     status: "Production",
@@ -837,62 +787,21 @@ export const PROJECTS: Project[] = [
     secondaryCtaLabel: "View Project",
   },
   {
-    slug: "portfolio",
-    title: "Portfolio Website",
-    featured: true,
-    priority: 4,
-    year: 2026,
-    collection: "Independent",
-    projectType: "Personal Portfolio",
-    context: "Personal Project",
-    summary:
-      "Built this portfolio to present my education, internships, Erasmus experience, projects, skills, and contact information in a recruiter-friendly format.",
-    description:
-      "Personal portfolio built with Next.js, TypeScript, reusable sections, project pages, and admin-backed content support.",
-    caseStudy:
-      "This portfolio was built to make my Computer Engineering background, junior full-stack skills, internship experience, Erasmus experience, and main projects easy to review. I focused on structured project pages, clear role and stack information, production deployment, SEO metadata, responsive UI, and maintainable content data.",
-    problem:
-      "Recruiters need to understand my background, role fit, projects, and contact paths quickly without reading vague or repeated text.",
-    result:
-      "Created a live Next.js portfolio with structured sections, project detail pages, CV links, SEO metadata, and clear positioning for junior software engineering roles.",
-    role: "Full-Stack Developer",
-    timeline: "2026",
-    status: "Production",
-    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "SEO", "Vercel"],
-    highlights: [
-      "Built reusable sections for hero, about, projects, experience, skills, credentials, and contact.",
-      "Added project detail pages with role, stack, contributions, and result-oriented case study copy.",
-      "Structured the content around junior software engineering, full-stack, frontend, and AI-assisted coding roles.",
-    ],
-    metrics: [
-      { label: "Purpose", value: "Recruiter-friendly portfolio" },
-      { label: "Focus", value: "Clear projects and role fit" },
-    ],
-    liveUrl: "https://abdo.kolaytec.com",
-    repoUrl: "https://github.com/Abdoessam0/abdelrahman-portfolio",
-    primaryCtaLabel: "Live Site",
-    secondaryCtaLabel: "View Project",
-  },
-  {
     slug: "bels-digital-application-system",
-    title: "BELS Digital Campus",
+    title: "BELS Digital Application System",
     featured: false,
     priority: 3,
     year: 2026,
     collection: "Client Work",
-    projectType: "Digital Campus / Admissions Platform",
+    projectType: "Admissions Platform",
     context: "Freelance Client",
     employer: "Freelance",
     summary:
-      "Built a digital campus application system with clearer forms, guided application steps, cleaner actions, and more structured student and parent workflows.",
+      "Built a digital school admissions system with clearer forms, guided application steps, cleaner actions, and more structured student and parent workflows.",
     description:
-      "Improved form flow, action clarity, and interface structure for a digital campus admissions workflow.",
+      "Improved form flow, action clarity, and interface structure for school admissions.",
     caseStudy:
       "This admissions system focused on making form-heavy tasks easier for students and parents. I worked on the application flow, the order of actions, and the clarity of the interface so users could move through the process with less confusion.",
-    problem:
-      "Students and parents needed a clearer way to complete form-heavy digital campus application steps.",
-    result:
-      "Improved the live application workflow with clearer forms, task order, and action labels.",
     role: "Software Engineer",
     timeline: "2026",
     status: "Live",

@@ -120,9 +120,6 @@ const fallbackSkillSummaryByCategory = new Map(
 const fallbackExperienceByCompany = new Map(
   EXPERIENCE.map((item) => [normalizeKey(item.company), item]),
 );
-const fallbackEducationByDegree = new Map(
-  PROFILE.education.map((item) => [normalizeKey(item.degree), item]),
-);
 const fallbackCertificateByTitle = new Map(
   CERTIFICATES.map((item) => [normalizeKey(item.title), item]),
 );
@@ -264,9 +261,9 @@ function normalizeProjectImage(row: PublicImageRow): ProjectImage | null {
 function mergeProjectRow(row: PublicProjectRow, images: ProjectImage[]) {
   const slug = nonEmpty(row.slug, slugify(nonEmpty(row.title, `project-${row.id}`)));
   const fallback = fallbackProjectBySlug.get(slug);
-  const title = fallback?.title ?? nonEmpty(row.title, "Untitled project");
-  const description = fallback?.summary ?? nonEmpty(row.short_description, "");
-  const longDescription = fallback?.caseStudy ?? nonEmpty(row.long_description, description);
+  const title = nonEmpty(row.title, fallback?.title ?? "Untitled project");
+  const description = nonEmpty(row.short_description, fallback?.description ?? fallback?.summary ?? "");
+  const longDescription = nonEmpty(row.long_description, fallback?.caseStudy ?? fallback?.description ?? description);
   const stack = splitList(row.tech_stack);
   const cover = normalizeImage(row.thumbnail_url, `${title} cover image`, fallback?.cover);
   const gallery = images.length > 0 ? images : fallback?.gallery;
@@ -375,15 +372,9 @@ export async function getPublishedProjects(): Promise<Project[]> {
       imagesByProjectId.set(row.project_id, current);
     }
 
-    const mergedProjects = rows
+    return rows
       .filter((row) => toBoolean(row.published))
       .map((row) => mergeProjectRow(row, imagesByProjectId.get(row.id) ?? []));
-    const mergedSlugs = new Set(mergedProjects.map((project) => project.slug));
-    const missingFallbackProjects = fallbackProjects.filter(
-      (project) => !mergedSlugs.has(project.slug),
-    );
-
-    return sortProjects([...mergedProjects, ...missingFallbackProjects]);
   } catch (error) {
     logPublicDataError("projects", error);
     return fallbackProjects;
@@ -437,11 +428,11 @@ export async function getVisibleExperience(): Promise<Experience[]> {
 
     return rows.map((row) => {
       const company = nonEmpty(row.company, "Company");
+      const role = nonEmpty(row.role, "Role");
       const fallback = fallbackExperienceByCompany.get(normalizeKey(company));
-      const role = fallback?.role ?? nonEmpty(row.role, "Role");
       const parsed = splitDescription(row.description);
-      const summary = fallback?.summary ?? parsed.summary ?? "";
-      const impact = fallback?.impact ?? (parsed.details.length > 1 ? parsed.details.slice(1) : summary ? [summary] : []);
+      const summary = parsed.summary || fallback?.summary || "";
+      const impact = parsed.details.length > 1 ? parsed.details.slice(1) : fallback?.impact ?? (summary ? [summary] : []);
       const stack = splitList(row.stack);
       const slug = fallback?.slug ?? slugify(`${company}-${role}-${row.id}`);
 
@@ -451,13 +442,13 @@ export async function getVisibleExperience(): Promise<Experience[]> {
         slug,
         featured: fallback?.featured ?? true,
         role,
-        company: fallback?.company ?? company,
-        location: fallback?.location ?? nonEmpty(row.location, ""),
-        period: fallback?.period ?? formatPeriod(row.start_date, row.end_date),
-        start: fallback?.start ?? toDateString(row.start_date),
-        end: fallback?.end ?? toDateString(row.end_date),
+        company,
+        location: nonEmpty(row.location, fallback?.location ?? ""),
+        period: formatPeriod(row.start_date, row.end_date, fallback?.period ?? ""),
+        start: toDateString(row.start_date) || fallback?.start || "",
+        end: toDateString(row.end_date) || fallback?.end || "",
         summary,
-        stack: fallback?.stack ?? stack,
+        stack: stack.length > 0 ? stack : fallback?.stack ?? [],
         impact,
         metrics: fallback?.metrics,
         links: fallback?.links,
@@ -481,23 +472,12 @@ export async function getVisibleEducation(): Promise<PublicEducation[]> {
       ORDER BY order_index ASC, end_date DESC, id DESC
     `);
 
-    const education = rows.map((row) => {
-      const degree = nonEmpty(row.degree, "Degree");
-      const fallback = fallbackEducationByDegree.get(normalizeKey(degree));
-
-      return {
-        degree: fallback?.degree ?? degree,
-        institution: fallback?.institution ?? nonEmpty(row.school, "School"),
-        location: fallback?.location ?? nonEmpty(row.location),
-        period: fallback?.period ?? nonEmpty(row.description, formatPeriod(row.start_date, row.end_date)),
-      };
-    });
-    const existingDegrees = new Set(education.map((item) => normalizeKey(item.degree)));
-    const missingFallbackEducation = PROFILE.education.filter(
-      (item) => !existingDegrees.has(normalizeKey(item.degree)),
-    );
-
-    return [...education, ...missingFallbackEducation];
+    return rows.map((row) => ({
+      degree: nonEmpty(row.degree, "Degree"),
+      institution: nonEmpty(row.school, "School"),
+      location: nonEmpty(row.location),
+      period: nonEmpty(row.description, formatPeriod(row.start_date, row.end_date)),
+    }));
   } catch (error) {
     logPublicDataError("education", error);
     return PROFILE.education;

@@ -77,15 +77,6 @@ export default async function ProjectDetailPage({
     (item, index, items) =>
       items.findIndex((media) => media.src === item.src) === index,
   );
-  const projectSnapshot = [
-    project.problem ? { label: "Problem", value: project.problem } : null,
-    { label: "My role", value: project.role },
-    { label: "Tech stack", value: project.stack.join(", ") },
-    { label: "What I built", value: project.highlights.join(" ") },
-    project.result ? { label: "Result or learning", value: project.result } : null,
-  ].filter((item): item is { label: string; value: string } =>
-    Boolean(item?.value),
-  );
 
   return (
     <section className="space-y-6 py-6 sm:space-y-8 sm:py-10">
@@ -170,28 +161,6 @@ export default async function ProjectDetailPage({
                 <p className="mt-4 text-sm leading-7 text-[#6f6a61] sm:text-base">
                   {project.caseStudy}
                 </p>
-              </div>
-
-              {/* Recruiter-friendly project snapshot */}
-              <div className="rounded-[1.5rem] border border-[rgba(24,24,24,0.1)] bg-white p-4 sm:p-5">
-                <p className="inline-flex items-center rounded-full border border-[rgba(24,24,24,0.12)] bg-[#fbf7ef] px-3 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-[#6f6a61]">
-                  Project snapshot
-                </p>
-                <dl className="mt-4 grid gap-3">
-                  {projectSnapshot.map((item) => (
-                    <div
-                      key={item.label}
-                      className="rounded-[1.1rem] border border-[rgba(24,24,24,0.08)] bg-[#fbf7ef] px-4 py-3"
-                    >
-                      <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#6f6a61]">
-                        {item.label}
-                      </dt>
-                      <dd className="mt-2 text-sm leading-7 text-[#6f6a61]">
-                        {item.value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
               </div>
 
               {/* Key contributions */}
