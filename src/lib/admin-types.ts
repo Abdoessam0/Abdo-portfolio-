@@ -2,6 +2,7 @@ export type AdminSession = {
   userId: number;
   username: string;
   email: string;
+  sessionVersion: number;
   exp: number;
   iat: number;
 };
@@ -13,6 +14,7 @@ export type AdminUserRecord = {
   password_hash: string;
   display_name: string | null;
   active: number;
+  session_version: number;
 };
 
 export type AdminProject = {

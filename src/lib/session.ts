@@ -125,7 +125,7 @@ export async function verifySessionToken(token: string | undefined | null) {
     if (!safeEqual(signature, expected)) return null;
 
     const session = JSON.parse(decoder.decode(base64UrlToBytes(body))) as AdminSession;
-    if (!session.userId || !session.username || !session.exp) return null;
+    if (!session.userId || !session.username || !session.exp || !session.sessionVersion) return null;
     if (session.exp < Math.floor(Date.now() / 1000)) return null;
 
     return session;

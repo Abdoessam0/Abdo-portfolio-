@@ -17,7 +17,7 @@ import {
 export async function getAdminSessionFromCookies() {
   const cookieStore = await cookies();
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
-  return verifySessionToken(token);
+  return validateSession(await verifySessionToken(token));
 }
 
 export async function requireAdminSession() {
@@ -32,7 +32,18 @@ export async function requireAdminSession() {
 
 export async function requireAdminApiSession(request: NextRequest) {
   const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-  return verifySessionToken(token);
+  return validateSession(await verifySessionToken(token));
+}
+
+async function validateSession(session: AdminSession | null) {
+  if (!session) return null;
+  await ensureAdminSchema();
+  const user = await queryRow<{ active: number; session_version: number }>(
+    "SELECT active, session_version FROM portfolio_admin_users WHERE id = ? LIMIT 1",
+    [session.userId],
+  );
+  if (!user || !Boolean(user.active) || Number(user.session_version) !== session.sessionVersion) return null;
+  return session;
 }
 
 async function createBootstrapAdminIfNeeded() {
@@ -61,7 +72,7 @@ export async function authenticateAdmin(identifier: string, password: string) {
 
   const user = await queryRow<AdminUserRecord>(
     `
-      SELECT id, username, email, password_hash, display_name, active
+      SELECT id, username, email, password_hash, display_name, active, session_version
       FROM portfolio_admin_users
       WHERE active = 1 AND (username = ? OR email = ?)
       LIMIT 1
@@ -79,11 +90,14 @@ export async function authenticateAdmin(identifier: string, password: string) {
   return user;
 }
 
-export async function createAdminLoginResponse(user: Pick<AdminUserRecord, "id" | "username" | "email">) {
+export async function createAdminLoginResponse(
+  user: Pick<AdminUserRecord, "id" | "username" | "email" | "session_version">,
+) {
   const token = await createSessionToken({
     userId: user.id,
     username: user.username,
     email: user.email,
+    sessionVersion: user.session_version,
   });
   const response = NextResponse.json({ ok: true });
 

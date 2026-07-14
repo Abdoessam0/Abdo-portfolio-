@@ -140,6 +140,7 @@ async function createSchema() {
       password_hash VARCHAR(255) NOT NULL,
       display_name VARCHAR(160) NULL,
       active TINYINT(1) NOT NULL DEFAULT 1,
+      session_version INT UNSIGNED NOT NULL DEFAULT 1,
       last_login_at TIMESTAMP NULL,
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -152,6 +153,7 @@ async function createSchema() {
 
   await ensurePortfolioIndexes();
   await ensureProfileSettingsColumns();
+  await ensureColumn("portfolio_admin_users", "session_version", "INT UNSIGNED NOT NULL DEFAULT 1 AFTER active");
 }
 
 async function ensureIndex(table: string, indexName: string, columns: string[]) {
