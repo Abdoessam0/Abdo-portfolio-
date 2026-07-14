@@ -1,42 +1,16 @@
 import "server-only";
 
 import { NextResponse, type NextRequest } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { basename, extname, join } from "path";
-import { requireAdminApiSession, unauthorizedResponse } from "@/lib/auth";
-import {
-  getUploadCategoryConfig,
-  isUploadCategory,
-  validateUploadFile,
-  type UploadCategory,
-} from "@/lib/admin-upload";
+import { auditAdminEvent } from "@/lib/audit-log";
+import { withAdminApi } from "@/lib/admin-route-utils";
+import { isUploadCategory, validateUploadFile } from "@/lib/admin-upload";
+import { prepareUpload } from "@/lib/secure-upload";
+import { deleteOwnedUpload, storeUpload } from "@/lib/upload-storage";
 
-function sanitizeBaseName(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/\.[^.]+$/, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 80);
-}
-
-function safeFilename(category: UploadCategory, originalName: string, mimeType: string): string {
-  const config = getUploadCategoryConfig(category);
-  const allowedExtensions = config.extensionsByType[mimeType] ?? [];
-  const requestedExt = extname(originalName).toLowerCase().replace(/[^.a-z0-9]/g, "");
-  const ext = allowedExtensions.includes(requestedExt) ? requestedExt : allowedExtensions[0] ?? "";
-  const originalBase = sanitizeBaseName(basename(originalName, requestedExt));
-  const base = category === "cv" ? config.defaultBaseName : originalBase || config.defaultBaseName;
-  const timestamp = Date.now();
-  const random = Math.random().toString(36).slice(2, 8);
-  return category === "cv" ? `${base}-${timestamp}${ext}` : `${base}-${timestamp}-${random}${ext}`;
-}
+export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
-  const session = await requireAdminApiSession(request);
-  if (!session) return unauthorizedResponse();
-
-  try {
+  return withAdminApi(request, async (session) => {
     const formData = await request.formData();
     const file = formData.get("file");
     const categoryValue = formData.get("category") ?? "projects";
@@ -54,20 +28,45 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
-    const config = getUploadCategoryConfig(categoryValue);
-    const uploadDir = join(process.cwd(), "public", "uploads", config.directory);
-    await mkdir(uploadDir, { recursive: true });
+    let prepared;
+    try {
+      prepared = await prepareUpload(categoryValue, file);
+    } catch (error) {
+      console.warn(
+        `[admin-upload] rejected category=${categoryValue} reason=${error instanceof Error ? error.message : "unknown"}`,
+      );
+      auditAdminEvent("upload.rejected", { userId: session.userId, category: categoryValue });
+      return NextResponse.json({ error: "The file is not a valid supported upload." }, { status: 400 });
+    }
 
-    const filename = safeFilename(categoryValue, file.name, file.type);
-    const filepath = join(uploadDir, filename);
+    try {
+      const stored = await storeUpload({ category: categoryValue, ...prepared });
+      auditAdminEvent("upload.success", {
+        userId: session.userId,
+        category: categoryValue,
+        bytes: prepared.body.length,
+        contentType: prepared.contentType,
+      });
+      return NextResponse.json({ url: stored.url, key: stored.key, category: categoryValue });
+    } catch (error) {
+      console.error(
+        `[admin-upload] storage_failure category=${categoryValue} reason=${error instanceof Error ? error.message : "unknown"}`,
+      );
+      auditAdminEvent("upload.failure", { userId: session.userId, category: categoryValue });
+      return NextResponse.json({ error: "The file could not be stored." }, { status: 500 });
+    }
+  });
+}
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(filepath, buffer);
+export async function DELETE(request: NextRequest) {
+  return withAdminApi(request, async (session) => {
+    const body = (await request.json().catch(() => null)) as { url?: unknown } | null;
+    if (!body || typeof body.url !== "string") {
+      return NextResponse.json({ error: "Invalid cleanup request." }, { status: 400 });
+    }
 
-    const publicUrl = `/uploads/${config.directory}/${filename}`;
-    return NextResponse.json({ url: publicUrl, filename, category: categoryValue });
-  } catch (error) {
-    console.error("[admin-upload]", error instanceof Error ? error.message : error);
-    return NextResponse.json({ error: "Upload failed. Please try again." }, { status: 500 });
-  }
+    const deleted = await deleteOwnedUpload(body.url);
+    auditAdminEvent("upload.cleanup", { userId: session.userId, deleted });
+    return NextResponse.json({ ok: true, deleted });
+  });
 }

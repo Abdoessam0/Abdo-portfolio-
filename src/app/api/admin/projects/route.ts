@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { createProject, listProjects } from "@/lib/admin-repository";
 import { ok, withAdminApi } from "@/lib/admin-route-utils";
 import { revalidatePortfolioPublicPages } from "@/lib/revalidate-portfolio";
+import { auditAdminEvent } from "@/lib/audit-log";
 
 export async function GET(request: NextRequest) {
   return withAdminApi(request, async () => {
@@ -17,8 +18,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  return withAdminApi(request, async () => {
+  return withAdminApi(request, async (session) => {
     const project = await createProject(await request.json());
+    auditAdminEvent("project.create", { userId: session.userId, projectId: project.id, published: project.published });
     revalidatePortfolioPublicPages();
     return ok(project);
   });

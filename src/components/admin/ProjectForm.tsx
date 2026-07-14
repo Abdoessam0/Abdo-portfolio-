@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
-import { ArrowLeft, ImagePlus, Loader2, Save, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, ExternalLink, ImagePlus, Loader2, Save, Trash2, Upload } from "lucide-react";
 import {
   ConfirmDialog,
   EmptyState,
@@ -99,6 +99,8 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
   const [deleteImageTarget, setDeleteImageTarget] = useState<ProjectImageItem | null>(null);
   const [deleteProjectOpen, setDeleteProjectOpen] = useState(false);
   const [deletingProject, setDeletingProject] = useState(false);
+  const [newUploads, setNewUploads] = useState<string[]>([]);
+  const [lastSavedProject, setLastSavedProject] = useState<AdminProject | null>(null);
 
   const isDirty = JSON.stringify(project) !== JSON.stringify(savedProject) || (mode === "create" && images.length > 0);
 
@@ -136,6 +138,23 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
     });
   };
 
+  const rememberUpload = (url: string) => {
+    setNewUploads((current) => (current.includes(url) ? current : [...current, url]));
+  };
+
+  const cleanupUploads = async (urls: string[]) => {
+    await Promise.allSettled(
+      urls.map((url) =>
+        fetch("/api/admin/upload", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url }),
+        }),
+      ),
+    );
+    setNewUploads((current) => current.filter((url) => !urls.includes(url)));
+  };
+
   const saveProject = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSaving(true);
@@ -147,6 +166,7 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
     });
 
     if (!response.ok) {
+      await cleanupUploads(newUploads);
       setToast({ type: "error", message: await readError(response) });
       setSaving(false);
       return;
@@ -169,6 +189,9 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
         });
 
         if (!imageResponse.ok) {
+          const attachedUrls = new Set(attachedImages.map((item) => item.image_url));
+          const unusedUploads = newUploads.filter((url) => url !== saved.thumbnail_url && !attachedUrls.has(url));
+          await cleanupUploads(unusedUploads);
           setSaving(false);
           setToast({
             type: "error",
@@ -187,6 +210,8 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
     const fv = formValueFromProject(saved);
     setProject(fv);
     setSavedProject(fv);
+    setLastSavedProject(saved);
+    setNewUploads([]);
     setSaving(false);
     setToast({ type: "success", message: mode === "create" && images.length > 0 ? "Project and images saved." : "Project saved." });
 
@@ -281,6 +306,7 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
     );
 
     if (!response.ok) {
+      if (newUploads.includes(imageForm.image_url)) await cleanupUploads([imageForm.image_url]);
       setToast({ type: "error", message: await readError(response) });
       setImageSaving(false);
       return;
@@ -292,6 +318,7 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
       return current.map((item) => (item.id === saved.id ? saved : item)).sort((a, b) => a.order_index - b.order_index);
     });
     setToast({ type: "success", message: editingImage ? "Image updated." : "Image added." });
+    setNewUploads((current) => current.filter((url) => url !== saved.image_url));
     setImageSaving(false);
     resetImageForm();
   };
@@ -300,6 +327,7 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
     if (!deleteImageTarget) return;
 
     if (deleteImageTarget.staged || mode === "create") {
+      if (newUploads.includes(deleteImageTarget.image_url)) await cleanupUploads([deleteImageTarget.image_url]);
       setImages((current) => current.filter((item) => item.id !== deleteImageTarget.id));
       setToast({ type: "success", message: "Staged image removed." });
       setDeleteImageTarget(null);
@@ -345,6 +373,24 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
           </Link>
         }
       />
+
+      {lastSavedProject ? (
+        <div className="mb-5 flex flex-wrap items-center gap-3 rounded-xl border border-emerald-400/30 bg-emerald-400/10 p-4 text-sm text-emerald-100">
+          <span className="font-semibold">Saved successfully.</span>
+          {lastSavedProject.published ? (
+            <Link href={`/projects/${lastSavedProject.slug}`} target="_blank" className="inline-flex items-center gap-1 underline">
+              Open public project <ExternalLink className="h-3.5 w-3.5" />
+            </Link>
+          ) : (
+            <span className="font-semibold text-amber-200">Draft: not visible publicly.</span>
+          )}
+          {lastSavedProject.thumbnail_url ? (
+            <a href={lastSavedProject.thumbnail_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
+              Open uploaded thumbnail <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          ) : null}
+        </div>
+      ) : null}
 
       <form id="project-form" onSubmit={saveProject} className={`${panelClass} grid gap-4 md:grid-cols-2`}>
         <label className="space-y-2 text-sm font-medium text-slate-300">
@@ -422,7 +468,10 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
             value={project.thumbnail_url}
             onChange={(url) => updateProjectField("thumbnail_url", url)}
             onError={(message) => setToast({ type: "error", message })}
-            onSuccess={() => setToast({ type: "success", message: "Project image uploaded. Save the project to keep this thumbnail URL." })}
+            onSuccess={(url) => {
+              rememberUpload(url);
+              setToast({ type: "success", message: "Thumbnail uploaded and pending project save." });
+            }}
             uploadLabel="Upload project thumbnail"
             currentLinkLabel="View current thumbnail"
             disabled={saving}
@@ -440,15 +489,15 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
             className={inputClass}
           />
         </label>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <label className="flex min-h-10 items-center gap-3 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-300">
+        <div className="grid gap-3 rounded-xl border-2 border-amber-400/40 bg-amber-400/5 p-3 sm:grid-cols-2">
+          <label className="flex min-h-12 items-center gap-3 rounded-lg border border-amber-400/40 bg-slate-950 px-3 py-2 text-sm font-bold text-amber-100">
             <input
               type="checkbox"
               checked={project.published}
               onChange={(event) => updateProjectField("published", event.target.checked)}
               className="h-4 w-4 rounded border-slate-600 bg-slate-900"
             />
-            Published
+            Published on public website
           </label>
           <label className="flex min-h-10 items-center gap-3 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-300">
             <input
@@ -550,7 +599,10 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
                       value={imageForm.image_url}
                       onChange={(url) => setImageForm((current) => ({ ...current, image_url: url }))}
                       onError={(message) => setToast({ type: "error", message })}
-                      onSuccess={() => setToast({ type: "success", message: "Image uploaded. Add it below to keep it with this project." })}
+                      onSuccess={(url) => {
+                        rememberUpload(url);
+                        setToast({ type: "success", message: "Image uploaded. Add it below; its status is Pending until saved." });
+                      }}
                       uploadLabel="Upload project image"
                       currentLinkLabel="View selected image"
                       disabled={imageSaving || saving}
@@ -619,7 +671,7 @@ export function ProjectForm({ mode, projectId }: { mode: "create" | "edit"; proj
                         <p className="mt-1 font-mono text-xs text-slate-500 break-all">{image.image_url}</p>
                         <p className="mt-0.5 font-mono text-xs text-slate-600">
                           Order {image.order_index}
-                          {image.staged ? " - staged until project save" : ""}
+                          {image.staged ? " - Pending" : " - Saved"}
                         </p>
                       </div>
                       <div className="flex gap-2">

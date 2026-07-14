@@ -12,6 +12,7 @@ import {
   type ProjectImage,
 } from "@/data/projects";
 import { queryRow, queryRows } from "@/lib/db";
+import { normalizeTrustedImageUrl } from "@/lib/trusted-image";
 
 export type PublicEducation = Profile["education"][number];
 
@@ -229,12 +230,8 @@ function normalizeCollection(value: string | null | undefined, fallback: Project
 }
 
 function normalizeImage(src: string | null | undefined, alt: string, fallback?: ProjectImage): ProjectImage | undefined {
-  const imageSrc = nonEmpty(src);
+  const imageSrc = normalizeTrustedImageUrl(src);
   if (!imageSrc) return fallback;
-
-  if (!imageSrc.startsWith("/")) {
-    return fallback;
-  }
 
   return {
     src: imageSrc,
@@ -246,8 +243,8 @@ function normalizeImage(src: string | null | undefined, alt: string, fallback?: 
 }
 
 function normalizeProjectImage(row: PublicImageRow): ProjectImage | null {
-  const src = nonEmpty(row.image_url);
-  if (!src || !src.startsWith("/")) return null;
+  const src = normalizeTrustedImageUrl(row.image_url);
+  if (!src) return null;
 
   return {
     src,

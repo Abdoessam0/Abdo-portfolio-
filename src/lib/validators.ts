@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { normalizeTrustedImageUrl } from "@/lib/trusted-image";
 
 const emptyToNull = z
   .union([z.string(), z.null(), z.undefined()])
@@ -13,6 +14,11 @@ const textValue = (max = 10000) =>
     .union([z.string(), z.null(), z.undefined()])
     .transform((value) => (value ?? "").toString().trim())
     .pipe(z.string().max(max));
+
+const trustedImageValue = textValue(2000).refine(
+  (value) => !value || Boolean(normalizeTrustedImageUrl(value)),
+  "Image URL must be a local path or an HTTPS URL on an approved host.",
+);
 
 export function sanitizeSlug(value: string) {
   return value
@@ -46,7 +52,7 @@ export const projectSchema = z
     long_description: textValue(50000),
     category: textValue(120),
     tech_stack: textValue(10000),
-    thumbnail_url: textValue(2000),
+    thumbnail_url: trustedImageValue,
     live_url: textValue(2000),
     github_url: textValue(2000),
     featured: z.coerce.boolean().default(false),
@@ -69,7 +75,7 @@ export const projectPatchSchema = z.object({
 });
 
 export const projectImageSchema = z.object({
-  image_url: z.string().trim().min(1, "Image URL is required.").max(2000),
+  image_url: trustedImageValue.refine(Boolean, "Image URL is required."),
   alt_text: textValue(255),
   order_index: z.coerce.number().int().default(0),
 });
