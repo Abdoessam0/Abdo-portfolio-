@@ -6,21 +6,24 @@ The former upload route wrote to `process.cwd()/public/uploads`. On Hostinger th
 
 ## Production configuration
 
-Set `UPLOAD_STORAGE_DRIVER=s3` and configure all `S3_*` variables shown in `.env.example`. `S3_PUBLIC_BASE_URL` must be an HTTPS origin/path that publicly serves bucket objects. Add that hostname and any approved manually entered image hosts to `TRUSTED_IMAGE_HOSTS`. Never commit real values.
+The default production driver is `database`. It stores validated uploads in the existing MySQL database and serves immutable media URLs from `/api/uploads/...`. This is the zero-configuration option for a small portfolio and prevents uploads from disappearing during Hostinger restarts or redeployments.
 
-The bucket/CORS policy should allow public `GET`/`HEAD` for `projects/*`, `certificates/*`, and `cv/*`, while write/delete permissions remain limited to the application access key. Uploaded objects receive an immutable one-year cache policy and UUID names.
+For larger media libraries, set `UPLOAD_STORAGE_DRIVER=s3` and configure all `S3_*` variables shown in `.env.example`. `S3_PUBLIC_BASE_URL` must be an HTTPS origin/path that publicly serves bucket objects. Add that hostname and any approved manually entered image hosts to `TRUSTED_IMAGE_HOSTS`. Never commit real values.
+
+When S3 is used, the bucket/CORS policy should allow public `GET`/`HEAD` for `projects/*`, `certificates/*`, and `cv/*`, while write/delete permissions remain limited to the application access key. Both storage drivers use UUID names and immutable one-year cache headers.
 
 ## Hostinger deployment
 
-1. Create or select an S3-compatible bucket outside the application filesystem.
-2. Configure the placeholder environment variables in Hostinger's application settings.
-3. Install dependencies from the lockfile with `npm ci`.
-4. Build with `npm run build` and restart the Node.js application.
-5. Upload a small JPEG in the admin, save a published test project, and open the returned HTTPS image URL directly.
-6. Restart the application and confirm the same URL and project still work.
-7. Redeploy the same commit and repeat the direct URL, homepage card, and project-detail checks.
+1. Set `UPLOAD_STORAGE_DRIVER=database` in Hostinger, or leave it unset to use the production default.
+2. Install dependencies from the lockfile with `npm ci`.
+3. Build with `npm run build` and restart the Node.js application.
+4. Upload a small JPEG in the admin, save a published test project, and open the returned `/api/uploads/...` URL directly.
+5. Restart the application and confirm the same URL and project still work.
+6. Redeploy the same commit and repeat the direct URL, homepage card, and project-detail checks.
 
-No data migration is required. Existing local URLs continue to render while their files exist. To preserve old runtime uploads, copy the existing files into the bucket and update the corresponding `thumbnail_url`, `image_url`, `certificate_url`, or `cv_url` values to their new stable HTTPS URLs.
+If S3 is preferred, create or select an S3-compatible bucket and configure the placeholder `S3_*` variables in Hostinger's application settings before rebuilding.
+
+No data migration is required. Existing local URLs continue to render while their files exist. To preserve old runtime uploads, upload them again through the admin or copy them into the selected persistent store and update the corresponding `thumbnail_url`, `image_url`, `certificate_url`, or `cv_url` values.
 
 ## Rollback
 

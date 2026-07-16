@@ -5,6 +5,7 @@ import { mkdir, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import type { UploadCategory } from "@/lib/admin-upload";
+import { executeStatement, queryRow } from "@/lib/db";
 
 type StoredUpload = {
   key: string;
@@ -18,8 +19,17 @@ type StoreUploadInput = {
   extension: string;
 };
 
+type DatabaseUpload = {
+  body: Buffer;
+  contentType: string;
+  byteSize: number;
+};
+
+type StorageDriver = "database" | "local" | "s3";
+
 const OWNED_PREFIXES = ["projects/", "certificates/", "cv/"] as const;
 let s3Client: S3Client | null = null;
+let databaseSchemaReady: Promise<void> | null = null;
 
 function requiredEnv(name: string) {
   const value = process.env[name]?.trim();
@@ -27,10 +37,10 @@ function requiredEnv(name: string) {
   return value;
 }
 
-function storageDriver() {
+function storageDriver(): StorageDriver {
   const configured = process.env.UPLOAD_STORAGE_DRIVER?.trim().toLowerCase();
-  if (configured === "s3" || configured === "local") return configured;
-  return process.env.NODE_ENV === "production" ? "s3" : "local";
+  if (configured === "database" || configured === "s3" || configured === "local") return configured;
+  return process.env.NODE_ENV === "production" ? "database" : "local";
 }
 
 function publicBaseUrl() {
@@ -62,8 +72,43 @@ function isOwnedKey(value: string) {
   return OWNED_PREFIXES.some((prefix) => value.startsWith(prefix)) && !value.includes("..") && !/[\r\n\0]/.test(value);
 }
 
+async function ensureDatabaseUploadSchema() {
+  if (!databaseSchemaReady) {
+    databaseSchemaReady = executeStatement(`
+      CREATE TABLE IF NOT EXISTS portfolio_uploads (
+        object_key VARCHAR(255) NOT NULL,
+        content_type VARCHAR(100) NOT NULL,
+        byte_size INT UNSIGNED NOT NULL,
+        body LONGBLOB NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (object_key),
+        KEY portfolio_uploads_created_idx (created_at)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `).then(() => undefined);
+  }
+
+  return databaseSchemaReady;
+}
+
+async function storeDatabaseUpload(key: string, input: StoreUploadInput) {
+  await ensureDatabaseUploadSchema();
+  await executeStatement(
+    `
+      INSERT INTO portfolio_uploads (object_key, content_type, byte_size, body)
+      VALUES (?, ?, ?, ?)
+    `,
+    [key, input.contentType, input.body.length, input.body],
+  );
+
+  return { key, url: `/api/uploads/${key}` };
+}
+
 export async function storeUpload(input: StoreUploadInput): Promise<StoredUpload> {
   const key = objectKey(input.category, input.extension);
+
+  if (storageDriver() === "database") {
+    return storeDatabaseUpload(key, input);
+  }
 
   if (storageDriver() === "local") {
     if (process.env.NODE_ENV === "production") {
@@ -89,12 +134,22 @@ export async function storeUpload(input: StoreUploadInput): Promise<StoredUpload
   return { key, url: `${publicBaseUrl()}/${key}` };
 }
 
-export function getOwnedUploadKey(url: string | null | undefined) {
+type OwnedUploadReference = {
+  driver: StorageDriver;
+  key: string;
+};
+
+function getOwnedUploadReference(url: string | null | undefined): OwnedUploadReference | null {
   if (!url || /[\r\n\0]/.test(url)) return null;
+
+  if (url.startsWith("/api/uploads/")) {
+    const key = url.slice("/api/uploads/".length).split(/[?#]/, 1)[0] ?? "";
+    return isOwnedKey(key) ? { driver: "database", key } : null;
+  }
 
   if (url.startsWith("/uploads/")) {
     const key = url.slice("/uploads/".length).split(/[?#]/, 1)[0] ?? "";
-    return isOwnedKey(key) ? key : null;
+    return isOwnedKey(key) ? { driver: "local", key } : null;
   }
 
   if (storageDriver() !== "s3") return null;
@@ -105,25 +160,64 @@ export function getOwnedUploadKey(url: string | null | undefined) {
     if (candidate.protocol !== "https:" || candidate.origin !== base.origin) return null;
     if (!candidate.pathname.startsWith(base.pathname)) return null;
     const key = decodeURIComponent(candidate.pathname.slice(base.pathname.length));
-    return isOwnedKey(key) ? key : null;
+    return isOwnedKey(key) ? { driver: "s3", key } : null;
   } catch {
     return null;
   }
 }
 
-export async function deleteOwnedUpload(url: string | null | undefined) {
-  const key = getOwnedUploadKey(url);
-  if (!key) return false;
+export function getOwnedUploadKey(url: string | null | undefined) {
+  return getOwnedUploadReference(url)?.key ?? null;
+}
 
-  if (storageDriver() === "local") {
+export async function getDatabaseUpload(key: string): Promise<DatabaseUpload | null> {
+  if (!isOwnedKey(key)) return null;
+
+  await ensureDatabaseUploadSchema();
+  const row = await queryRow<{
+    body: Buffer;
+    content_type: string;
+    byte_size: number;
+  }>(
+    `
+      SELECT body, content_type, byte_size
+      FROM portfolio_uploads
+      WHERE object_key = ?
+      LIMIT 1
+    `,
+    [key],
+  );
+
+  if (!row || !Buffer.isBuffer(row.body)) return null;
+  return {
+    body: row.body,
+    contentType: row.content_type,
+    byteSize: Number(row.byte_size),
+  };
+}
+
+export async function deleteOwnedUpload(url: string | null | undefined) {
+  const owned = getOwnedUploadReference(url);
+  if (!owned) return false;
+
+  if (owned.driver === "database") {
+    await ensureDatabaseUploadSchema();
+    const result = await executeStatement(
+      "DELETE FROM portfolio_uploads WHERE object_key = ?",
+      [owned.key],
+    );
+    return result.affectedRows > 0;
+  }
+
+  if (owned.driver === "local") {
     if (process.env.NODE_ENV === "production") return false;
-    await unlink(join(process.cwd(), "public", "uploads", ...key.split("/"))).catch((error: NodeJS.ErrnoException) => {
+    await unlink(join(process.cwd(), "public", "uploads", ...owned.key.split("/"))).catch((error: NodeJS.ErrnoException) => {
       if (error.code !== "ENOENT") throw error;
     });
     return true;
   }
 
-  await getS3Client().send(new DeleteObjectCommand({ Bucket: requiredEnv("S3_BUCKET"), Key: key }));
+  await getS3Client().send(new DeleteObjectCommand({ Bucket: requiredEnv("S3_BUCKET"), Key: owned.key }));
   return true;
 }
 
@@ -136,4 +230,3 @@ export async function deleteOwnedUploads(urls: Array<string | null | undefined>)
     }
   });
 }
-
