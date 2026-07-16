@@ -3,14 +3,14 @@ import type { ReactNode } from "react";
 import Footer from "@/components/Footer";
 import { FloatingWhatsApp } from "@/components/story/FloatingWhatsApp";
 import { StoryNavbar } from "@/components/story/StoryNavbar";
-import { PROFILE } from "@/data/profile";
+import { PORTFOLIO_OWNER_NAME, PROFILE } from "@/data/profile";
 import { LangProvider } from "@/hooks/use-lang";
 import { getProfileSettings } from "@/lib/public-data";
 
 const siteUrl = new URL(PROFILE.links.portfolio);
-const title = "Abdo Essam | Software Engineer Portfolio";
+const title = `${PORTFOLIO_OWNER_NAME} | Software Engineer Portfolio`;
 const description =
-  "Portfolio of Abdo Essam, a software engineer focused on frontend, full-stack web applications, Next.js, React, TypeScript, and production-ready digital products.";
+  `Portfolio of ${PORTFOLIO_OWNER_NAME}, a software engineer focused on frontend, full-stack web applications, Next.js, React, TypeScript, and production-ready digital products.`;
 const previewImage = `${siteUrl.origin}/opengraph-image?v=3`;
 const langBootstrapScript = `
 (() => {
@@ -32,10 +32,10 @@ export const metadata: Metadata = {
   metadataBase: siteUrl,
   title: {
     default: title,
-    template: "%s | Abdo Essam",
+    template: `%s | ${PORTFOLIO_OWNER_NAME}`,
   },
   description,
-  applicationName: "Abdo Essam Portfolio",
+  applicationName: `${PORTFOLIO_OWNER_NAME} Portfolio`,
   robots: {
     index: false,
     follow: true,
@@ -45,17 +45,17 @@ export const metadata: Metadata = {
     },
   },
   keywords: [
-    "Abdo Essam",
-    "Abdo Essam portfolio",
+    PORTFOLIO_OWNER_NAME,
+    `${PORTFOLIO_OWNER_NAME} portfolio`,
     "Software Engineer Ankara",
     "Frontend Developer",
     "Full Stack Developer",
     "Next.js Developer",
     "React Developer",
   ],
-  authors: [{ name: "Abdo Essam", url: PROFILE.socials.linkedin }],
-  creator: "Abdo Essam",
-  publisher: "Abdo Essam",
+  authors: [{ name: PORTFOLIO_OWNER_NAME, url: PROFILE.socials.linkedin }],
+  creator: PORTFOLIO_OWNER_NAME,
+  publisher: PORTFOLIO_OWNER_NAME,
   alternates: {
     canonical: "https://abdo.kolaytec.com/",
   },
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title,
     description,
     url: siteUrl.toString(),
-    siteName: "Abdo Essam Portfolio",
+    siteName: `${PORTFOLIO_OWNER_NAME} Portfolio`,
     type: "website",
     locale: "en_US",
     images: [

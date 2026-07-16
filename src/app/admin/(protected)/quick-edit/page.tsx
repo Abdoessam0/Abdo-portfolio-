@@ -15,6 +15,7 @@ import {
   textareaClass,
 } from "@/components/admin/AdminUi";
 import { AdminFileUpload } from "@/components/admin/AdminFileUpload";
+import { PORTFOLIO_OWNER_NAME } from "@/data/profile";
 import type { AdminProfileSettings } from "@/lib/admin-types";
 
 type SettingsValue = Omit<AdminProfileSettings, "id" | "created_at" | "updated_at">;
@@ -183,7 +184,7 @@ export default function QuickEditPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <label className="space-y-2 text-sm font-medium text-slate-300">
               Name <span className="text-red-400">*</span>
-              <input value={settings.name} onChange={set("name")} required className={inputClass} placeholder="Abdo Essam" />
+              <input value={settings.name} onChange={set("name")} required className={inputClass} placeholder={PORTFOLIO_OWNER_NAME} />
             </label>
             <label className="space-y-2 text-sm font-medium text-slate-300">
               Email <span className="text-red-400">*</span>

@@ -116,10 +116,11 @@ export type Profile = {
 };
 
 const RESUME_PATH = "/Abdelrahman_Mohamed_Full_Stack_AI_CV_Eye_Friendly.pdf";
+export const PORTFOLIO_OWNER_NAME = "Abdelrahman Mohamed";
 
 export const PROFILE: Profile = {
   person: {
-    name: "Abdo Essam",
+    name: PORTFOLIO_OWNER_NAME,
     role: "Software Engineer",
     summary:
       "Software Engineer based in Ankara, building web applications, dashboards, admin panels, and business platforms with Next.js, React, TypeScript, PHP/Laravel, and MySQL.",
@@ -139,7 +140,7 @@ export const PROFILE: Profile = {
     github: "https://github.com/Abdoessam0",
     instagram: "https://www.instagram.com/_Abdo_Essam",
     whatsapp:
-      "https://wa.me/905527508202?text=Hi%20Abdo,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
+      "https://wa.me/905527508202?text=Hi%20Abdelrahman%20Mohamed,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
   },
   links: {
     portfolio: "https://abdo.kolaytec.com",
@@ -148,7 +149,7 @@ export const PROFILE: Profile = {
   hero: {
     eyebrow: "Software Engineer / Full-Stack Developer",
     headline:
-      "Abdo Essam builds web applications, dashboards, and business platforms.",
+      `${PORTFOLIO_OWNER_NAME} builds web applications, dashboards, and business platforms.`,
     subheadline:
       "Frontend-first and full-stack capable, with production web work, client-facing support experience, and a practical product mindset.",
     description:
@@ -167,14 +168,14 @@ export const PROFILE: Profile = {
       {
         label: "Download CV",
         href: RESUME_PATH,
-        ariaLabel: "Download Abdo Essam CV PDF",
+        ariaLabel: `Download ${PORTFOLIO_OWNER_NAME} CV PDF`,
       },
     ],
     trustedBy: ["Kolaytec", "RE/MAX Wise", "NFS Soft", "AFAQY"],
   },
   heroImage: {
     src: "/profile-image.jpg",
-    alt: "Abdo Essam, Software Engineer and Full-Stack Developer",
+    alt: `${PORTFOLIO_OWNER_NAME}, Software Engineer and Full-Stack Developer`,
     width: 482,
     height: 775,
   },
@@ -255,7 +256,7 @@ export const PROFILE: Profile = {
   about: {
     intro: "Software Engineer / Full-Stack Developer / Frontend-First",
     story: [
-      "I am Abdo Essam, a Software Engineer who builds practical web products for real users.",
+      `I am ${PORTFOLIO_OWNER_NAME}, a Software Engineer who builds practical web products for real users.`,
       "My work is strongest around frontend implementation, API-connected workflows, admin panels, dashboards, and business websites.",
       "I am interested in software engineering roles and product work where clean delivery, communication, and reliability matter.",
     ],
@@ -435,7 +436,7 @@ export const PROFILE: Profile = {
       },
       {
         label: "WhatsApp",
-        href: "https://wa.me/905527508202?text=Hi%20Abdo,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
+        href: "https://wa.me/905527508202?text=Hi%20Abdelrahman%20Mohamed,%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect.",
         value: "+90 552 750 8202",
         note: "Quick follow-up",
         kind: "whatsapp",

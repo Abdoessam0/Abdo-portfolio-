@@ -3,6 +3,8 @@
  * Visible homepage and shared layout copy should live here.
  */
 
+import { PORTFOLIO_OWNER_NAME } from "@/data/profile";
+
 export type Lang = "en" | "ar";
 export type Dir = "ltr" | "rtl";
 
@@ -230,7 +232,7 @@ type SiteCopy = {
 export const dict: Record<Lang, SiteCopy> = {
   en: {
     dir: "ltr",
-    label: "Abdo Essam - Software Engineer / Full-Stack Developer",
+    label: `${PORTFOLIO_OWNER_NAME} - Software Engineer / Full-Stack Developer`,
     headline: "I build websites, dashboards, and web platforms\nfor real business work.",
     sub: "Frontend-first and full-stack capable. I work with Next.js, React, TypeScript, Tailwind, PHP/Laravel, MySQL, and REST APIs to ship practical digital products.",
     cta1: "View My Work",
@@ -238,7 +240,7 @@ export const dict: Record<Lang, SiteCopy> = {
     cta3: "Let's Talk",
     toggle: "عربي",
     marquee:
-      "ABDO ESSAM - SOFTWARE ENGINEER - NEXT.JS - REACT - TYPESCRIPT - PRODUCTION WEB APPS - UI/UX - API SYSTEMS - ",
+      `${PORTFOLIO_OWNER_NAME.toUpperCase()} - SOFTWARE ENGINEER - NEXT.JS - REACT - TYPESCRIPT - PRODUCTION WEB APPS - UI/UX - API SYSTEMS - `,
     language: {
       toggleLabel: "Choose language",
       en: "EN",
@@ -308,7 +310,7 @@ export const dict: Record<Lang, SiteCopy> = {
       intro: "Software Engineer / Full-Stack Developer / Frontend-First",
       badges: ["Ankara, Turkey", "Egyptian", "GMT+3"],
       story: [
-        "I am Abdo Essam, a Software Engineer who builds practical web products for real users.",
+        `I am ${PORTFOLIO_OWNER_NAME}, a Software Engineer who builds practical web products for real users.`,
         "My work is strongest around frontend implementation, API-connected workflows, admin panels, dashboards, and business websites.",
         "I am interested in software engineering roles and product work where clean delivery, communication, and reliability matter.",
       ],
@@ -727,7 +729,7 @@ export const dict: Record<Lang, SiteCopy> = {
       openPdf: "Open PDF",
     },
     floatingWhatsapp: {
-      ariaLabel: "Message Abdo Essam on WhatsApp",
+      ariaLabel: `Message ${PORTFOLIO_OWNER_NAME} on WhatsApp`,
       hoverLabel: "Message me",
     },
     projectCta: {
@@ -765,7 +767,7 @@ export const dict: Record<Lang, SiteCopy> = {
   },
   ar: {
     dir: "rtl",
-    label: "عبدو عصام - مهندس برمجيات / مطور Full-Stack",
+    label: `${PORTFOLIO_OWNER_NAME} - مهندس برمجيات / مطور Full-Stack`,
     headline: "أبني مواقع ولوحات تحكم ومنصات ويب\nتخدم العمل الحقيقي.",
     sub: "أعمل على الواجهات أولًا، ومعي خبرة Full-Stack. أستخدم Next.js و React و TypeScript و Tailwind و PHP/Laravel و MySQL و REST APIs لبناء منتجات عملية.",
     cta1: "شاهد أعمالي",
@@ -773,7 +775,7 @@ export const dict: Record<Lang, SiteCopy> = {
     cta3: "تواصل معي",
     toggle: "EN",
     marquee:
-      "عبدو عصام - مهندس برمجيات - Next.js - React - TypeScript - تطبيقات ويب عملية - واجهات مستخدم - أنظمة API - ",
+      `${PORTFOLIO_OWNER_NAME} - مهندس برمجيات - Next.js - React - TypeScript - تطبيقات ويب عملية - واجهات مستخدم - أنظمة API - `,
     language: {
       toggleLabel: "اختيار اللغة",
       en: "EN",
@@ -839,7 +841,7 @@ export const dict: Record<Lang, SiteCopy> = {
       intro: "مهندس برمجيات / مؤسس / Frontend-First",
       badges: ["أنقرة، تركيا", "مصري", "GMT+3"],
       story: [
-        "أنا عبدو عصام، مهندس برمجيات أبني منتجات ويب عملية لمستخدمين حقيقيين.",
+        `أنا ${PORTFOLIO_OWNER_NAME}، مهندس برمجيات أبني منتجات ويب عملية لمستخدمين حقيقيين.`,
         "أقوى أعمالي في تنفيذ الواجهات، ربط APIs، لوحات الإدارة، لوحات التحكم، ومواقع الأعمال.",
         "أبحث عن أدوار برمجية أو عمل منتج يهتم بجودة التنفيذ، التواصل الواضح، والاعتمادية.",
       ],
@@ -1254,7 +1256,7 @@ export const dict: Record<Lang, SiteCopy> = {
       openPdf: "فتح PDF",
     },
     floatingWhatsapp: {
-      ariaLabel: "راسل عبدو عصام على واتساب",
+      ariaLabel: `راسل ${PORTFOLIO_OWNER_NAME} على واتساب`,
       hoverLabel: "راسلني",
     },
     projectCta: {

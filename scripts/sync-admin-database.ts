@@ -269,7 +269,7 @@ async function syncProfileSettings(connection: Connection) {
   );
 }
 
-async function ensureAbdoAdminUser(connection: Connection) {
+async function ensurePortfolioAdminUser(connection: Connection) {
   const passwordHash = await bcrypt.hash("admin", 12);
   await connection.execute(
     `
@@ -325,7 +325,7 @@ async function main() {
     await syncEducation(connection);
     await syncCertificates(connection);
     await syncProfileSettings(connection);
-    await ensureAbdoAdminUser(connection);
+    await ensurePortfolioAdminUser(connection);
     await connection.commit();
 
     console.log(

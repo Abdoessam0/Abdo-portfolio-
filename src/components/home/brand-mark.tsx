@@ -1,3 +1,5 @@
+import { PORTFOLIO_OWNER_NAME } from "@/data/profile";
+
 type BrandMarkProps = {
   compact?: boolean;
   className?: string;
@@ -15,7 +17,7 @@ export function BrandMark({ compact = false, className = "" }: BrandMarkProps) {
       {compact ? null : (
         <div className="flex flex-col leading-none">
           <span className="font-heading text-[0.92rem] font-semibold tracking-[0.01em] text-white">
-            Abdo Essam
+            {PORTFOLIO_OWNER_NAME}
           </span>
           <span className="mt-0.5 text-[0.65rem] uppercase tracking-[0.22em] text-muted">
             Software Engineer

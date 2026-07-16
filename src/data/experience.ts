@@ -1,4 +1,4 @@
-import type { Metric } from "./profile";
+import { PORTFOLIO_OWNER_NAME, type Metric } from "./profile";
 
 export type ExperienceMedia = {
   src: string;
@@ -107,7 +107,7 @@ export const EXPERIENCE: Experience[] = [
     gallery: [
       {
         src: "/images/remax-lisbon/remax-lisbon-journey-wall.jpg",
-        alt: "Abdo Essam in front of the RE/MAX Wise office in Lisbon",
+        alt: `${PORTFOLIO_OWNER_NAME} in front of the RE/MAX Wise office in Lisbon`,
         caption: "RE/MAX Wise — Lisbon",
         captionSub: "Software Developer Internship, 2025",
         width: 1200,
