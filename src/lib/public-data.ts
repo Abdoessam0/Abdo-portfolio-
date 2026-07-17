@@ -292,6 +292,8 @@ function mergeProjectRow(row: PublicProjectRow, images: ProjectImage[]) {
     additionalLinks: fallback?.additionalLinks,
     primaryCtaLabel: fallback?.primaryCtaLabel ?? (row.live_url ? "Live Site" : "View Project"),
     secondaryCtaLabel: fallback?.secondaryCtaLabel ?? "View Project",
+    // DB-only records fall back to empty; known slugs get the correct value via static spread above.
+    disciplines: fallback?.disciplines ?? [],
   } satisfies Project;
 }
 
@@ -452,6 +454,9 @@ export async function getVisibleExperience(): Promise<Experience[]> {
         documents: fallback?.documents,
         gallery: fallback?.gallery,
         projectSlugs: fallback?.projectSlugs,
+        // Backward-compatible defaults for new required fields.
+        type: fallback?.type ?? "Work",
+        international: fallback?.international ?? false,
       } satisfies Experience;
     });
   } catch (error) {

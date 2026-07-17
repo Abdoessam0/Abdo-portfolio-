@@ -10,7 +10,7 @@ The default production driver is `database`. It stores validated uploads in the 
 
 For larger media libraries, set `UPLOAD_STORAGE_DRIVER=s3` and configure all `S3_*` variables shown in `.env.example`. `S3_PUBLIC_BASE_URL` must be an HTTPS origin/path that publicly serves bucket objects. Add that hostname and any approved manually entered image hosts to `TRUSTED_IMAGE_HOSTS`. Never commit real values.
 
-When S3 is used, the bucket/CORS policy should allow public `GET`/`HEAD` for `projects/*`, `certificates/*`, and `cv/*`, while write/delete permissions remain limited to the application access key. Both storage drivers use UUID names and immutable one-year cache headers.
+If the driver is set to `s3` but any required S3 variable is missing, the application logs one warning and safely falls back to database storage. When S3 is fully configured, the bucket/CORS policy should allow public `GET`/`HEAD` for `projects/*`, `certificates/*`, and `cv/*`, while write/delete permissions remain limited to the application access key. Both storage drivers use UUID names and immutable one-year cache headers.
 
 ## Hostinger deployment
 

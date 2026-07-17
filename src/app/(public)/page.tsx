@@ -3,6 +3,7 @@ import { ContactSection } from "@/components/home/contact-section";
 import { CredentialsSection } from "@/components/home/credentials-section";
 import { ExperienceSection } from "@/components/home/experience-section";
 import { FounderSection } from "@/components/home/founder-section";
+import { GlobalJourneySection } from "@/components/home/global-journey-section";
 // import { HeroSection } from "@/components/home/hero-section"; // replaced on this branch
 import { StoryHero } from "@/components/story/StoryHero";
 import { StoryProjectCTA } from "@/components/story/StoryProjectCTA";
@@ -35,7 +36,12 @@ export default async function HomePage() {
     telephone: PROFILE.person.phone,
     nationality: PROFILE.person.nationality,
     knowsLanguage: PROFILE.person.languages,
-    sameAs: [linkedinUrl, githubUrl, PROFILE.socials.instagram, "https://kolaytec.com"],
+    sameAs: [
+      linkedinUrl,
+      githubUrl,
+      PROFILE.socials.instagram,
+      "https://kolaytec.com",
+    ],
   };
 
   const websiteSchema = {
@@ -70,7 +76,11 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([personSchema, websiteSchema, profilePageSchema]),
+          __html: JSON.stringify([
+            personSchema,
+            websiteSchema,
+            profilePageSchema,
+          ]),
         }}
       />
 
@@ -78,11 +88,21 @@ export default async function HomePage() {
         <StoryHero profileSettings={profileSettings} />
         <div className="deferred-section">
           <div className="section-divider" />
-          <ExperienceSection experience={portfolio.experience} projects={portfolio.projects} />
+          <GlobalJourneySection />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
-          <FounderSection />
+          <AboutSection
+            education={portfolio.education}
+            profileSettings={profileSettings}
+          />
+        </div>
+        <div className="deferred-section">
+          <div className="section-divider" />
+          <ExperienceSection
+            experience={portfolio.experience}
+            projects={portfolio.projects}
+          />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
@@ -90,7 +110,7 @@ export default async function HomePage() {
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
-          <AboutSection education={portfolio.education} profileSettings={profileSettings} />
+          <FounderSection />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
@@ -98,7 +118,10 @@ export default async function HomePage() {
         </div>
         <div className="deferred-section">
           <div className="section-divider" />
-          <CredentialsSection certificates={portfolio.certificates} education={portfolio.education} />
+          <CredentialsSection
+            certificates={portfolio.certificates}
+            education={portfolio.education}
+          />
         </div>
         <div className="deferred-section">
           <div className="section-divider" />

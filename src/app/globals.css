@@ -11,7 +11,11 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem; /* pill navbar ~72px + gap */
+  /* Fallback for browsers that use scroll-padding-top.
+     Matches the section[id] scroll-margin-top below.
+     StoryNavbar: fixed top-4 (16px) + pill height (~56px) = ~72px total.
+     5rem (80px) gives an 8px comfortable buffer. */
+  scroll-padding-top: 5rem;
   overflow-x: clip;
 }
 
@@ -67,7 +71,9 @@ html {
   }
 
   section[id] {
-    scroll-margin-top: 7rem;
+    /* StoryNavbar: fixed top-4 (16px) + pill (~56px) = ~72px.
+       5rem = 80px — 8px comfortable gap so heading is never clipped. */
+    scroll-margin-top: 5rem;
   }
 
   ::selection {
@@ -240,7 +246,8 @@ html {
 
 @media (max-width: 767px) {
   html {
-    scroll-padding-top: 5.5rem;
+    /* Mobile pill is same size; match section scroll-margin-top below */
+    scroll-padding-top: 4.5rem;
   }
 
   body {
@@ -260,7 +267,8 @@ html {
   }
 
   section[id] {
-    scroll-margin-top: 6rem;
+    /* Mobile: same navbar height, slightly tighter gap is fine */
+    scroll-margin-top: 4.5rem;
   }
 
   .glass-panel,

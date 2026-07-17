@@ -9,8 +9,15 @@ import { PROFILE } from "@/data/profile";
 import { useLang } from "@/hooks/use-lang";
 import type { PublicProfileSettings } from "@/lib/public-data";
 
-// ─── Nav items are driven by the dictionary ───────────────────────────────
-const NAV_IDS = ["about", "projects", "experience", "skills", "contact"] as const;
+// Nav IDs match the page section order: Hero → Journey → About → Experience → Projects → Skills → Contact
+const NAV_IDS = [
+  "journey",
+  "about",
+  "experience",
+  "projects",
+  "skills",
+  "contact",
+] as const;
 
 function resolveHref(pathname: string, id: string) {
   return pathname === "/" ? `#${id}` : `/#${id}`;
@@ -30,7 +37,11 @@ function StoryBrandMark() {
   );
 }
 
-export function StoryNavbar({ profileSettings }: { profileSettings?: PublicProfileSettings }) {
+export function StoryNavbar({
+  profileSettings,
+}: {
+  profileSettings?: PublicProfileSettings;
+}) {
   const { lang, setLang, t } = useLang();
   const pathname = usePathname() ?? "/";
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,7 +62,9 @@ export function StoryNavbar({ profileSettings }: { profileSettings?: PublicProfi
   // Prevent body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   return (
@@ -80,18 +93,21 @@ export function StoryNavbar({ profileSettings }: { profileSettings?: PublicProfi
             <StoryBrandMark />
           </Link>
 
-          {/* Desktop links */}
-          <div className="hidden items-center gap-1 lg:flex">
+          {/* Desktop links — semantic nav element for accessibility */}
+          <nav
+            aria-label="Main navigation"
+            className="hidden items-center gap-1 lg:flex"
+          >
             {NAV_IDS.map((id) => (
               <Link
                 key={id}
                 href={resolveHref(pathname, id)}
                 className="rounded-full px-3.5 py-1.5 text-[0.8rem] font-medium text-white/60 transition hover:bg-white/8 hover:text-white"
               >
-                {t.nav[id]}
+                {id === "journey" ? "Journey" : t.nav[id]}
               </Link>
             ))}
-          </div>
+          </nav>
 
           {/* Right cluster: lang toggle + CV + hamburger */}
           <div className="flex items-center gap-2">
@@ -139,9 +155,14 @@ export function StoryNavbar({ profileSettings }: { profileSettings?: PublicProfi
               onClick={() => setMenuOpen((v) => !v)}
               className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white lg:hidden"
               aria-expanded={menuOpen}
+              aria-controls="mobile-nav-drawer"
               aria-label="Toggle menu"
             >
-              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {menuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
             </button>
           </div>
         </nav>
@@ -159,7 +180,12 @@ export function StoryNavbar({ profileSettings }: { profileSettings?: PublicProfi
             dir={t.dir}
             className="fixed inset-x-0 top-[4.5rem] z-40 flex justify-center px-4 lg:hidden"
           >
-            <motion.div className="w-full max-w-[780px] overflow-hidden rounded-[1.4rem] bg-[#1f1f1d] p-3 shadow-[0_16px_48px_rgba(0,0,0,0.32)]">
+            <motion.div
+              id="mobile-nav-drawer"
+              role="navigation"
+              aria-label="Mobile navigation"
+              className="w-full max-w-[780px] overflow-hidden rounded-[1.4rem] bg-[#1f1f1d] p-3 shadow-[0_16px_48px_rgba(0,0,0,0.32)]"
+            >
               <div className="space-y-1">
                 {NAV_IDS.map((id) => (
                   <Link
@@ -168,7 +194,7 @@ export function StoryNavbar({ profileSettings }: { profileSettings?: PublicProfi
                     onClick={() => setMenuOpen(false)}
                     className="flex items-center justify-between rounded-2xl px-4 py-3 text-[0.9rem] font-medium text-white/70 transition hover:bg-white/8 hover:text-white"
                   >
-                    <span>{t.nav[id]}</span>
+                    <span>{id === "journey" ? "Journey" : t.nav[id]}</span>
                     <span className="text-xs text-white/25">#{id}</span>
                   </Link>
                 ))}

@@ -1,8 +1,11 @@
 "use client";
 
-import type { ProjectCollection } from "@/data/projects";
-
-export type ProjectFilterValue = "all" | ProjectCollection;
+/**
+ * Generic filter bar value type.
+ * Deliberately left as string so the component can serve collection filters,
+ * discipline filters, and experience-type filters without type-casting at call sites.
+ */
+export type ProjectFilterValue = string;
 
 type ProjectFilterOption = {
   value: ProjectFilterValue;

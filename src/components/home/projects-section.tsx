@@ -13,15 +13,27 @@ import {
   PROJECTS,
   sortProjects,
   type Project,
+  type ProjectDiscipline,
 } from "@/data/projects";
 import { useLang } from "@/hooks/use-lang";
+
+type DisciplineFilter = "all" | ProjectDiscipline;
+
+const DISCIPLINE_ORDER: ProjectDiscipline[] = [
+  "Full-Stack",
+  "Frontend",
+  "Backend",
+  "Mobile",
+  "AI",
+];
 
 const fallbackOrderedProjects = sortProjects(PROJECTS);
 
 export function ProjectsSection({ projects = fallbackOrderedProjects }: { projects?: Project[] }) {
   const { t } = useLang();
-  const [activeFilter, setActiveFilter] = useState<ProjectFilterValue>("all");
+  const [activeFilter, setActiveFilter] = useState<DisciplineFilter>("all");
   const orderedProjects = projects;
+
   const liveProjectCount = useMemo(
     () =>
       orderedProjects.filter(
@@ -37,6 +49,7 @@ export function ProjectsSection({ projects = fallbackOrderedProjects }: { projec
         .length,
     [orderedProjects],
   );
+
   const projectHighlights = useMemo(
     () => [
       {
@@ -58,66 +71,46 @@ export function ProjectsSection({ projects = fallbackOrderedProjects }: { projec
     [clientWorkCount, liveProjectCount, orderedProjects.length, t],
   );
 
-  const filterOptions = useMemo(
-    () => [
-      {
-        value: "all" as const,
-        label: t.projects.filters.all.label,
-        count: orderedProjects.length,
-        helper: t.projects.filters.all.helper,
-      },
-      {
-        value: "Client Work" as const,
-        label: t.projects.filters["Client Work"].label,
-        count: orderedProjects.filter(
-          (project) => project.collection === "Client Work",
-        ).length,
-        helper: t.projects.filters["Client Work"].helper,
-      },
-      {
-        value: "Independent" as const,
-        label: t.projects.filters.Independent.label,
-        count: orderedProjects.filter(
-          (project) => project.collection === "Independent",
-        ).length,
-        helper: t.projects.filters.Independent.helper,
-      },
-      {
-        value: "Prototype" as const,
-        label: t.projects.filters.Prototype.label,
-        count: orderedProjects.filter(
-          (project) => project.collection === "Prototype",
-        ).length,
-        helper: t.projects.filters.Prototype.helper,
-      },
-      {
-        value: "Academic" as const,
-        label: t.projects.filters.Academic.label,
-        count: orderedProjects.filter(
-          (project) => project.collection === "Academic",
-        ).length,
-        helper: t.projects.filters.Academic.helper,
-      },
-    ],
-    [orderedProjects, t],
-  );
+  // Build discipline filter options — only show disciplines that have at least one project
+  const disciplineOptions = useMemo(() => {
+    const allOption = {
+      value: "all" as ProjectFilterValue,
+      label: t.projects.disciplineFilters.all.label,
+      count: orderedProjects.length,
+      helper: t.projects.disciplineFilters.all.helper,
+    };
+
+    const opts = [allOption];
+    for (const discipline of DISCIPLINE_ORDER) {
+      const count = orderedProjects.filter((p) =>
+        p.disciplines.includes(discipline),
+      ).length;
+      if (count === 0) continue; // hide empty discipline filters
+      opts.push({
+        value: discipline as ProjectFilterValue,
+        label: t.projects.disciplineFilters[discipline].label,
+        count,
+        helper: t.projects.disciplineFilters[discipline].helper,
+      });
+    }
+    return opts;
+  }, [orderedProjects, t]);
 
   const filteredProjects = useMemo(() => {
-    if (activeFilter === "all") {
-      return orderedProjects;
-    }
-
-    return orderedProjects.filter(
-      (project) => project.collection === activeFilter,
+    if (activeFilter === "all") return orderedProjects;
+    return orderedProjects.filter((p) =>
+      p.disciplines.includes(activeFilter as ProjectDiscipline),
     );
   }, [activeFilter, orderedProjects]);
 
-  const activeFilterOption =
-    filterOptions.find((option) => option.value === activeFilter) ??
-    filterOptions[0];
-  const activeFilterDescription = t.projects.filters[activeFilter].description;
+  const activeOption =
+    disciplineOptions.find((o) => o.value === activeFilter) ?? disciplineOptions[0];
+  const activeDescription =
+    t.projects.disciplineFilters[activeFilter as DisciplineFilter]?.description ??
+    t.projects.disciplineFilters.all.description;
+
   const shownLabel =
-    activeFilterOption.count === 1
+    filteredProjects.length === 1
       ? t.projects.shownSingular
       : t.projects.shownPlural;
 
@@ -135,7 +128,7 @@ export function ProjectsSection({ projects = fallbackOrderedProjects }: { projec
             description={t.projects.heading.description}
           />
 
-          {/* Stats strip — warm light cards */}
+          {/* Stats strip */}
           <div className="grid gap-3 sm:grid-cols-3 xl:w-[42rem]">
             {projectHighlights.map((item) => (
               <div
@@ -156,22 +149,22 @@ export function ProjectsSection({ projects = fallbackOrderedProjects }: { projec
           </div>
         </div>
 
-        {/* Filter panel — warm light surface */}
+        {/* Discipline filter panel */}
         <div className="flex flex-col gap-4 rounded-[1.4rem] border border-[rgba(24,24,24,0.1)] bg-[#fffdf8] p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-1.5">
             <p className="text-[0.68rem] uppercase tracking-[0.22em] text-[#6f6a61]">
               {t.projects.browseByType}
             </p>
             <p className="text-sm leading-6 text-[#6f6a61]">
-              {activeFilterDescription}
+              {activeDescription}
             </p>
           </div>
 
           <ProjectFilterBar
-            value={activeFilter}
-            options={filterOptions}
-            onChange={setActiveFilter}
-            ariaLabel={t.projects.filterAriaLabel}
+            value={activeFilter as ProjectFilterValue}
+            options={disciplineOptions}
+            onChange={(v) => setActiveFilter(v as DisciplineFilter)}
+            ariaLabel={t.projects.disciplineAriaLabel}
           />
         </div>
       </Reveal>
@@ -180,14 +173,14 @@ export function ProjectsSection({ projects = fallbackOrderedProjects }: { projec
         <Reveal className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-1.5">
             <p className="text-[0.68rem] uppercase tracking-[0.22em] text-[#6f6a61]">
-              {activeFilterOption.label}
+              {activeOption.label}
             </p>
             <h3 className="font-heading text-[1.45rem] font-black tracking-[-0.04em] text-[#181818] sm:text-2xl">
-              {activeFilterOption.count} {shownLabel} {t.projects.shown}
+              {filteredProjects.length} {shownLabel} {t.projects.shown}
             </h3>
           </div>
           <p className="max-w-lg text-sm leading-6 text-[#6f6a61]">
-            {activeFilterDescription}
+            {activeDescription}
           </p>
         </Reveal>
 

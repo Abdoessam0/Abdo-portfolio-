@@ -160,6 +160,12 @@ type SiteCopy = {
     shownSingular: string;
     shownPlural: string;
     filterAriaLabel: string;
+    /** Discipline filter buttons — shown when count > 0 */
+    disciplineFilters: Record<
+      "all" | "Full-Stack" | "Frontend" | "Backend" | "Mobile" | "AI",
+      ProjectFilterCopy
+    >;
+    disciplineAriaLabel: string;
     collectionLabels: Record<string, string>;
     statusLabels: Record<string, string>;
     items: Record<string, ProjectItemCopy>;
@@ -175,6 +181,19 @@ type SiteCopy = {
       momentsTitle: string;
       momentsDescription: string;
       momentsSub: string;
+      /** Type filter labels */
+      typeWork: string;
+      typeInternship: string;
+      typeVolunteering: string;
+      filterAriaLabel: string;
+      filterAll: string;
+      filterWork: string;
+      filterInternship: string;
+      filterVolunteering: string;
+      /** Empty state when filter returns no results */
+      emptyState: string;
+      /** Overview label used on cards instead of "Problem" */
+      overviewLabel: string;
     };
     items: Record<string, ExperienceItemCopy>;
   };
@@ -435,6 +454,39 @@ export const dict: Record<Lang, SiteCopy> = {
       shownSingular: "project",
       shownPlural: "projects",
       filterAriaLabel: "Filter portfolio projects",
+      disciplineFilters: {
+        all: {
+          label: "All disciplines",
+          helper: "Everything",
+          description: "All projects shown together, ordered by strength.",
+        },
+        "Full-Stack": {
+          label: "Full-Stack",
+          helper: "End-to-end",
+          description: "Projects spanning frontend and backend implementation.",
+        },
+        Frontend: {
+          label: "Frontend",
+          helper: "UI work",
+          description: "Interface, component, and layout work.",
+        },
+        Backend: {
+          label: "Backend",
+          helper: "Server-side",
+          description: "Server logic, APIs, and data systems.",
+        },
+        Mobile: {
+          label: "Mobile",
+          helper: "Apps",
+          description: "Mobile app projects built with React Native.",
+        },
+        AI: {
+          label: "AI",
+          helper: "ML / Vision",
+          description: "Machine learning and computer vision projects.",
+        },
+      },
+      disciplineAriaLabel: "Filter projects by discipline",
       collectionLabels: {
         "Client Work": "Client Work",
         Independent: "Independent",
@@ -555,6 +607,16 @@ export const dict: Record<Lang, SiteCopy> = {
         momentsTitle: "Photos from my internship in Riyadh.",
         momentsDescription: "Team moments and certificate handoff during the role.",
         momentsSub: "Technical Support Internship, 2024",
+        typeWork: "Work",
+        typeInternship: "Internship",
+        typeVolunteering: "Volunteering",
+        filterAriaLabel: "Filter by experience type",
+        filterAll: "All",
+        filterWork: "Work",
+        filterInternship: "Internship",
+        filterVolunteering: "Volunteering",
+        emptyState: "No entries match this filter.",
+        overviewLabel: "Overview",
       },
       items: {
         feinsoft: {
@@ -965,6 +1027,39 @@ export const dict: Record<Lang, SiteCopy> = {
       shownSingular: "مشروع",
       shownPlural: "مشاريع",
       filterAriaLabel: "تصفية مشاريع البورتفوليو",
+      disciplineFilters: {
+        all: {
+          label: "كل التخصصات",
+          helper: "الكل",
+          description: "جميع المشاريع مرتبة حسب الأهمية.",
+        },
+        "Full-Stack": {
+          label: "Full-Stack",
+          helper: "شامل",
+          description: "مشاريع تغطي الواجهة والخادم معاً.",
+        },
+        Frontend: {
+          label: "Frontend",
+          helper: "واجهات",
+          description: "عمل على الواجهات والمكونات والتصميم.",
+        },
+        Backend: {
+          label: "Backend",
+          helper: "خادم",
+          description: "منطق الخادم وواجهات API وأنظمة البيانات.",
+        },
+        Mobile: {
+          label: "موبايل",
+          helper: "تطبيقات",
+          description: "تطبيقات موبايل مبنية بـ React Native.",
+        },
+        AI: {
+          label: "ذكاء اصطناعي",
+          helper: "رؤية حاسوبية",
+          description: "مشاريع تعلم آلي ورؤية حاسوبية.",
+        },
+      },
+      disciplineAriaLabel: "تصفية المشاريع حسب التخصص",
       collectionLabels: {
         "Client Work": "عملاء",
         Independent: "مستقل",
@@ -1078,6 +1173,16 @@ export const dict: Record<Lang, SiteCopy> = {
         momentsTitle: "صور من فترة التدريب في الرياض.",
         momentsDescription: "لقطات من الفريق وتسليم الشهادة أثناء الدور.",
         momentsSub: "تدريب دعم فني، 2024",
+        typeWork: "عمل",
+        typeInternship: "تدريب",
+        typeVolunteering: "تطوع",
+        filterAriaLabel: "تصفية حسب نوع الخبرة",
+        filterAll: "الكل",
+        filterWork: "عمل",
+        filterInternship: "تدريب",
+        filterVolunteering: "تطوع",
+        emptyState: "لا توجد خبرات تطابق هذا التصفية.",
+        overviewLabel: "نظرة عامة",
       },
       items: {
         feinsoft: {

@@ -23,10 +23,16 @@ export type ExperienceDocument = {
   description: string;
 };
 
+export type ExperienceType = "Work" | "Internship" | "Volunteering";
+
 export type Experience = {
   id: string;
   slug: string;
   featured: boolean;
+  /** Explicit classification — never inferred at runtime. */
+  type: ExperienceType;
+  /** True when the role was performed outside the student's home country (Egypt). */
+  international: boolean;
   role: string;
   company: string;
   location: string;
@@ -48,6 +54,8 @@ export const EXPERIENCE: Experience[] = [
     id: "feinsoft",
     slug: "feinsoft",
     featured: true,
+    type: "Internship",
+    international: true,
     role: "Long-Term Software Intern",
     company: "Feinsoft",
     location: "Ankara, Türkiye",
@@ -68,6 +76,8 @@ export const EXPERIENCE: Experience[] = [
     id: "remax-wise",
     slug: "remax-wise",
     featured: true,
+    type: "Internship",
+    international: true,
     role: "Software Developer",
     company: "RE/MAX Wise",
     location: "Lisbon, Portugal",
@@ -168,6 +178,8 @@ export const EXPERIENCE: Experience[] = [
     id: "afaqy",
     slug: "afaqy",
     featured: true,
+    type: "Work",
+    international: true,
     role: "Technical Support Engineer",
     company: "AFAQY",
     location: "Riyadh, Saudi Arabia",
@@ -229,6 +241,8 @@ export const EXPERIENCE: Experience[] = [
     id: "nfs-soft",
     slug: "nfs-soft",
     featured: true,
+    type: "Internship",
+    international: true,
     role: "WordPress Developer Intern",
     company: "NFS Soft",
     location: "Erzurum, Turkey",

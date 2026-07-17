@@ -28,8 +28,17 @@ type DatabaseUpload = {
 type StorageDriver = "database" | "local" | "s3";
 
 const OWNED_PREFIXES = ["projects/", "certificates/", "cv/"] as const;
+const REQUIRED_S3_ENV = [
+  "S3_ENDPOINT",
+  "S3_REGION",
+  "S3_BUCKET",
+  "S3_ACCESS_KEY_ID",
+  "S3_SECRET_ACCESS_KEY",
+  "S3_PUBLIC_BASE_URL",
+] as const;
 let s3Client: S3Client | null = null;
 let databaseSchemaReady: Promise<void> | null = null;
+let warnedAboutIncompleteS3 = false;
 
 function requiredEnv(name: string) {
   const value = process.env[name]?.trim();
@@ -37,9 +46,21 @@ function requiredEnv(name: string) {
   return value;
 }
 
+function hasCompleteS3Configuration() {
+  return REQUIRED_S3_ENV.every((name) => Boolean(process.env[name]?.trim()));
+}
+
 function storageDriver(): StorageDriver {
   const configured = process.env.UPLOAD_STORAGE_DRIVER?.trim().toLowerCase();
-  if (configured === "database" || configured === "s3" || configured === "local") return configured;
+  if (configured === "s3") {
+    if (hasCompleteS3Configuration()) return "s3";
+    if (!warnedAboutIncompleteS3) {
+      console.warn("[upload-storage] S3 configuration is incomplete; using database storage.");
+      warnedAboutIncompleteS3 = true;
+    }
+    return "database";
+  }
+  if (configured === "database" || configured === "local") return configured;
   return process.env.NODE_ENV === "production" ? "database" : "local";
 }
 

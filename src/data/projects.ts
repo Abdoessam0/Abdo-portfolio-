@@ -4,6 +4,13 @@ export type ProjectCollection =
   | "Prototype"
   | "Academic";
 
+export type ProjectDiscipline =
+  | "Full-Stack"
+  | "Frontend"
+  | "Backend"
+  | "Mobile"
+  | "AI";
+
 export type ProjectImage = {
   src: string;
   alt: string;
@@ -29,6 +36,8 @@ export type Project = {
   priority: number;
   year: number;
   collection: ProjectCollection;
+  /** Explicit discipline tags — never inferred from stack at runtime. */
+  disciplines: ProjectDiscipline[];
   projectType: string;
   context: string;
   employer?: string;
@@ -54,11 +63,15 @@ export type Project = {
 
 export function sortProjects(projects: Project[]) {
   return [...projects].sort((left, right) => {
-    if (left.year !== right.year) {
-      return right.year - left.year;
-    }
-
-    return left.priority - right.priority;
+    // Featured first
+    const featuredDiff = (right.featured ? 1 : 0) - (left.featured ? 1 : 0);
+    if (featuredDiff !== 0) return featuredDiff;
+    // Then by priority ascending (lower = stronger)
+    if (left.priority !== right.priority) return left.priority - right.priority;
+    // Then by year descending
+    if (left.year !== right.year) return right.year - left.year;
+    // Slug as final tiebreaker for deterministic order
+    return left.slug.localeCompare(right.slug);
   });
 }
 
@@ -74,6 +87,7 @@ export const PROJECTS: Project[] = [
     priority: 1,
     year: 2026,
     collection: "Prototype",
+    disciplines: ["Frontend"],
     projectType: "Restaurant Decision-Support Platform",
     context: "Interactive Smart Table Prototype",
     summary:
@@ -153,6 +167,7 @@ export const PROJECTS: Project[] = [
     priority: 1,
     year: 2025,
     collection: "Client Work",
+    disciplines: ["Full-Stack", "Frontend"],
     projectType: "Multi-Site Real Estate Platform",
     context: "RE/MAX Wise",
     employer: "RE/MAX Wise",
@@ -224,6 +239,7 @@ export const PROJECTS: Project[] = [
     priority: 5,
     year: 2025,
     collection: "Independent",
+    disciplines: ["Full-Stack"],
     projectType: "Marketplace Platform",
     context: "Independent Product",
     summary:
@@ -270,6 +286,7 @@ export const PROJECTS: Project[] = [
     priority: 7,
     year: 2025,
     collection: "Independent",
+    disciplines: ["Full-Stack", "Backend"],
     projectType: "Civic Platform",
     context: "Independent Product",
     summary:
@@ -316,6 +333,7 @@ export const PROJECTS: Project[] = [
     priority: 6,
     year: 2025,
     collection: "Prototype",
+    disciplines: ["Mobile"],
     projectType: "Mobile Safety App",
     context: "Ataturk University",
     summary:
@@ -394,6 +412,7 @@ export const PROJECTS: Project[] = [
     priority: 9,
     year: 2023,
     collection: "Prototype",
+    disciplines: ["Full-Stack", "Backend"],
     projectType: "Event Platform",
     context: "Independent Prototype",
     summary:
@@ -462,6 +481,7 @@ export const PROJECTS: Project[] = [
     priority: 8,
     year: 2024,
     collection: "Prototype",
+    disciplines: ["AI"],
     projectType: "Computer Vision System",
     context: "Independent Prototype",
     summary:
@@ -531,6 +551,7 @@ export const PROJECTS: Project[] = [
     priority: 10,
     year: 2022,
     collection: "Academic",
+    disciplines: ["Backend"],
     projectType: "Desktop Management System",
     context: "Academic Project",
     summary:
@@ -614,6 +635,7 @@ export const PROJECTS: Project[] = [
     priority: 4,
     year: 2026,
     collection: "Client Work",
+    disciplines: ["Frontend"],
     projectType: "Education Website",
     context: "Freelance Client",
     employer: "Freelance",
@@ -653,6 +675,7 @@ export const PROJECTS: Project[] = [
     priority: 5,
     year: 2026,
     collection: "Client Work",
+    disciplines: ["Frontend"],
     projectType: "Business Website",
     context: "Freelance Client",
     employer: "Freelance",
@@ -715,6 +738,7 @@ export const PROJECTS: Project[] = [
     priority: 2,
     year: 2026,
     collection: "Client Work",
+    disciplines: ["Full-Stack", "Backend", "Mobile"],
     projectType: "Business Website",
     context: "Freelance Client",
     employer: "Freelance",
@@ -754,6 +778,7 @@ export const PROJECTS: Project[] = [
     priority: 4,
     year: 2026,
     collection: "Client Work",
+    disciplines: ["Frontend"],
     projectType: "Business Website",
     context: "Kolaytec",
     employer: "Kolaytec",
@@ -793,6 +818,7 @@ export const PROJECTS: Project[] = [
     priority: 3,
     year: 2026,
     collection: "Client Work",
+    disciplines: ["Frontend"],
     projectType: "Admissions Platform",
     context: "Freelance Client",
     employer: "Freelance",

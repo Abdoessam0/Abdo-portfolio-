@@ -1,19 +1,20 @@
 "use client";
 
+import { useMemo, useState } from "react";
+import type { Experience, ExperienceType } from "@/data/experience";
 import { EXPERIENCE } from "@/data/experience";
-import type { Experience } from "@/data/experience";
 import { PROJECTS, type Project } from "@/data/projects";
 import { ExperienceCard } from "@/components/home/experience-card";
+import { ProjectFilterBar } from "@/components/home/project-filter-bar";
+import type { ProjectFilterValue } from "@/components/home/project-filter-bar";
 import { Reveal } from "@/components/home/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
 import { useLang } from "@/hooks/use-lang";
 
-function buildSummaryCards(experience: Experience[]) {
-  return experience.slice(0, 3).map((item) => ({
-    company: item.company,
-    role: item.role,
-    summary: item.summary,
-  }));
+type ExperienceFilter = "all" | ExperienceType;
+
+function toFilterValue(t: ExperienceType): ExperienceFilter {
+  return t;
 }
 
 export function ExperienceSection({
@@ -24,8 +25,58 @@ export function ExperienceSection({
   projects?: Project[];
 }) {
   const { t } = useLang();
-  const featuredExperience = experience.filter((item) => item.featured);
-  const summaryCards = buildSummaryCards(featuredExperience.length ? featuredExperience : experience);
+  const labels = t.experience.labels;
+  const [activeFilter, setActiveFilter] = useState<ExperienceFilter>("all");
+
+  // Build per-type counts
+  const typeCounts = useMemo(() => {
+    const counts: Record<ExperienceType, number> = {
+      Work: 0,
+      Internship: 0,
+      Volunteering: 0,
+    };
+    for (const item of experience) {
+      counts[item.type] = (counts[item.type] ?? 0) + 1;
+    }
+    return counts;
+  }, [experience]);
+
+  // Build filter options — only show types that have at least one entry
+  const filterOptions = useMemo(() => {
+    const all = {
+      value: "all" as ProjectFilterValue,
+      label: labels.filterAll,
+      count: experience.length,
+      helper: "",
+    };
+    const opts = [all];
+
+    const order: ExperienceType[] = ["Work", "Internship", "Volunteering"];
+    for (const type of order) {
+      const count = typeCounts[type] ?? 0;
+      if (count === 0) continue; // hide empty filters
+
+      const labelMap: Record<ExperienceType, string> = {
+        Work: labels.filterWork,
+        Internship: labels.filterInternship,
+        Volunteering: labels.filterVolunteering,
+      };
+      opts.push({
+        value: toFilterValue(type) as ProjectFilterValue,
+        label: labelMap[type],
+        count,
+        helper: "",
+      });
+    }
+    return opts;
+  }, [experience.length, typeCounts, labels]);
+
+  const filteredExperience = useMemo(() => {
+    if (activeFilter === "all") return experience;
+    return experience.filter((item) => item.type === activeFilter);
+  }, [activeFilter, experience]);
+
+  const showFilter = filterOptions.length > 1; // Only show if more than just "All"
 
   return (
     <section id="experience" dir={t.dir} className="space-y-6 py-3 sm:space-y-8 sm:py-4">
@@ -37,38 +88,34 @@ export function ExperienceSection({
         />
       </Reveal>
 
-      <Reveal>
-        <div className="grid gap-3 md:grid-cols-3">
-          {summaryCards.map((item) => (
-            <article
-              key={item.company}
-              className="rounded-[1.05rem] border border-[rgba(24,24,24,0.1)] bg-white px-4 py-4 shadow-[0_2px_10px_rgba(24,24,24,0.05)]"
-            >
-              <p className="text-[0.66rem] font-semibold uppercase tracking-[0.2em] text-[#6f6a61]">
-                {item.company}
-              </p>
-              <h3 className="mt-2 font-heading text-[1rem] font-semibold tracking-[-0.03em] text-[#181818]">
-                {item.role}
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-[#6f6a61]">
-                {item.summary}
-              </p>
-            </article>
-          ))}
-        </div>
-      </Reveal>
+      {showFilter && (
+        <Reveal>
+          <ProjectFilterBar
+            value={activeFilter as ProjectFilterValue}
+            options={filterOptions}
+            onChange={(v) => setActiveFilter(v as ExperienceFilter)}
+            ariaLabel={labels.filterAriaLabel}
+          />
+        </Reveal>
+      )}
 
       <div className="space-y-4">
-        {featuredExperience.map((experience, index) => (
-          <Reveal key={experience.id} delay={index * 0.05}>
-            <ExperienceCard
-              experience={experience}
-              relatedProjects={projects.filter((project) =>
-                experience.projectSlugs?.includes(project.slug),
-              )}
-            />
+        {filteredExperience.length === 0 ? (
+          <Reveal>
+            <p className="py-8 text-center text-sm text-[#6f6a61]">{labels.emptyState}</p>
           </Reveal>
-        ))}
+        ) : (
+          filteredExperience.map((item, index) => (
+            <Reveal key={item.id} delay={index * 0.05}>
+              <ExperienceCard
+                experience={item}
+                relatedProjects={projects.filter((p) =>
+                  item.projectSlugs?.includes(p.slug),
+                )}
+              />
+            </Reveal>
+          ))
+        )}
       </div>
     </section>
   );

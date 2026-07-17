@@ -29,7 +29,7 @@ export function ExperienceCard({
   const isCompactExperience = experience.slug === "feinsoft";
   const copy = t.experience.items[experience.id];
   const metrics = copy?.metrics ?? experience.metrics;
-  const impact = copy?.impact ?? experience.impact;
+  const impact = (copy?.impact ?? experience.impact).slice(0, 2);
 
   return (
     <motion.article
@@ -56,6 +56,11 @@ export function ExperienceCard({
             </span>
             <span className="rounded-full border border-[rgba(24,24,24,0.1)] bg-[#f5f3ef] px-2.5 py-1 text-[0.72rem] text-[#6f6a61]">
               {copy?.location ?? experience.location}
+            </span>
+            <span className="rounded-full border border-[rgba(24,24,24,0.1)] bg-[#f5f3ef] px-2.5 py-1 text-[0.72rem] text-[#6f6a61]">
+              {experience.type === "Work" ? t.experience.labels.typeWork
+                : experience.type === "Volunteering" ? t.experience.labels.typeVolunteering
+                : t.experience.labels.typeInternship}
             </span>
           </div>
 
